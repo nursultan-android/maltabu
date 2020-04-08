@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Maltabu.kz</string>
+    <string name="hello">Салем</string>
+    <string name="navigation_drawer_open">Ашу</string>
+    <string name="navigation_drawer_close">Жабу</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">Проект</string>
+    <string name="nav_header_desc">Хэдхэд</string>
+    <string name="other_lang">Қазақша</string>
+    <string name="action_settings">Настройки</string>
+    <string name="menu1">Төрт-түлік</string>
+    <string name="menu2">Үй Жануарлары</string>
+    <string name="menu3">Жем/Шөп</string>
+    <string name="menu4">Көтерме сауда</string>
+    <string name="menu5">Қызметтер және техника</string>
+    <string name="menu6">Азық-түлік</string>
+    <string name="menu7">Жұмыспен қамту</string>
+    <string name="menu8">Тегін хабарландыру беру</string>
+    <string name="menu82">Қарапайым жедел және тегін</string>
+    <string name="Cabinet">Жеке кабинет</string>
+    <string name="Option1">Бүкіл бөлімдер бойынша</string>
+    <string name="Option2">Бүкіл Қазақстан</string>
+    <string name="Search">Іздеу</string>
+    <string name="SearchText">Жедел іздеу</string>
+    <string name="SearchText2">Қажетті сөзді теруді бастаңыз</string>
+    <string name="select">Тандау</string>
+    <string name="toTop">Поднять наверх - 150 ₸</string>
+    <string name="toHot">Добавить в горячие - 250 ₸</string>
+    <string name="showPhone"><u>Телефон нөмірін көрсету</u></string>
+    <string name="showComments">Пікірлерді көрсету</string>
+    <string name="download">Загрузить еще</string>
+    <string name="region">Облыс</string>
+    <string name="city">Қала</string>
+    <string name="price">Бағасы</string>
+    <string name="onlyPhoto">Тек фотолармен</string>
+    <string name="onlyTrade">Айырбастау</string>
+    <string name="bargain">Шұғыл, сауда-саттық</string>
+    <string name="chooseRegion">Облысты таңдаңыз</string>
+    <string name="chooseCategoty">Бөлімді таңдаңыз</string>
+    <string name="choosSubCategoty">Санатты таңдаңыз</string>
+    <string name="chooseCity">Қаланы таңдаңыз</string>
+    <string name="filterResult">Нәтижені көрсету</string>
+    <string name="filterClear">Тізімді тазалау</string>
+
+    <string name="title">Тақырып</string>
+    <string name="desc">Сипаттамасы</string>
+    <string name="barter">Айырбас</string>
+    <string name="barter2">Айырбастау мүмкіндігі бар</string>
+    <string name="photo">Фотосуреттер</string>
+    <string name="phone">Телефон</string>
+    <string name="mail">Эл. пошта</string>
+    <string name="address">Мекен-жай</string>
+    <string name="rules">Бұл хабарландыруды беру арқылы мен <b>Сайт ережелерімен</b>келісемін</string>
+    <string name="rules2">Мен <font color="#617ffb"> Сайт ережелерімен </font> келісемін</string>
+    <string name="rules3">Пользовательское соглашение Maltabu.kz</string>
+    <string name="addPost">Хабарландыру беру</string>
+    <string name="radioB1">Келісімді баға</string>
+    <string name="radioB2">Тегін беремін</string>
+    <string name="priceValid">Баға белгілеңіз</string>
+    <string name="titleValid">Хабарландыру тақырыбын енгізіңіз</string>
+    <string name="emailValid">invalid Электронды пошта</string>
+    <string name="regionValid">Қаланы таңдаңыз</string>
+    <string name="phoneValid">Телефон номірі</string>
+
+    <string name="chooseCategoryCatalog">Хабарландыру санатын таңдау</string>
+    <string name="photoPlus">Фотосүреттер қосу</string>
+    <string name="phonePlus">Қосымша телефон номірін қосу</string>
+    <string name="catalog">Санат</string>
+
+    <string name="or">немесе</string>
+    <string name="savePassword">Құпия сөзді сақтау</string>
+    <string name="mailExist">Бұл эл. пошта тіркелген</string>
+    <string name="phoneExist">Бұл телефон номірі тіркелген</string>
+    <string name="forgetPass">Құпия сөзіңізді ұмытып қалдыңыз ба?</string>
+    <string name="forgetPassTitle">Құпия сөзді қалпына келтіру</string>
+    <string name="forgetPassPhone">Телефон арқылы тіркелгем</string>
+    <string name="forgetPassMail">Эл.пошта арқылы тіркелгем</string>
+    <string name="forgetPassSuccess">Құпия сөз өзгертілді</string>
+    <string name="infoCode">Сіздін телефонызға смс-хабарлама жіберілeді</string>
+    <string name="wrongCode">Қате код</string>
+    <string name="iHaveCode">Менде код бар</string>
+    <string name="recoverPass">Құпия сөзді қалпына келтіру</string>
+    <string name="wrongPassOrLogin">Логин немесе құпия сөз қате</string>
+
+    <string name="sort0">Сортировка</string>
+    <string name="sort1">Жаңа хабарландыруларды көрсету</string>
+    <string name="sort2">Бұрынғы хабарландыруларды көрсету</string>
+    <string name="sort3">Бағасы төмен хабарландыруларды көрсету</string>
+    <string name="sort4">Бағасы жоғары хабарландыруларды көрсету</string>
+
+    <string name="reg11">Компанияның аты немесе атауы</string>
+    <string name="reg12">Сіздің қалдырған пікірлеріңізде көрсетіліп тұрады</string>
+    <string name="chooseReg1">Телефон арқылы тіркелу</string>
+    <string name="chooseReg2">Эл.пошта арқылы тіркелу</string>
+    <string name="reg21">Эл.пошта(логин)</string>
+    <string name="reg211">Телефон(логин)</string>
+    <string name="reg22">Сізден басқа ешкімге көрсетілмейді</string>
+    <string name="reg31">Құпия сөз</string>
+    <string name="reg32">Құпия сөз кем дегенде 6 таңбадан құралу керек</string>
+    <string name="reg41">Құпия сөзді қайталап жазыңыз</string>
+    <string name="reg42">Жоғарыда көрсеткен құпия сөзіңізді қайталаңыз</string>
+    <string name="regTitle">Тіркелу</string>
+    <string name="regButton">Тіркелу</string>
+    <string name="auth">Авторизация</string>
+    <string name="auth2">Кіру</string>
+    <string name="auth3">Логин</string>
+    <string name="auth4">Жеке кабинет ашу</string>
+    <string name="hotTitle">Жедел ұсыныстар</string>
+    <string name="scoreNumb">Номер счета</string>
+    <string name="scoreButton">Пополнить счет</string>
+    <string name="noPosts">Хабарландырулар жоқ</string>
+    <string name="noPosts2">Өкінішке орай, осы сұраныс бойынша әзірге хабарландыру жоқ</string>
+
+    <string name="activateTitle">Хабарлама</string>
+    <string name="activateTit">Жеке кабинетте тіркелу</string>
+    <string name="activateMessage">Жеке кабинетіңізді іске қосу үшін
+        электрондық поштаңызға жіберілген сілтемені бысыңыз.</string>
+    <string name="activateRepeat">Если вы не можете найти письмо,
+        необходимо проверить папку Спам, куда оно могло случайно попасть.</string>
+    <string name="activateRepeat2">Если и там нет письма, нажмите </string>
+    <string name="activateRepeatButton">Отправить письмо повторно</string>
+    <string name="payment">Пополнение счета</string>
+    <string name="paymentTitle">Вы можете пополнить счет в терминале платежныж систем <u><b>Касса 24</b></u></string>
+    <string name="payment1">1. Выберите окошко с названием <b>MALTABU.KZ</b> в списке услуг</string>
+    <string name="payment2">2. Введите номер вашего кабинета - </string>
+    <string name="payment3">3. Внесите на счет необходимую сумму</string>
+    <string name="paymentF">После этого деньги поступят на Ваш личный счет на сайте maltabu.kz</string>
+
+    <string name="changePasswordTitle">Изменить пароль</string>
+    <string name="changePasswordOldPass">Старый пароль</string>
+    <string name="changePasswordOldPass2">Введите старый пароль</string>
+    <string name="changePasswordNewPass">Новый пароль</string>
+    <string name="changePasswordConfPass">Повторите пароль</string>
+    <string name="CallPhone">Сатушыға қоңырау шалу</string>
+
+    <string name="noPostTitle">Хабарландырулар жоқ</string>
+    <string name="noPostText">Өкінішке орай, осы сұраныс бойынша әзірге хабарландыру жоқ.</string>
+
+    <string name="postFound">Хабарландырулардың нұсқасы: 0</string>
+
+    <string name="addPostTitle">Хабарландыру тексеруден өтуге жіберілді!</string>
+    <string name="addPostText">Сіздің хабарландыруыңызды модератор тексерістен өткізіп жатыр, тексерістенөткен жағдайда сайтқа шығарылады және хабарландыруыңызды жеке кабинетіңізде өңдеуге мүмкіндік туады.</string>
+
+    <string name="photo1">Галерея</string>
+    <string name="photo2">Камера</string>
+    <string name="rotate">Айналдыру</string>
+
+    <string name="descr1">рет қаралынды</string>
+    <string name="descr2">рет телефон қаралынды</string>
+    <string name="descr3">пікірлер саны</string>
+
+    <string name="descr4">Қалпына келтіру</string>
+    <string name="descr5">Архивтен жою</string>
+
+    <string name="noAvtivation1">Создание личного кабинета</string>
+    <string name="noActivation2">Вы можете пользоваться вашим личным кабинетом.</string>
+
+    <string name="cab1">Менің хабарландыруларым</string>
+    <string name="cab2">Профиль параметрлері</string>
+    <string name="cab3">Құпия сөз өзгерту</string>
+    <string name="cab4">Шығу</string>
+
+    <string name="cab01">Өңдеу</string>
+    <string name="cab02">Жою</string>
+
+    <string name="comments1">Пікірлер</string>
+    <string name="comments2">Пікір қалдыру</string>
+    <string name="comments3">Пікіріңізді қалдыру үшін, Сізге жүйеге Кіру немесе Тіркелу қажет</string>
+    <string name="productionNoAuth">Сізге жүйеге Кіру немесе Тіркелу қажет</string>
+    <string name="successPay">Төлем</string>
+    <string name="visitorsCount">рет қаралынды</string>
+    <string name="filter">Іздеу</string>
+    <string name="news">Жаңалықтар</string>
+
+    <string name="sell">Сату</string>
+</resources>

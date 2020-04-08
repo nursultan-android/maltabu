@@ -1,0 +1,181 @@
+<resources>
+    <string name="app_name">Maltabu.kz</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="other_lang">Русский</string>
+    <string name="hello">Привет</string>
+    <string name="menu1">Сельхоз животные</string>
+    <string name="menu2">Домашние питомцы</string>
+    <string name="menu3">Корм</string>
+    <string name="menu4">Оптовая торговля</string>
+    <string name="menu5">Услуги и техника</string>
+    <string name="menu6">Продукты питания</string>
+    <string name="menu7">Работа</string>
+    <string name="menu8">Подать объявление бесплатно</string>
+    <string name="Cabinet">Личный кабинет</string>
+    <string name="menu82">Просто, быстро и бесплатно</string>
+    <string name="Option1">Во всех разделах</string>
+    <string name="Option2">Весь Казахстан</string>
+    <string name="Search">Поиск</string>
+    <string name="SearchText">Быстрый поиск</string>
+    <string name="SearchText2">Начинайте вводить необходимое слово</string>
+    <string name="select">Выбрать</string>
+    <string name="toTop">Поднять наверх - 150 ₸</string>
+    <string name="toHot">Добавить в горячие - 250 ₸</string>
+    <string name="showPhone"><u>Показать телефон</u></string>
+    <string name="showComments">Показать комментарии</string>
+    <string name="download">Загрузить еще</string>
+    <string name="region">Область</string>
+    <string name="city">Город</string>
+    <string name="price">Цена</string>
+    <string name="onlyPhoto">Только с фото</string>
+    <string name="onlyTrade">На обмен</string>
+    <string name="bargain">Срочно, торг</string>
+    <string name="chooseRegion">Выберите область</string>
+    <string name="chooseCity">Выберите город</string>
+    <string name="chooseCategoty">Выберите категорию</string>
+    <string name="choosSubCategoty">Выберите подкатегорию</string>
+    <string name="filterResult">Показать результат</string>
+    <string name="filterClear">Очистить список</string>
+
+    <string name="title">Заголовок</string>
+    <string name="desc">Описание</string>
+    <string name="barter">Обмен</string>
+    <string name="barter2">Возможен обмен</string>
+    <string name="photo">Фотографии</string>
+    <string name="phone">Телефон</string>
+    <string name="mail">Эл. почта</string>
+    <string name="address">Адрес</string>
+    <string name="rules">Размещая данное объявление, я соглашаюсь с <font color="#617ffb"> Правилами сайта</font></string>
+    <string name="rules2">Я согласен с <b>Правилами сайта</b></string>
+    <string name="rules3">Пользовательское соглашение Maltabu.kz</string>
+    <string name="addPost">Подать объявление</string>
+    <string name="radioB1">Договорная цена</string>
+    <string name="radioB2">Отдам даром</string>
+
+    <string name="priceValid">Укажите цену</string>
+    <string name="titleValid">Введите заголовок объявления</string>
+    <string name="emailValid">invalid email</string>
+    <string name="regionValid">Выберите область и город</string>
+    <string name="phoneValid">Введите хотя бы 1 номер телефона</string>
+
+    <string name="chooseCategoryCatalog">Выберите раздел и категорию</string>
+    <string name="photoPlus">Добавить фотографии</string>
+    <string name="phonePlus">Добавить телефон</string>
+    <string name="catalog">Категория</string>
+
+    <string name="sort0">Сортировка</string>
+    <string name="sort1">Показать сначала новые объявления</string>
+    <string name="sort2">Показать сначала старые объявления</string>
+    <string name="sort3">Показать сначала дешевые объявления</string>
+    <string name="sort4">Показать сначала дорогие объявления</string>
+
+    <string name="or">или</string>
+    <string name="savePassword">Сохранить пароль</string>
+    <string name="mailExist">Данный электронный адрес уже существует</string>
+    <string name="phoneExist">Данный номер телефона уже существует</string>
+    <string name="forgetPass">Забыли пароль?</string>
+    <string name="forgetPassTitle">Восстановление пароля</string>
+    <string name="forgetPassPhone">Регистрировался(-acь) через телефон</string>
+    <string name="forgetPassMail">Регистрировался(-acь) через эл.почту</string>
+    <string name="forgetPassSuccess">Вы успешно сменили пароль</string>
+    <string name="wrongCode">Неверный код</string>
+
+    <string name="infoCode">На ваш номер будет отправлено sms-сообщение с 4-x значным кодом для восстановления пароля</string>
+    <string name="iHaveCode">Далее</string>
+    <string name="recoverPass">Восстановить пароль</string>
+    <string name="wrongPassOrLogin">Неправильный логин или пароль</string>
+
+
+    <string name="reg11">Имя или название компании</string>
+    <string name="reg12">Будет отбражаться в ваших комментариях</string>
+    <string name="reg21">Эл. почта(логин для входа)</string>
+    <string name="reg211">Номер телефона(логин для входа)</string>
+    <string name="reg22">Никому не показывается, кроме вас</string>
+    <string name="chooseReg1">Зарегистрироваться через номер телефона</string>
+    <string name="chooseReg2">Зарегистрироваться через электронную почту</string>
+    <string name="reg31">Пароль</string>
+    <string name="reg32">Пароль должен состоять минимум из 6 символов</string>
+    <string name="reg41">Повторите пароль</string>
+    <string name="reg42">Повторите пароль введенный выше</string>
+    <string name="regTitle">Регистрация</string>
+    <string name="regButton">Зарегистрироваться</string>
+    <string name="auth">Авторизация</string>
+    <string name="auth2">Вход</string>
+    <string name="auth3">Логин</string>
+    <string name="auth4">Создать личный кабинет</string>
+
+    <string name="scoreNumb">Номер счета</string>
+    <string name="scoreButton">Пополнить счет</string>
+    <string name="hotTitle">Горячие предложения</string>
+    <string name="noPosts">Объявлений нет</string>
+    <string name="noPosts2">К сожалению, по данному запросу еще нет объявлений</string>
+
+    <string name="cab1">Мои объявления</string>
+    <string name="cab2">Настройка профиля</string>
+    <string name="cab3">Сменить пароль</string>
+    <string name="cab4">Выйти</string>
+
+    <string name="activateTitle">Уведомление</string>
+    <string name="activateTit">Активация личного кабинета</string>
+    <string name="activateMessage">На указанную вами электронную почту было отправлено
+        письмо с инструкциями для аактивации личного кабинета.</string>
+    <string name="activateRepeat">Если вы не можете найти письмо,
+        необходимо проверить папку Спам, куда оно могло случайно попасть.</string>
+    <string name="activateRepeat2">Если и там нет письма, нажмите </string>
+    <string name="activateRepeatButton">Отправить письмо повторно</string>
+    <string name="payment">Пополнение счета</string>
+    <string name="paymentTitle">Вы можете пополнить счет в терминале платежныж систем <u><b>Касса 24</b></u></string>
+    <string name="payment1">1. Выберите окошко с названием <b>MALTABU.KZ</b> в списке услуг</string>
+    <string name="payment2">2. Введите номер вашего кабинета - </string>
+    <string name="payment3">3. Внесите на счет необходимую сумму</string>
+    <string name="paymentF">После этого деньги поступят на Ваш личный счет на сайте maltabu.kz</string>
+
+    <string name="changePasswordTitle">Изменить пароль</string>
+    <string name="changePasswordOldPass">Старый пароль</string>
+    <string name="changePasswordOldPass2">Введите старый пароль</string>
+    <string name="changePasswordNewPass">Новый пароль</string>
+    <string name="changePasswordConfPass">Повторите пароль</string>
+
+    <string name="noPostTitle">Объявлений нет</string>
+    <string name="noPostText">К сожалению, по данному запросу еще нет объявлений.</string>
+
+    <string name="CallPhone">Позвонить продавцу</string>
+
+
+    <string name="postFound">Объявлений найдено: 0</string>
+    <string name="addPostTitle">Объявление отправлено на проверку!</string>
+    <string name="addPostText">Ваше объявление находится у модератора, после проверки оно появится на сайте и будет доступно для редактирования в личном кабинете.</string>
+    <string name="photo1">Галерея</string>
+    <string name="photo2">Камера</string>
+    <string name="rotate">Повернуть</string>
+
+    <string name="descr1">просмотров объявления</string>
+    <string name="descr2">просмотров телефона</string>
+    <string name="descr3">оставлено комментариев</string>
+
+    <string name="descr4"> Восстановить</string>
+    <string name="descr5">Удалить из архива</string>
+
+    <string name="noAvtivation1">Создание личного кабинета</string>
+    <string name="noActivation2">Вы можете пользоваться вашим личным кабинетом.</string>
+
+    <string name="cab01">Редактировать</string>
+    <string name="cab02">Удалить</string>
+
+    <string name="comments1">Комментарии</string>
+    <string name="comments2">Написать комментарий</string>
+    <string name="comments3">Для добавления комментария, Вам необходимо войти или зарегистрироваться в системе</string>
+    <string name="productionNoAuth">Вам необходимо войти или зарегистрироваться в системе</string>
+    <string name="successPay">Оплата</string>
+
+    <string name="visitorsCount">просмотров</string>
+    <string name="filter">Фильтр</string>
+    <string name="news">Новости</string>
+
+    <string name="sell">Продать</string>
+</resources>

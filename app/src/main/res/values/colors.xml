@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffbf25</color>
+    <color name="secondary">#ffbf25</color>
+    <color name="primary">#ffbf25</color>
+    <color name="colorPrimaryDark">#ffbf25</color>
+    <color name="colorAccent">#ffbf25</color>
+    <color name="MaltabuBlue">#617ffb</color>
+    <color name="MaltabuGreen">#1ea502</color>
+    <color name="MaltabuBlueLight">#879ffc</color>
+    <color name="MaltabuBlueARGB">#80FFFFFF</color>
+    <color name="MaltabuYellow">#ffbf25</color>
+    <color name="MaltabuGrey">#f4f5f6</color>
+    <color name="MaltabuGrey2">#bdc3c7</color>
+    <color name="MaltabuGrey3">#eeeeee</color>
+    <color name="MaltabuGrey555">#555555</color>
+    <color name="MaltabuGrey777">#777777</color>
+    <color name="White">#ffffff</color>
+    <color name="Black">#000000</color>
+    <color name="Red">#c0392b</color>
+    <color name="RedBadge">#ff0000</color>
+</resources>
