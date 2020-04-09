@@ -88,7 +88,7 @@ open class Repository{
         return mainService!!.getRegions()
     }
 
-    fun getAdBuId(id: Int): Observable<Response<Ad>>{
+    fun getAdBuId(id: Int): Observable<Response<ResponseAd>>{
         return mainService!!.getAdById(id)
     }
 
@@ -96,14 +96,30 @@ open class Repository{
         return mainService!!.getAmountType()
     }
 
-    fun newAd(body: NewAdBody): Observable<Response<MessageStatus>>{
-        return mainService!!.newAd(title = body.title!!,main_phone =  body.main_phone!!, category_id = body.category_id!!, region_id = body.region_id!!, city_id = body.city_id!!,
-            amount_id = body.amountId!!, amount = body.amount, email = body.email, description = body.description, phones = body.phones,  primary_image_id = body.primary_image_id)
-//        return secondService!!.newAd(body.title!!,body.main_phone!!, body.category_id!!, body.region_id!!, body.amountId!!,
-//            body.city_id!!, body.amount!!,body.email, body.description, body.phones, body.image_ids!!.toIntArray(), body.primary_image_id!!)
-    }
+//    fun newAd(body: NewAdBody): Observable<Response<MessageStatus>>{
+//        return mainService!!.newAd(title = body.title!!,main_phone =  body.main_phone!!, category_id = body.category_id!!, region_id = body.region_id!!, city_id = body.city_id!!,
+//            amount_id = body.amountId!!, amount = body.amount, email = body.email, description = body.description, phones = body.phones,  primary_image_id = body.primary_image_id)
+////        return secondService!!.newAd(body.title!!,body.main_phone!!, body.category_id!!, body.region_id!!, body.amountId!!,
+////            body.city_id!!, body.amount!!,body.email, body.description, body.phones, body.image_ids!!.toIntArray(), body.primary_image_id!!)
+//    }
 
     fun postAdPhoto(file: MultipartBody.Part): Observable<Response<Int>>{
         return mainService!!.postAdPhoto(file)
+    }
+
+    fun register(name: String, email:String, phone:String, password:String, passwordConf: String):Observable<Response<ResponseRegister>>{
+        return mainService!!.register(name = name,email = email,phone=phone,password= password,password_confirmation = passwordConf)
+    }
+
+    fun social(email:String, providerName:String, userId: String):Observable<Response<ResponseRegister>>{
+        return mainService!!.socail_auth(email = email, provider_name = providerName, provider_id = userId)
+    }
+
+    fun login(email:String, password:String):Observable<Response<ResponseAuth>>{
+        return mainService!!.login(email, password)
+    }
+
+    fun getHotAds(): Observable<Response<ResponseAds>>{
+        return mainService!!.getHotAd()
     }
 }

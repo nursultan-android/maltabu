@@ -97,7 +97,7 @@
     <string name="reg211">Телефон(логин)</string>
     <string name="reg22">Сізден басқа ешкімге көрсетілмейді</string>
     <string name="reg31">Құпия сөз</string>
-    <string name="reg32">Құпия сөз кем дегенде 6 таңбадан құралу керек</string>
+    <string name="reg32">Құпия сөз кем дегенде 8 таңбадан құралу керек</string>
     <string name="reg41">Құпия сөзді қайталап жазыңыз</string>
     <string name="reg42">Жоғарыда көрсеткен құпия сөзіңізді қайталаңыз</string>
     <string name="regTitle">Тіркелу</string>
@@ -161,6 +161,10 @@
     <string name="cab3">Құпия сөз өзгерту</string>
     <string name="cab4">Шығу</string>
 
+    <string name="field_required">Заполните Имя</string>
+    <string name="passwords_not_quals">Пароли не совпадают</string>
+    <string name="password_required">Заполните Пароль</string>
+
     <string name="cab01">Өңдеу</string>
     <string name="cab02">Жою</string>
 
@@ -174,4 +178,26 @@
     <string name="news">Жаңалықтар</string>
 
     <string name="sell">Сату</string>
+
+    <string name="phone_or_login">Email немесе телефон нөмірі</string>
+    <string name="profile_phone">Телефон нөмірі</string>
+    <string name="profile_name">Аты</string>
+    <string name="profile_surname">Тегі</string>
+
+    <string name="save">Cақтау</string>
+    <string name="rules2020">© 2018-2020 Барлық құқықтар қорғалған «Малтабу»</string>
+
+
+    <string name="rus">Русский</string>
+    <string name="kaz">Қазақша</string>
+
+
+    <string name="login_validate">login енгізіңіз</string>
+
+    <string name="logoutMessage">Аккаунттан шыққыңыз келе ме?</string>
+    <string name="yes">Иə</string>
+    <string name="no">Жоқ</string>
+    <string name="facebook_app_id">235176714524367</string> <string name="fb_login_protocol_scheme">fb235176714524367</string>
+
+    <string name="login_with_social">Әлеуметтік желілер арқылы кіру</string>
 </resources>

@@ -30,13 +30,11 @@ import kotlinx.android.synthetic.main.dialog_choose_catalog.*
 import kotlinx.android.synthetic.main.dialog_choose_image.*
 import kotlinx.android.synthetic.main.dialog_sort.*
 import kotlinx.android.synthetic.main.fragment_new_ad.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.model.NewAdBody
 import kz.maltabu.app.maltabukz.network.ApiResponse
-import kz.maltabu.app.maltabukz.network.models.response.AmountType
-import kz.maltabu.app.maltabukz.network.models.response.City
-import kz.maltabu.app.maltabukz.network.models.response.Region
-import kz.maltabu.app.maltabukz.network.models.response.ResponseRegion
+import kz.maltabu.app.maltabukz.network.models.response.*
 import kz.maltabu.app.maltabukz.ui.activity.NewAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.CityAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.RegionAdapter
@@ -108,6 +106,7 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
         setListeners()
         setPhoneMask()
         setArrowButtonColor()
+        setUser()
     }
 
     private fun consumeResponseImage(response: ApiResponse) {
@@ -583,5 +582,22 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
 
     private fun hideLoader(){
         (activity as NewAdActivity).hideLoader()
+    }
+
+    private fun setUser(){
+        val user: User? = Paper.book().read<User>(Keys.USER.constantKey, null)
+        if(user!=null){
+            if(user.phone!=null && user.phone.isNotEmpty()){
+                editText_phone_1.setText(user.phone)
+                editText_phone_1.isEnabled=false
+                editText_phone_1.setOnClickListener {}
+            }
+        }
+        if(user!=null){
+            if(user.email!=null && user.email.isNotEmpty()){
+                editText_email.setText(user.email)
+                editText_email.isEnabled=false
+            }
+        }
     }
 }

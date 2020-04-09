@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.dialog_sort.*
 import kotlinx.android.synthetic.main.fragment_category.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
+import kz.maltabu.app.maltabukz.ui.activity.MainActivity
 import kz.maltabu.app.maltabukz.ui.adapter.CatalogsViewPAgerApadter
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.vm.CategoryViewModel
@@ -41,11 +43,16 @@ class CategoryFragment(val catagory: MenuCategory) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setCategoryTitle()
         setAdapter()
         setDefaultSort()
         sort.setOnClickListener {
 //            showSortDialog()
         }
+    }
+
+    private fun setCategoryTitle() {
+        (activity as MainActivity).hottitle.text=catagory.name
     }
 
     private fun setDefaultSort(){

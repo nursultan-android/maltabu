@@ -1,14 +1,14 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
@@ -16,14 +16,17 @@ import androidx.lifecycle.ViewModelProviders
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.main_menu.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.network.models.response.ResponseCategories
+import kz.maltabu.app.maltabukz.network.models.response.User
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.CategoryFragment
 import kz.maltabu.app.maltabukz.ui.fragment.HotFragment
+import kz.maltabu.app.maltabukz.utils.LocaleHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.FragmentTagEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
@@ -37,6 +40,7 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     var manager = supportFragmentManager
     private var current = FragmentTagEnum.HOT.constantKey
     private lateinit var ft: FragmentTransaction
+    private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,7 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
         viewModel.getCategories()
         setLangListeners()
+        setFragmentFromMenu(HotFragment.newInstance())
     }
 
     override fun chooseCategory(category: MenuCategory) {
@@ -77,12 +82,15 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         when (response.status) {
             Status.LOADING -> {}
             Status.SUCCESS -> {
+                hideLoader()
                 renderResponse(response.data!!.body() as ResponseCategories)
             }
             Status.ERROR -> {
+                hideLoader()
                 Log.d("TAGg", response.error.toString())
             }
             Status.THROWABLE -> {
+                hideLoader()
                 Log.d("TAGg", response.throwabl.toString())
             }
         }
@@ -90,6 +98,7 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
 
     private fun setViewSettings(){
         setSupportActionBar(toolbar)
+        dialog = ProgressDialog(this)
         appBarLayout.outlineProvider = null
         supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -119,12 +128,16 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
             if(lang == ApiLangEnum.KAZAKH.constantKey) {
                 setLang(ApiLangEnum.RUSSIAN.constantKey, resources.getDrawable(R.drawable.ru))
                 changeViewModel(ApiLangEnum.RUSSIAN.constantKey)
+                nav_view.getHeaderView(0).langText.text=resources.getString(R.string.rus)
             } else {
                 setLang(ApiLangEnum.KAZAKH.constantKey, resources.getDrawable(R.drawable.kz))
                 changeViewModel(ApiLangEnum.KAZAKH.constantKey)
+                nav_view.getHeaderView(0).langText.text=resources.getString(R.string.kaz)
             }
         }
-
+        nav_view.getHeaderView(0).cabinet_lay.setOnClickListener {
+            startActivity(Intent(this, AuthActivity::class.java))
+        }
         newAdButton.setOnClickListener {
             val intent = Intent(this, NewAdActivity::class.java)
             startActivity(intent)
@@ -168,12 +181,40 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         }
     }
 
+    fun showLoader(){
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        if(!dialog.isShowing)
+            dialog.show()
+    }
+
+    fun hideLoader(){
+        if(dialog.isShowing)
+            dialog.dismiss()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setUserInfo()
+    }
+
     override fun onBackPressed() {
         if(current==FragmentTagEnum.CATEGORY.constantKey){
             val fragment = HotFragment.newInstance()
             setFragmentFromMenu(fragment)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    private fun setUserInfo() {
+        val user: User? = Paper.book().read<User>(Keys.USER.constantKey, null)
+        if(user!=null){
+            if(user.name!=null && user.name.isNotEmpty()){
+                nav_view.getHeaderView(0).user_name.text = user.name
+            }
+        } else {
+            nav_view.getHeaderView(0).user_name.text = resources.getString(R.string.Cabinet)
         }
     }
 }

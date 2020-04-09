@@ -23,7 +23,7 @@ interface Service {
     fun getRegions(): Observable<Response<ResponseRegion>>
 
     @GET("/api/v2/advertisement/{id}")
-    fun getAdById(@Path("id")id: Int): Observable<Response<Ad>>
+    fun getAdById(@Path("id")id: Int): Observable<Response<ResponseAd>>
 
     @GET("/api/v2/amount-type")
     fun getAmountType(): Observable<Response<List<AmountType>>>
@@ -38,4 +38,22 @@ interface Service {
     @Multipart
     @POST("/api/v2/advertisement/image/upload")
     fun postAdPhoto(@Part img: MultipartBody.Part):Observable<Response<Int>>
+
+    @FormUrlEncoded
+    @POST("/api/v2/register")
+    fun register(@Field("name") name: String, @Field("email") email: String, @Field("phone") phone: String, @Field("password") password: String,
+                 @Field("password_confirmation") password_confirmation: String):Observable<Response<ResponseRegister>>
+
+    @FormUrlEncoded
+    @POST("/api/v2/social-auth")
+    fun socail_auth(@Field("provider_name") provider_name: String, @Field("provider_id") provider_id: String, @Field("email") email: String)
+            :Observable<Response<ResponseRegister>>
+
+    @FormUrlEncoded
+    @POST("/api/v2/login")
+    fun login(@Field("identity") email: String, @Field("password") password: String):Observable<Response<ResponseAuth>>
+
+    @GET("/api/v2/advertisements-hot")
+    fun getHotAd(): Observable<Response<ResponseAds>>
+
 }

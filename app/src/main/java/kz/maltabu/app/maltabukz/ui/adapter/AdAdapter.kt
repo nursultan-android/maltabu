@@ -11,8 +11,9 @@ import com.makeramen.roundedimageview.RoundedImageView
 import kotlinx.android.synthetic.main.item_ad.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.Ad
+import kz.maltabu.app.maltabukz.utils.CustomAnimator
 
-class AdAdapter(val context: Context) : RecyclerView.Adapter<AdAdapter.ViewHolder>() {
+class AdAdapter(val context: Context, val chooseAd: ChooseAd) : RecyclerView.Adapter<AdAdapter.ViewHolder>() {
     private var adList : List<Ad> = ArrayList()
 
     fun setData(adList: List<Ad>) {
@@ -43,10 +44,14 @@ class AdAdapter(val context: Context) : RecyclerView.Adapter<AdAdapter.ViewHolde
         val ad =adList[position]
         holder.title.text=ad.title
         holder.date.text=ad.date
-        holder.price.text=ad.amount.toString()
+        holder.price.text=ad.amount.toString()+ad.currency
         holder.visitors.text=ad.visited.toString()
         holder.photoCount.text=ad.images.size.toString()
-        Glide.with(context).load(ad.image).centerCrop().into(holder.img)
+        Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_no_photo)).centerCrop().into(holder.img)
+        holder.itemView.setOnClickListener {
+            CustomAnimator.animateHotViewLinear(holder.itemView)
+            chooseAd.chooseAd(ad)
+        }
     }
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
@@ -56,6 +61,10 @@ class AdAdapter(val context: Context) : RecyclerView.Adapter<AdAdapter.ViewHolde
         val img: RoundedImageView = view.ad_img
         val visitors: TextView = view.ad_visitors_count_text
         val photoCount: TextView = view.ad_photo_count_text
+    }
+
+    interface ChooseAd{
+        fun chooseAd(ad: Ad)
     }
 
 }

@@ -99,7 +99,7 @@
     <string name="chooseReg1">Зарегистрироваться через номер телефона</string>
     <string name="chooseReg2">Зарегистрироваться через электронную почту</string>
     <string name="reg31">Пароль</string>
-    <string name="reg32">Пароль должен состоять минимум из 6 символов</string>
+    <string name="reg32">Пароль должен состоять минимум из 8 символов</string>
     <string name="reg41">Повторите пароль</string>
     <string name="reg42">Повторите пароль введенный выше</string>
     <string name="regTitle">Регистрация</string>
@@ -119,6 +119,7 @@
     <string name="cab2">Настройка профиля</string>
     <string name="cab3">Сменить пароль</string>
     <string name="cab4">Выйти</string>
+
 
     <string name="activateTitle">Уведомление</string>
     <string name="activateTit">Активация личного кабинета</string>
@@ -178,4 +179,30 @@
     <string name="news">Новости</string>
 
     <string name="sell">Продать</string>
+    <string name="passwords_not_quals">Пароли не совпадают</string>
+    <string name="field_required">Заполните Имя</string>
+    <string name="password_required">Заполните Пароль</string>
+
+    <string name="phone_or_login">Email или номер телефона</string>
+    <string name="profile_phone">Номер телефона</string>
+    <string name="profile_name">Имя</string>
+    <string name="profile_surname">Фамилия</string>
+
+    <string name="save">Сохранить</string>
+    <string name="rules2020">© 2018-2020 Все права защищены «Малтабу»</string>
+
+
+    <string name="rus">Русский</string>
+    <string name="kaz">Қазақша</string>
+
+
+    <string name="logoutMessage">Выйти из аккаунта?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+
+    <string name="login_validate">Введите login</string>
+
+    <string name="facebook_app_id">235176714524367</string> <string name="fb_login_protocol_scheme">fb235176714524367</string>
+    <string name="login_with_social">Вход через социальные сети</string>
 </resources>

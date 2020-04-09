@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         style="@style/AppTabLayout"
         android:background="@color/MaltabuYellow"
+        app:tabIndicatorColor="@color/White"
         app:tabTextAppearance="@style/AppTabTextAppearance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
@@ -36,6 +37,7 @@
         app:tabMode="scrollable"/>
     <TextView
         android:id="@+id/sort"
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/MaltabuGrey3"
@@ -47,6 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tablayout" />
     <ImageView
         android:id="@+id/sort_icon"
+        android:visibility="gone"
         android:src="@drawable/ic_sort_black_24dp"
         android:paddingStart="16dp"
         app:layout_constraintBottom_toBottomOf="@id/sort"
@@ -54,13 +57,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/sort_shadow"
-        app:layout_constraintTop_toTopOf="@id/viewpager"
-        android:src="@drawable/line_divider"
-        android:background="@android:color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -70,4 +66,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sort"/>
 
+    <ImageView
+        android:id="@+id/sort_shadow"
+        app:layout_constraintTop_toTopOf="@id/viewpager"
+        android:src="@drawable/line_divider"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

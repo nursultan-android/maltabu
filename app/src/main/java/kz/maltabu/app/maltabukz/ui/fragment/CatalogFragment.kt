@@ -1,5 +1,6 @@
 package kz.maltabu.app.maltabukz.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import kz.maltabu.app.maltabukz.model.QueryPaginationModel
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAds
+import kz.maltabu.app.maltabukz.ui.activity.ShowAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.AdAdapter
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
@@ -23,7 +25,7 @@ import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.utils.views.EndlessListener
 import kz.maltabu.app.maltabukz.vm.CatalogViewModel
 
-class CatalogFragment(private val id: Int?) : Fragment() {
+class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
     var pageNumber=1
     lateinit var viewModel: CatalogViewModel
     lateinit var adapter: AdAdapter
@@ -37,7 +39,7 @@ class CatalogFragment(private val id: Int?) : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, CatalogViewModel.ViewModelFactory(Paper.book().read(Keys.LANG.constantKey, ApiLangEnum.KAZAKH.constantKey)))
             .get(CatalogViewModel::class.java)
-        adapter= AdAdapter(activity!!)
+        adapter= AdAdapter(activity!!, this)
         adapter.setData(adList)
     }
 
@@ -56,6 +58,11 @@ class CatalogFragment(private val id: Int?) : Fragment() {
     }
 
     private fun addListener(){
+        swipe_lay.setOnRefreshListener {
+            resetData()
+            viewModel.getAds(getQuery())
+        }
+
         ad_recycler.addOnScrollListener(
             object : EndlessListener(ad_recycler.layoutManager as LinearLayoutManager){
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView){
@@ -68,14 +75,22 @@ class CatalogFragment(private val id: Int?) : Fragment() {
 
     private fun consumeResponse(response: ApiResponse) {
         when (response.status) {
-            Status.LOADING -> {}
+            Status.LOADING -> {
+                showProgress()
+            }
             Status.SUCCESS -> {
+                hideProgress()
+                swipe_lay.isRefreshing=false
                 renderResponse(response.data!!.body() as ResponseAds)
             }
             Status.ERROR -> {
+                hideProgress()
+                swipe_lay.isRefreshing=false
                 Log.d("TAGg", response.error.toString())
             }
             Status.THROWABLE -> {
+                hideProgress()
+                swipe_lay.isRefreshing=false
                 Log.d("TAGg", response.throwabl.toString())
             }
         }
@@ -84,6 +99,40 @@ class CatalogFragment(private val id: Int?) : Fragment() {
     private fun renderResponse(response: ResponseAds) {
         adList.addAll(response.adList)
         adapter.notifyDataSetChanged()
+        if(adList.size>0) {
+            setHasAd()
+        } else {
+            setNoAd()
+        }
+    }
+
+    private fun setNoAd() {
+        no_ads_image.visibility=View.VISIBLE
+        no_ads_text.visibility=View.VISIBLE
+    }
+
+    private fun setHasAd() {
+        no_ads_image.visibility=View.GONE
+        no_ads_text.visibility=View.GONE
+    }
+
+    private fun showProgress(){
+        progress_hor.visibility=View.VISIBLE
+    }
+
+    private fun hideProgress(){
+        progress_hor.visibility=View.INVISIBLE
+    }
+
+    override fun chooseAd(ad: Ad) {
+        val intent = Intent(activity, ShowAdActivity::class.java)
+        intent.putExtra("ad", ad)
+        startActivity(intent)
+    }
+
+    private fun resetData() {
+        adList.clear()
+        pageNumber=1
     }
 
     fun getQuery():QueryPaginationModel{
