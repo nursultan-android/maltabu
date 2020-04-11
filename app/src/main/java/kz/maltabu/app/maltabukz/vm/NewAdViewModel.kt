@@ -116,7 +116,7 @@ class NewAdViewModel(private var language: String) : ViewModel() {
         val request = Request.Builder()
             .url(BuildConfig.BASE_URL+"/api/v2/advertisements")
             .addHeader("Content-Type", "multipart/form-data")
-            .addHeader("x-locale", "ru")
+            .addHeader("x-locale", language)
             .post(body)
             .build()
 
@@ -124,7 +124,6 @@ class NewAdViewModel(private var language: String) : ViewModel() {
             client.newCall(request).execute()
         }
     }
-
 
     class ViewModelFactory(private val language: String): ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

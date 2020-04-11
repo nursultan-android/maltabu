@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_hot.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
@@ -52,6 +53,7 @@ class HotFragment : Fragment(), HotAdAdapter.ChooseAd {
         })
         setAdapterSettings()
         viewModel.getAds()
+        (activity as MainActivity).hottitle.setText(R.string.hotTitle)
     }
 
     private fun setAdapterSettings() {

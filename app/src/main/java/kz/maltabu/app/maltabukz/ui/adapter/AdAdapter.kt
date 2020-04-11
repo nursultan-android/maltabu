@@ -13,7 +13,7 @@ import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 
-class AdAdapter(val context: Context, val chooseAd: ChooseAd) : RecyclerView.Adapter<AdAdapter.ViewHolder>() {
+class AdAdapter(val context: Context, val chooseAd: AdAdapterWithAdvers.ChooseAd) : RecyclerView.Adapter<AdAdapter.ViewHolder>() {
     private var adList : List<Ad> = ArrayList()
 
     fun setData(adList: List<Ad>) {

@@ -1,7 +1,6 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -16,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.main_menu.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
@@ -26,6 +24,7 @@ import kz.maltabu.app.maltabukz.network.models.response.User
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.CategoryFragment
 import kz.maltabu.app.maltabukz.ui.fragment.HotFragment
+import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.LocaleHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.FragmentTagEnum
@@ -128,17 +127,16 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
             if(lang == ApiLangEnum.KAZAKH.constantKey) {
                 setLang(ApiLangEnum.RUSSIAN.constantKey, resources.getDrawable(R.drawable.ru))
                 changeViewModel(ApiLangEnum.RUSSIAN.constantKey)
-                nav_view.getHeaderView(0).langText.text=resources.getString(R.string.rus)
             } else {
                 setLang(ApiLangEnum.KAZAKH.constantKey, resources.getDrawable(R.drawable.kz))
                 changeViewModel(ApiLangEnum.KAZAKH.constantKey)
-                nav_view.getHeaderView(0).langText.text=resources.getString(R.string.kaz)
             }
         }
         nav_view.getHeaderView(0).cabinet_lay.setOnClickListener {
             startActivity(Intent(this, AuthActivity::class.java))
         }
         newAdButton.setOnClickListener {
+            CustomAnimator.animateHotViewLinear(it)
             val intent = Intent(this, NewAdActivity::class.java)
             startActivity(intent)
         }
@@ -147,6 +145,12 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     private fun setLang(lang: String, img: Drawable) {
         Paper.book().write(Keys.LANG.constantKey, lang)
         nav_view.getHeaderView(0).counrty_img.setImageDrawable(img)
+        val newRes = LocaleHelper.setLanguage(this, lang).resources
+        nav_view.getHeaderView(0).langText.text = newRes.getString(R.string.other_lang)
+        nav_view.getHeaderView(0).rules_granted.text = newRes.getString(R.string.rules2020)
+        if(Paper.book().read(Keys.TOKEN.constantKey, "")==null|| Paper.book().read(Keys.TOKEN.constantKey, "").isEmpty()){
+            nav_view.getHeaderView(0).user_name.text = newRes.getString(R.string.Cabinet)
+        }
     }
 
     private fun changeViewModel(key: String) {

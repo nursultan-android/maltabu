@@ -421,7 +421,7 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
             choose_price.text=resources.getString(R.string.sell)
             editText_price.isEnabled=true
             editText_price.setText("")
-            editText_price.setHint(resources.getString(R.string.price))
+            editText_price.hint = resources.getString(R.string.price)
             sortDialog.dismiss()
         }
         sortDialog.cheap.setOnClickListener {
@@ -517,6 +517,19 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
         }
         if(editText_email.text.toString().isNotEmpty()){
             body.email=editText_email.text.toString()
+        }
+        if(arrayPhones!=null){
+            for (i in 0 until arrayPhones.size){
+                if(arrayPhones[i]!=null && arrayPhones[i].isNotEmpty()){
+                    if (body.phones!=null) {
+                        body.phones!!.add(arrayPhones[i])
+                    } else {
+                        body.phones=ArrayList()
+                        body.phones!!.add(arrayPhones[i])
+                    }
+                    Log.d("TAGg", arrayPhones[i])
+                }
+            }
         }
     }
 

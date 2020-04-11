@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.item_hot.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
+import kz.maltabu.app.maltabukz.utils.FormatHelper
 
 class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : RecyclerView.Adapter<HotAdAdapter.ViewHolder>() {
     private var adList : List<Ad> = ArrayList()
@@ -43,7 +44,7 @@ class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ad =adList[position]
-        holder.price.text=ad.amount.toString()+ad.currency
+        holder.price.text= FormatHelper.setFormat(ad.currency, ad.amount)
         holder.photoCount.text=ad.images.size.toString()
         holder.location.text=ad.city
         Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_no_photo)).centerCrop().into(holder.img)

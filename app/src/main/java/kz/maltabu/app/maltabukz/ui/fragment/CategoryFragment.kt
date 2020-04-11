@@ -24,12 +24,12 @@ class CategoryFragment(val catagory: MenuCategory) : Fragment() {
 
     private lateinit var adapter: CatalogsViewPAgerApadter
     private lateinit var sortDialog: Dialog
+    private lateinit var viewModel: CategoryViewModel
 
     companion object {
         fun newInstance(catagory: MenuCategory) = CategoryFragment(catagory)
-    }
 
-    private lateinit var viewModel: CategoryViewModel
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_category, container, false)
@@ -66,33 +66,24 @@ class CategoryFragment(val catagory: MenuCategory) : Fragment() {
         sortDialog.newAds.setOnClickListener {
             Paper.book().write(Keys.SORT.constantKey, "date")
             sort.text=resources.getString(R.string.sort1)
-            getNewAds()
             sortDialog.dismiss()
         }
         sortDialog.cheap.setOnClickListener {
             Paper.book().write(Keys.SORT.constantKey, "price")
             sort.text=resources.getString(R.string.sort3)
-            getNewAds()
             sortDialog.dismiss()
         }
         sortDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         sortDialog.show()
     }
 
-    private fun getNewAds() {
-        val fragment = adapter.getItem(viewpager.currentItem) as CatalogFragment
-        fragment.adapter.clearData()
-        fragment.pageNumber=1
-        fragment.viewModel.getAds(fragment.getQuery())
-    }
-
     private fun setAdapter(){
-        viewpager.offscreenPageLimit=10
+        viewpager.offscreenPageLimit=1
         adapter = CatalogsViewPAgerApadter(activity!!.supportFragmentManager)
         val list = catagory.categoryChildList
         list.sortBy { it.order }
         for(i in 0 until list.size ) {
-            val catalog = CatalogFragment.newInstance(list[i].id)
+            val catalog = CatalogFragment(list[i].id)
             adapter.addFragment(catalog, list[i].title)
         }
         viewpager.adapter=adapter

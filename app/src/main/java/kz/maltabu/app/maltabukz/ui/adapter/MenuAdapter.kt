@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
@@ -44,7 +45,10 @@ class MenuAdapter(private val context: Context, private val choose: ChooseCatego
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentCategory =categories[position]
         holder.menuName.text=currentCategory.name
-        SvgLoaderUtils.fetchSvg(context, currentCategory.image, holder.menuImage)
+        if(currentCategory.image.endsWith("svg"))
+            SvgLoaderUtils.fetchSvg(context, currentCategory.image, holder.menuImage)
+        else
+            Glide.with(context).load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
         holder.itemView.onClick {
             choose.chooseCategory(currentCategory)
         }

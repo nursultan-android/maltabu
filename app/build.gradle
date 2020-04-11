@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.google.gms.google-services'
 
+apply plugin: 'com.google.firebase.crashlytics'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -15,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 70
+        versionName "2.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -125,10 +127,21 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-core:17.3.0'
+
+    // Add the Firebase SDK for Crashlytics.
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta03'
 
     //google auth
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
+    //firebase messaging
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+
     //facebook sdk
     implementation 'com.facebook.android:facebook-login:5.5.1'
+
+    //yandex metrica
+    implementation 'com.yandex.android:mobmetricalib:3.6.4'
+    implementation 'com.yandex.android:mobileads:2.100'
 }

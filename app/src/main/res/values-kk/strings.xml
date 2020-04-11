@@ -198,6 +198,6 @@
     <string name="yes">Иə</string>
     <string name="no">Жоқ</string>
     <string name="facebook_app_id">235176714524367</string> <string name="fb_login_protocol_scheme">fb235176714524367</string>
-
+    <string name="yandex_app_id">16364ff9-f4b0-45ac-ad8f-820d663f50a2</string>
     <string name="login_with_social">Әлеуметтік желілер арқылы кіру</string>
 </resources>

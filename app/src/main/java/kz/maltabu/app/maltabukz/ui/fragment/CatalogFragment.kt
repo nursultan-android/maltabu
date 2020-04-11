@@ -3,6 +3,7 @@ package kz.maltabu.app.maltabukz.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.yandex.mobile.ads.AdRequestError
+import com.yandex.mobile.ads.nativeads.NativeAdLoader
+import com.yandex.mobile.ads.nativeads.NativeAppInstallAd
+import com.yandex.mobile.ads.nativeads.NativeContentAd
+import com.yandex.mobile.ads.nativeads.NativeImageAd
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_catalog.*
 import kz.maltabu.app.maltabukz.R
@@ -18,29 +24,36 @@ import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAds
 import kz.maltabu.app.maltabukz.ui.activity.ShowAdActivity
-import kz.maltabu.app.maltabukz.ui.adapter.AdAdapter
+import kz.maltabu.app.maltabukz.ui.adapter.AdAdapterWithAdvers
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.utils.views.EndlessListener
+import kz.maltabu.app.maltabukz.utils.yandexAds.AdapterHolder
+import kz.maltabu.app.maltabukz.utils.yandexAds.YandexHelper
 import kz.maltabu.app.maltabukz.vm.CatalogViewModel
 
-class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
+class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.ChooseAd {
     var pageNumber=1
     lateinit var viewModel: CatalogViewModel
-    lateinit var adapter: AdAdapter
-    private val adList = ArrayList<Ad>()
+    lateinit var adapterWithAd: AdAdapterWithAdvers
+    lateinit var yandexHelper: YandexHelper
+    private var adIndex=5
+    private var mData = ArrayList<Pair<Int, Any>>()
 
-    companion object {
-        fun newInstance(id: Int) = CatalogFragment(id)
-    }
+//    companion object {
+//        fun newInstance(id: Int) = CatalogFragment(id)
+//    }
+    fun newInstance(id: Int) = CatalogFragment(id)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, CatalogViewModel.ViewModelFactory(Paper.book().read(Keys.LANG.constantKey, ApiLangEnum.KAZAKH.constantKey)))
             .get(CatalogViewModel::class.java)
-        adapter= AdAdapter(activity!!, this)
-        adapter.setData(adList)
+        adapterWithAd= AdAdapterWithAdvers(activity!!,this)
+        adapterWithAd.setData(mData)
+        yandexHelper= YandexHelper(activity!!)
+        yandexHelper.createNativeAdLoader(nativeAdLoadListener)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,7 +66,7 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
             consumeResponse(it)
         })
         viewModel.getAds(getQuery())
-        ad_recycler.adapter = adapter
+        ad_recycler.adapter = adapterWithAd
         addListener()
     }
 
@@ -97,10 +110,11 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
     }
 
     private fun renderResponse(response: ResponseAds) {
-        adList.addAll(response.adList)
-        adapter.notifyDataSetChanged()
-        if(adList.size>0) {
+        addToPair(response.adList)
+        if(mData.isNotEmpty()){
             setHasAd()
+            adapterWithAd.notifyDataSetChanged()
+            adapterWithAd.setData(mData)
         } else {
             setNoAd()
         }
@@ -131,7 +145,8 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
     }
 
     private fun resetData() {
-        adList.clear()
+        adIndex=5
+        mData.clear()
         pageNumber=1
     }
 
@@ -141,5 +156,45 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapter.ChooseAd {
         return QueryPaginationModel(page = pageNumber, category = id, order = sort)
     }
 
+    private fun addToPair(list: List<Ad>){
+        if(list.isNotEmpty())
+            for (i in list.indices) {
+                mData.add(Pair(AdapterHolder.BlockContentProvider.DEFAULT, list[i]))
+                if(i%5==4){
+                    loadAd()
+                }
+            }
+    }
+
+    private fun loadAd(){
+        yandexHelper.loadAd()
+    }
+
+    private val nativeAdLoadListener = object : NativeAdLoader.OnImageAdLoadListener {
+        override fun onAppInstallAdLoaded(nativeAppInstallAd: NativeAppInstallAd) {
+            fillData(Pair(AdapterHolder.BlockContentProvider.NATIVE_BANNER, nativeAppInstallAd))
+        }
+
+        override fun onContentAdLoaded(nativeContentAd: NativeContentAd) {
+            fillData(Pair(AdapterHolder.BlockContentProvider.NATIVE_BANNER, nativeContentAd))
+        }
+
+        override fun onImageAdLoaded(nativeImageAd: NativeImageAd) {
+            fillData(Pair(AdapterHolder.BlockContentProvider.NATIVE_BANNER, nativeImageAd))
+        }
+
+        override fun onAdFailedToLoad(error: AdRequestError) {
+            Log.d("SAMPLE_TAG", error.description)
+        }
+
+        private fun fillData(nativeAd: Pair<Int, Any>) {
+            if (adIndex<mData.size) {
+                mData.add(adIndex, nativeAd)
+                adIndex += 6
+                adapterWithAd.notifyDataSetChanged()
+                adapterWithAd.setData(mData)
+            }
+        }
+    }
 
 }

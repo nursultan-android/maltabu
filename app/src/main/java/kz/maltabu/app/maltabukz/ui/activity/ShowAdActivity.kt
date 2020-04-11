@@ -26,7 +26,9 @@ import kz.maltabu.app.maltabukz.network.models.response.ResponseAd
 import kz.maltabu.app.maltabukz.ui.adapter.ImagesAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.PhoneAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.ImageFragment
+import kz.maltabu.app.maltabukz.ui.fragment.YandexAdFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
+import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
@@ -48,14 +50,30 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
         super.onCreate(savedInstanceState)
         val id = (intent.getSerializableExtra("ad") as Ad).id
         setContentView(R.layout.activity_show_ad)
+//        val data = intent.data
+//        if(data!=null){
+//            var slug = data.toString()
+//            slug = slug.substring(slug.lastIndexOf("/") + 1)
+//            Log.d("TAGg", slug)
+//
+//        }
         dialog = ProgressDialog(this)
         viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(Keys.LANG.constantKey, ApiLangEnum.KAZAKH.constantKey)))
             .get(ShowAdActivityViewModel::class.java)
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
         viewModel.getAdById(id)
-        imagesIntent = Intent(this, ImagesActivity::class.java)
+        imagesIntent = Intent(this, ImageActivity::class.java)
         finish.setOnClickListener {
             CustomAnimator.animateHotViewLinear(it)
+            finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        if(intent.data==null) {
+            super.onBackPressed()
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
@@ -111,6 +129,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
     private fun setAdapter(ad: Ad) {
         val pagerAdapter = ImagesAdapter(supportFragmentManager, getImageFragments(ad))
         pager.adapter = pagerAdapter
+        pager.offscreenPageLimit=9
         val phoneAdapter = PhoneAdapter(this, this)
         phoneAdapter.setData(ad.phones)
         phones_txt.adapter=phoneAdapter
@@ -122,6 +141,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
             for (i in 0 until ad.images.size) {
                 fragments.add(ImageFragment.newInstance(i, ad.images[i]))
             }
+            fragments.add(YandexAdFragment.newInstance())
         }
         return fragments
     }
@@ -148,7 +168,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
 
     private fun renderResponse(response: ResponseAd) {
         title_txt.text = response.ad.title
-        price_txt.text = response.ad.amount.toString()+response.ad.currency
+        price_txt.text = FormatHelper.setFormat(response.ad.currency, response.ad.amount)
         content_txt.text = response.ad.description
         dateTxt.text = response.ad.date
         location_txt.text = response.ad.city

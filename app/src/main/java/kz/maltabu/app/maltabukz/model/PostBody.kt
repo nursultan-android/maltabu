@@ -1,5 +1,6 @@
 package kz.maltabu.app.maltabukz.model
 
+import android.util.Log
 import okhttp3.MultipartBody
 
 class PostBody(private val bodyAd: NewAdBody) {
@@ -14,8 +15,10 @@ class PostBody(private val bodyAd: NewAdBody) {
             .addFormDataPart("category_id", bodyAd.category_id.toString())
             .addFormDataPart("amount_id", bodyAd.amountId.toString())
         if(bodyAd.phones!=null && bodyAd.phones!!.size>0){
+            builderSecond.addFormDataPart("phones[0]", bodyAd.main_phone)
             for (i in 0 until bodyAd.phones!!.size){
-                builderSecond.addFormDataPart("phones[${i.toString()}]", bodyAd.phones!![i])
+                builderSecond.addFormDataPart("phones[${(i+1).toString()}]", bodyAd.phones!![i])
+                Log.d("TAGg", bodyAd.phones!![i])
             }
         }
         if(bodyAd.image_ids!=null && bodyAd.image_ids!!.size>0){

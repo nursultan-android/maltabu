@@ -4,14 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.CategoryChild
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
-import kz.maltabu.app.maltabukz.utils.SvgLoaderUtils
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CategoryAdapter(private val context: Context, private val choose: ChooseCategory) :
