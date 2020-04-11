@@ -1,28 +1,28 @@
 package kz.maltabu.app.maltabukz.ui.adapter
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import java.util.*
 
-class CatalogsViewPAgerApadter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm!!) {
-    private val mFragmentList: MutableList<Fragment> = ArrayList()
+class CatalogsViewPAgerApadter : PagerAdapter() {
     private val mFragmentTitleList: MutableList<String> = ArrayList()
 
-    override fun getItem(position: Int): Fragment {
-        return mFragmentList[position]
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return true
     }
 
     override fun getCount(): Int {
-        return mFragmentList.size
+        return mFragmentTitleList.size
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         return mFragmentTitleList[position]
     }
 
-    fun addFragment(fragment: Fragment, title: String) {
-        mFragmentList.add(fragment)
+    fun addFragment(title: String) {
         mFragmentTitleList.add(title)
     }
 }

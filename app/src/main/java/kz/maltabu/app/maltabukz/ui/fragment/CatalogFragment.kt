@@ -41,10 +41,9 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
     private var adIndex=5
     private var mData = ArrayList<Pair<Int, Any>>()
 
-//    companion object {
-//        fun newInstance(id: Int) = CatalogFragment(id)
-//    }
-    fun newInstance(id: Int) = CatalogFragment(id)
+    companion object {
+        fun newInstance(id: Int) = CatalogFragment(id)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

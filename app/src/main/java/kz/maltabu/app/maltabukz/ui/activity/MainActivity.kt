@@ -67,6 +67,13 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         drawer.closeDrawers()
     }
 
+    fun setFragmentForCatalog(fragment: Fragment) {
+//        recognizeFragment(fragment)
+        ft = manager.beginTransaction()
+        ft.replace(R.id.catalog_place, fragment).commit()
+        drawer.closeDrawers()
+    }
+
     private fun recognizeFragment(fragment: Fragment) {
         if(fragment is CategoryFragment){
             current = FragmentTagEnum.CATEGORY.constantKey

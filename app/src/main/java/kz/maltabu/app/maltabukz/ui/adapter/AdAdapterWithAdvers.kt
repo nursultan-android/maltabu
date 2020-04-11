@@ -68,7 +68,6 @@ class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) 
         holder.photoCount.text=ad.images.size.toString()
         Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_no_photo)).centerCrop().into(holder.img)
         holder.itemView.setOnClickListener {
-            CustomAnimator.animateHotViewLinear(holder.itemView)
             chooseAd.chooseAd(ad)
         }
     }

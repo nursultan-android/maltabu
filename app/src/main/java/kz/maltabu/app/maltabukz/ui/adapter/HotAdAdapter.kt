@@ -49,7 +49,6 @@ class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : Recyc
         holder.location.text=ad.city
         Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_no_photo)).centerCrop().into(holder.img)
         holder.itemView.setOnClickListener {
-            CustomAnimator.animateHotViewLinear(holder.itemView)
             chooseAd.chooseAd(ad)
         }
     }

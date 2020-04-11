@@ -16,7 +16,7 @@ import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.ui.fragment.FullScreenFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator.Companion.animateHotViewLinear
 
-class ImageActivity : AppCompatActivity() {
+class ImageActivity : BaseActivity() {
     private var img: ImageView? = null
     private var ad: Ad? = null
     private var PAGE_COUNT = 0

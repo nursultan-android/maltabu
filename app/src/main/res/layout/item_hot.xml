@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardUseCompatPadding="true"
+    android:background="@drawable/menu_background_ripple"
     app:cardCornerRadius="10dp"
     android:elevation="50dp"
     android:layout_width="match_parent"
