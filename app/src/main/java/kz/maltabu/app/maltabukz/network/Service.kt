@@ -56,4 +56,7 @@ interface Service {
     @GET("/api/v2/advertisements-hot")
     fun getHotAd(): Observable<Response<ResponseAds>>
 
+    @GET("/api/v2/news")
+    fun getNews(@Query("page") page: Int):Observable<Response<ResponseNews>>
+
 }

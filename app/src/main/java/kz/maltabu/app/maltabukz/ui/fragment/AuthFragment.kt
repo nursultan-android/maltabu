@@ -23,6 +23,7 @@ import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAuth
 import kz.maltabu.app.maltabukz.network.models.response.ResponseRegister
 import kz.maltabu.app.maltabukz.ui.activity.AuthActivity
+import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.utils.customEnum.SocialEnum
@@ -134,7 +135,7 @@ class AuthFragment : BaseSocialFragment() {
         button_auth.setOnClickListener {
             if(validateFields()){
                 var login  = login_edit_txt.text.toString()
-                if(isAlpha(login)|| login.length == 10) {
+                if(FormatHelper.isAlpha(login)|| login.length == 10) {
                     login="7$login"
                 }
                 viewModel.login(login, password_edit_txt.text.toString())
@@ -189,10 +190,6 @@ class AuthFragment : BaseSocialFragment() {
                 true
             }
         }
-    }
-
-    fun isAlpha(name: String): Boolean {
-        return name.matches("[a-zA-Z]+".toRegex())
     }
 
     private fun showDialog(){

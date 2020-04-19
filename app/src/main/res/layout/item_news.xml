@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/selectedPost"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <ImageView
+        android:id="@+id/news_image"
+        android:src="@drawable/ic_no_photo_colored"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/MaltabuGrey3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/black_bos"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/news_title"
+            android:layout_width="0dp"
+            android:transitionName="news_desc_title"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="3"
+            android:text="Name"
+            android:textColor="@color/White"
+            android:textSize="@dimen/_17ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/news_date"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/MaltabuGrey3"
+            android:text="21.12.32"
+            app:layout_constraintEnd_toStartOf="@id/visitors_img"
+            app:layout_constraintTop_toTopOf="@id/visitors_img"
+            app:layout_constraintBottom_toBottomOf="@id/visitors_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/visitors_count"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/MaltabuGrey3"
+            android:text="0"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/news_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/visitors_img"
+            android:src="@drawable/ic_eye"
+            android:tint="@color/MaltabuGrey3"
+            app:layout_constraintBottom_toBottomOf="@id/visitors_count"
+            app:layout_constraintTop_toTopOf="@id/visitors_count"
+            app:layout_constraintEnd_toStartOf="@id/visitors_count"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_15sdp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

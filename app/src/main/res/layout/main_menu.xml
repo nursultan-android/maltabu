@@ -111,6 +111,36 @@
 
             </androidx.recyclerview.widget.RecyclerView>
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/news_menu"
+                android:background="@drawable/menu_background_ripple"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu_recycler"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/menu_img"
+                    android:layout_width="@dimen/_19sdp"
+                    android:src="@drawable/ic_news"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginStart="@dimen/_13sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/menu_title"
+                    android:text="@string/news"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_13sdp"
+                    android:layout_marginBottom="@dimen/_13sdp"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/menu_img"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +148,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menu_recycler">
+                app:layout_constraintTop_toBottomOf="@+id/news_menu">
 
                 <ImageView
                     android:id="@+id/counrty_img"

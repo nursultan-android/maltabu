@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_menu.view.*
+import kotlinx.android.synthetic.main.item_menu.view.menu_title
+import kotlinx.android.synthetic.main.item_phone.view.*
 import kz.maltabu.app.maltabukz.R
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -44,10 +46,14 @@ class PhoneAdapter(private val context: Context, private val callMaker: MakeCall
         holder.itemView.setOnClickListener {
             callMaker.makeCall(phones[position])
         }
+        if(phones.size==1){
+            holder.line.visibility=View.GONE
+        }
     }
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         val menuName: TextView = view.menu_title
+        val line: View = view.under_line
     }
 
     interface MakeCall{

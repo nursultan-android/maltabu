@@ -17,12 +17,14 @@ import com.yandex.mobile.ads.nativeads.NativeAppInstallAd
 import com.yandex.mobile.ads.nativeads.NativeContentAd
 import com.yandex.mobile.ads.nativeads.NativeImageAd
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_catalog.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.model.QueryPaginationModel
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAds
+import kz.maltabu.app.maltabukz.ui.activity.MainActivity
 import kz.maltabu.app.maltabukz.ui.activity.ShowAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.AdAdapterWithAdvers
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
@@ -33,7 +35,7 @@ import kz.maltabu.app.maltabukz.utils.yandexAds.AdapterHolder
 import kz.maltabu.app.maltabukz.utils.yandexAds.YandexHelper
 import kz.maltabu.app.maltabukz.vm.CatalogViewModel
 
-class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.ChooseAd {
+class CatalogFragment(private val id: Int?, private val currentCatalog: Int) : Fragment(), AdAdapterWithAdvers.ChooseAd {
     var pageNumber=1
     lateinit var viewModel: CatalogViewModel
     lateinit var adapterWithAd: AdAdapterWithAdvers
@@ -42,7 +44,7 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
     private var mData = ArrayList<Pair<Int, Any>>()
 
     companion object {
-        fun newInstance(id: Int) = CatalogFragment(id)
+        fun newInstance(id: Int, position: Int) = CatalogFragment(id, position)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,9 +66,9 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
         viewModel.mainResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             consumeResponse(it)
         })
-        viewModel.getAds(getQuery())
         ad_recycler.adapter = adapterWithAd
         addListener()
+        viewModel.getAds(getQuery())
     }
 
     private fun addListener(){
@@ -74,7 +76,6 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
             resetData()
             viewModel.getAds(getQuery())
         }
-
         ad_recycler.addOnScrollListener(
             object : EndlessListener(ad_recycler.layoutManager as LinearLayoutManager){
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView){
@@ -83,6 +84,18 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
                 }
             }
         )
+        (activity as MainActivity).showFilter()
+        activity!!.filter_image.setOnClickListener {
+            openFilter()
+        }
+        activity!!.filter_text.setOnClickListener {
+            openFilter()
+        }
+    }
+
+    private fun openFilter(){
+        (activity as MainActivity).catalogIndex=currentCatalog
+        (activity as MainActivity).setFragmentFilterFragment()
     }
 
     private fun consumeResponse(response: ApiResponse) {
@@ -143,16 +156,37 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
         startActivity(intent)
     }
 
-    private fun resetData() {
+    fun resetData() {
         adIndex=5
         mData.clear()
         pageNumber=1
     }
 
     fun getQuery():QueryPaginationModel{
-        Paper.book().delete(Keys.SORT.constantKey)
         val sort = Paper.book().read(Keys.SORT.constantKey, "date")
-        return QueryPaginationModel(page = pageNumber, category = id, order = sort)
+        val query = QueryPaginationModel(page = pageNumber, category = id, order = sort)
+        if((activity as MainActivity).filer!=null){
+            val filterFromAActivity = (activity as MainActivity).filer
+            if(filterFromAActivity!!.image_required!=null){
+                 query.image_required=filterFromAActivity.image_required
+            }
+            if(filterFromAActivity.exchange!=null){
+                query.exchange=filterFromAActivity.exchange
+            }
+            if(filterFromAActivity.price_from!=null){
+                query.price_from=filterFromAActivity.price_from
+            }
+            if(filterFromAActivity.price_to!=null){
+                query.price_to=filterFromAActivity.price_to
+            }
+            if(filterFromAActivity.region_id!=null){
+                query.region=filterFromAActivity.region_id
+            }
+            if(filterFromAActivity.city_id!=null){
+                query.region=filterFromAActivity.city_id
+            }
+        }
+        return query
     }
 
     private fun addToPair(list: List<Ad>){
@@ -163,6 +197,11 @@ class CatalogFragment(private val id: Int?) : Fragment(), AdAdapterWithAdvers.Ch
                     loadAd()
                 }
             }
+    }
+
+    fun resetDataAndGetAds(){
+        resetData()
+        viewModel.getAds(getQuery())
     }
 
     private fun loadAd(){

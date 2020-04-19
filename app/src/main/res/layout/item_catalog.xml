@@ -10,8 +10,11 @@
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/menu_img"
-        android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_20sdp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:alpha="0.3"
         android:layout_marginStart="@dimen/_8sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,6 +22,9 @@
 
     <TextView
         android:id="@+id/menu_title"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:alpha="0.3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"

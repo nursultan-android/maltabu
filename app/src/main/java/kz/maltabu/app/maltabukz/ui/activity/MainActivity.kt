@@ -17,13 +17,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.main_menu.view.*
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.model.FilterBody
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.network.models.response.ResponseCategories
 import kz.maltabu.app.maltabukz.network.models.response.User
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.CategoryFragment
-import kz.maltabu.app.maltabukz.ui.fragment.HotFragment
+import kz.maltabu.app.maltabukz.ui.fragment.*
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.LocaleHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
@@ -37,9 +37,12 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var adapter: MenuAdapter
     var manager = supportFragmentManager
-    private var current = FragmentTagEnum.HOT.constantKey
+    var current = FragmentTagEnum.HOT.constantKey
     private lateinit var ft: FragmentTransaction
     private lateinit var dialog: ProgressDialog
+    var catalogIndex=0
+
+    var filer: FilterBody?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +51,6 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         adapter= MenuAdapter(this, this)
         viewModel = ViewModelProviders.of(this, MainActivityViewModel.ViewModelFactory(Paper.book().read(Keys.LANG.constantKey, ApiLangEnum.KAZAKH.constantKey)))
             .get(MainActivityViewModel::class.java)
-
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
         viewModel.getCategories()
         setLangListeners()
@@ -68,14 +70,31 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     }
 
     fun setFragmentForCatalog(fragment: Fragment) {
-//        recognizeFragment(fragment)
         ft = manager.beginTransaction()
-        ft.replace(R.id.catalog_place, fragment).commit()
+        ft.replace(R.id.catalog_place, fragment,"catalog").commit()
         drawer.closeDrawers()
     }
 
+    fun setFragmentFilterFragment() {
+        current = FragmentTagEnum.FILTER.constantKey
+        ft = manager.beginTransaction()
+        ft.replace(R.id.drawer, FilterFragment.newInstance()).addToBackStack("catalog").commit()
+        drawer.closeDrawers()
+    }
+
+    fun setFullScreenFragment(fragment: NewsWebView){
+        current = FragmentTagEnum.NEWS_WEB_VIEW.constantKey
+        ft = manager.beginTransaction()
+        ft.replace(R.id.drawer, fragment).addToBackStack("news").commit()
+        drawer.closeDrawers()
+    }
+
+    fun getCatalogFragment(): Fragment {
+        return manager.findFragmentByTag("catalog")!!
+    }
+
     private fun recognizeFragment(fragment: Fragment) {
-        if(fragment is CategoryFragment){
+        if(fragment is CategoryFragment || fragment is NewsFragment){
             current = FragmentTagEnum.CATEGORY.constantKey
         } else {
             if(fragment is HotFragment) {
@@ -115,6 +134,9 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_toggle)
         supportActionBar!!.title = ""
         drawer.openDrawer(Gravity.LEFT)
+        nav_view.getHeaderView(0).news_menu.setOnClickListener {
+            setFragmentFromMenu(NewsFragment.newInstance())
+        }
         hideFilter()
         setLangSettings()
     }
@@ -176,13 +198,14 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
        return categories.sortedBy { it.order }
     }
 
-    private fun hideFilter(){
-        filter.visibility=View.GONE
+    fun hideFilter(){
+        filter_image.visibility=View.GONE
         filter_text.visibility=View.GONE
+        filter_badge.visibility=View.GONE
     }
 
-    private fun showFilter(){
-        filter.visibility=View.VISIBLE
+    fun showFilter(){
+        filter_image.visibility=View.VISIBLE
         filter_text.visibility=View.VISIBLE
     }
 
@@ -214,7 +237,12 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
             val fragment = HotFragment.newInstance()
             setFragmentFromMenu(fragment)
         } else {
-            super.onBackPressed()
+            if(current==FragmentTagEnum.FILTER.constantKey){
+                super.onBackPressed()
+                current=FragmentTagEnum.CATEGORY.constantKey
+            } else {
+                super.onBackPressed()
+            }
         }
     }
 

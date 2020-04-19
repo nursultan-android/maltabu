@@ -26,6 +26,7 @@ import kz.maltabu.app.maltabukz.network.models.response.ResponseAd
 import kz.maltabu.app.maltabukz.ui.adapter.ImagesAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.PhoneAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.ImageFragment
+import kz.maltabu.app.maltabukz.ui.fragment.NoImageFragment
 import kz.maltabu.app.maltabukz.ui.fragment.YandexAdFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.FormatHelper
@@ -142,6 +143,8 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
                 fragments.add(ImageFragment.newInstance(i, ad.images[i]))
             }
             fragments.add(YandexAdFragment.newInstance())
+        } else {
+            fragments.add(0,NoImageFragment.newInstance())
         }
         return fragments
     }

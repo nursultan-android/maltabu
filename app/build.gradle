@@ -17,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 70
-        versionName "2.0.0"
+        versionCode 73
+        versionName "2.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,12 +48,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://malsaty.kz/"'
+            buildConfigField "String", "BASE_URL", '"https://maltabu.kz/"'
             signingConfig signingConfigs.release
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", '"https://malsaty.kz/"'
+            buildConfigField "String", "BASE_URL", '"https://maltabu.kz/"'
         }
     }
 }
@@ -144,4 +144,7 @@ dependencies {
     //yandex metrica
     implementation 'com.yandex.android:mobmetricalib:3.6.4'
     implementation 'com.yandex.android:mobileads:2.100'
+
+    //rxBinding
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
 }

@@ -20,5 +20,9 @@ class FormatHelper {
             val decimalFormat = DecimalFormat("#,### $currency", symbols)
             return decimalFormat.format(number)
         }
+
+        fun isAlpha(name: String): Boolean {
+            return name.matches("[a-zA-Z]+".toRegex())
+        }
     }
 }

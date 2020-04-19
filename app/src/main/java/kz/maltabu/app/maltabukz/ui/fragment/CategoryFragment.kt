@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
 import kz.maltabu.app.maltabukz.R
@@ -55,26 +54,38 @@ class CategoryFragment(private val catagory: MenuCategory) : Fragment(), Catalog
         list.sortBy { it.order }
         adapter.setData(list)
         tablayout.adapter = adapter
-        selectCatalog()
+        selectCatalog((activity as MainActivity).catalogIndex)
     }
 
     override fun chooseCatalog(position:Int, catalog: CategoryChild) {
-        val catalog = CatalogFragment.newInstance(catalog.id)
+        val catalog = CatalogFragment.newInstance(catalog.id, position)
         (activity as MainActivity).setFragmentForCatalog(catalog)
-        scroll(position)
-
+        when(position){
+            adapter.itemCount-1 -> {
+                scroll(position)
+            }
+            1 ->{
+                scroll(0)
+            }
+            else -> {
+                scroll(position+1)
+            }
+        }
     }
 
     private fun scroll(position: Int) {
         Handler().postDelayed({
-            (tablayout.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 30)
-        }, 100)
+            tablayout.scrollToPosition(position)
+        }, 0)
     }
 
-    private fun selectCatalog(){
-        val pos = 0
-        Handler().postDelayed({
-            tablayout.findViewHolderForAdapterPosition(pos)!!.itemView.performClick()
-        }, 1)
+    private fun selectCatalog(pos: Int){
+        try {
+            if(tablayout!=null) {
+                Handler().postDelayed({
+                    tablayout.findViewHolderForAdapterPosition(pos)!!.itemView.performClick()
+                }, 20)
+            }
+        } catch (e:Exception){}
     }
 }

@@ -54,6 +54,7 @@ class HotFragment : Fragment(), HotAdAdapter.ChooseAd {
         setAdapterSettings()
         viewModel.getAds()
         (activity as MainActivity).hottitle.setText(R.string.hotTitle)
+        (activity as MainActivity).hideFilter()
     }
 
     private fun setAdapterSettings() {

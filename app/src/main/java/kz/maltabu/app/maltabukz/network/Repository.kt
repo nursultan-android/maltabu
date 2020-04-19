@@ -99,8 +99,8 @@ open class Repository{
 //    fun newAd(body: NewAdBody): Observable<Response<MessageStatus>>{
 //        return mainService!!.newAd(title = body.title!!,main_phone =  body.main_phone!!, category_id = body.category_id!!, region_id = body.region_id!!, city_id = body.city_id!!,
 //            amount_id = body.amountId!!, amount = body.amount, email = body.email, description = body.description, phones = body.phones,  primary_image_id = body.primary_image_id)
-////        return secondService!!.newAd(body.title!!,body.main_phone!!, body.category_id!!, body.region_id!!, body.amountId!!,
-////            body.city_id!!, body.amount!!,body.email, body.description, body.phones, body.image_ids!!.toIntArray(), body.primary_image_id!!)
+//        return secondService!!.newAd(body.title!!,body.main_phone!!, body.category_id!!, body.region_id!!, body.amountId!!,
+//           body.city_id!!, body.amount!!,body.email, body.description, body.phones, body.image_ids!!.toIntArray(), body.primary_image_id!!)
 //    }
 
     fun postAdPhoto(file: MultipartBody.Part): Observable<Response<Int>>{
@@ -121,5 +121,9 @@ open class Repository{
 
     fun getHotAds(): Observable<Response<ResponseAds>>{
         return mainService!!.getHotAd()
+    }
+
+    fun getNews(page:Int): Observable<Response<ResponseNews>> {
+        return mainService!!.getNews(page)
     }
 }

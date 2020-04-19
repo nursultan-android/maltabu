@@ -31,6 +31,15 @@ class CustomAnimator {
             objectAnimator.start()
         }
 
+        fun animateTab(refresh: View?) {
+            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.9f, 1f)
+            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.9f, 1f)
+            val objectAnimator = ObjectAnimator.ofPropertyValuesHolder(refresh, scaleX, scaleY)
+            objectAnimator.interpolator = BounceInterpolator()
+            objectAnimator.startDelay=200
+            objectAnimator.start()
+        }
+
         fun animateHotViewLinear(refresh: View?) {
             val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.95f, 1f)
             val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.95f, 1f)

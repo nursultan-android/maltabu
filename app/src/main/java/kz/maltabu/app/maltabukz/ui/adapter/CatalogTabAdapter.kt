@@ -12,12 +12,13 @@ import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.CategoryChild
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
+import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.SvgLoaderUtils
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class CatalogTabAdapter(private val context: Context, private val listener: ChooseCategory) :
-    RecyclerView.Adapter<CatalogTabAdapter.ViewHolder>() {
+class CatalogTabAdapter(private val context: Context, private val listener: ChooseCategory) : RecyclerView.Adapter<CatalogTabAdapter.ViewHolder>() {
     private var categories : List<CategoryChild> = ArrayList()
+    private var selectedTavIndex = 0
 
     fun setData(categories: List<CategoryChild>) {
         this.categories = categories
@@ -51,7 +52,18 @@ class CatalogTabAdapter(private val context: Context, private val listener: Choo
         else
             Glide.with(context).load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
         holder.itemView.onClick {
+            selectedTavIndex = position
             listener.chooseCatalog(position, currentCategory)
+            notifyDataSetChanged()
+            CustomAnimator.animateTab(holder.itemView)
+        }
+
+        if(selectedTavIndex==position){
+            holder.menuName.alpha=1f
+            holder.menuImage.alpha=1f
+        } else {
+            holder.menuName.alpha=0.3f
+            holder.menuImage.alpha=0.3f
         }
     }
 
@@ -61,6 +73,6 @@ class CatalogTabAdapter(private val context: Context, private val listener: Choo
     }
 
     interface ChooseCategory{
-        public fun chooseCatalog(position: Int, category: CategoryChild){}
+        fun chooseCatalog(position: Int, category: CategoryChild){}
     }
 }

@@ -22,12 +22,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator
 import com.esafirm.imagepicker.features.ImagePicker
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import com.redmadrobot.inputmask.MaskedTextChangedListener.Companion.installOn
 import io.paperdb.Paper
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_new_ad.*
 import kotlinx.android.synthetic.main.dialog_choose_catalog.*
+import kotlinx.android.synthetic.main.dialog_choose_catalog.catalogs_recycler
 import kotlinx.android.synthetic.main.dialog_choose_image.*
+import kotlinx.android.synthetic.main.dialog_choose_region.*
 import kotlinx.android.synthetic.main.dialog_sort.*
 import kotlinx.android.synthetic.main.fragment_new_ad.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -38,6 +45,7 @@ import kz.maltabu.app.maltabukz.network.models.response.*
 import kz.maltabu.app.maltabukz.ui.activity.NewAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.CityAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.RegionAdapter
+import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
 import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
@@ -50,6 +58,7 @@ import okhttp3.Response
 import org.jetbrains.anko.image
 import org.json.JSONObject
 import java.io.File
+import java.text.NumberFormat
 
 class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegion, CityAdapter.ChooseCity{
 
@@ -107,6 +116,7 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
         setPhoneMask()
         setArrowButtonColor()
         setUser()
+        setPriceMask()
     }
 
     private fun consumeResponseImage(response: ApiResponse) {
@@ -229,7 +239,8 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
     }
 
     private fun showRegionsDialog(regions: List<Region>) {
-        sortDialog.setContentView(R.layout.dialog_choose_catalog)
+        Log.d("TAGg", regions[regions.size-1].name)
+        sortDialog.setContentView(R.layout.dialog_choose_region)
         val adapter = RegionAdapter(this)
         adapter.setData(regions)
         sortDialog.catalogs_recycler.adapter = adapter
@@ -238,9 +249,10 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
     }
 
     private fun showCitiesDialog(cities: List<City>) {
-        sortDialog.setContentView(R.layout.dialog_choose_catalog)
+        sortDialog.setContentView(R.layout.dialog_choose_region)
         val adapter = CityAdapter(this)
         adapter.setData(cities)
+        sortDialog.text_view_title!!.text = resources.getString(R.string.chooseCity)
         sortDialog.catalogs_recycler.adapter = adapter
         sortDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         sortDialog.show()
@@ -300,6 +312,22 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
             choose_photo.isEnabled=true
             filesArr[7]=null
         }
+    }
+
+    private fun setPriceMask(){
+//        var current = ""
+//        val disposable = RxTextView.textChanges(editText_price)
+//                .subscribe {
+//
+//                    if(it.toString()!=null && it.toString().isNotEmpty()) {
+//                        var data  = it.toString()
+//                        current=data
+//                        if(current!=data){
+//                            editText_price.setText(data+ "₸")
+//                            Log.d("TAGg", data)
+//                        }
+//                    }
+//                }
     }
 
     private fun showPhotoDialog() {
@@ -427,7 +455,7 @@ class NewAdFragment(val categoryId: Int) : Fragment(), RegionAdapter.ChooseRegio
         sortDialog.cheap.setOnClickListener {
             body.amountId=3
             editText_price.visibility =View.VISIBLE
-            editText_price.setText(resources.getString(R.string.radioB2))
+            editText_price.hint = resources.getString(R.string.radioB2)
             editText_price.isEnabled=false
             sortDialog.dismiss()
         }

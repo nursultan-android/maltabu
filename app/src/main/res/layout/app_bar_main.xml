@@ -29,7 +29,7 @@
                 android:background="@color/MaltabuYellow"/>
 
             <ImageView
-                android:id="@+id/filter"
+                android:id="@+id/filter_image"
                 android:layout_width="16dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="8dp"
@@ -43,15 +43,15 @@
                 android:src="@drawable/red_circle"
                 app:layout_constraintCircleAngle="45"
                 app:layout_constraintCircleRadius="10dp"
-                app:layout_constraintCircle="@id/filter"
-                app:layout_constraintStart_toStartOf="@id/filter"
+                app:layout_constraintCircle="@id/filter_image"
+                app:layout_constraintStart_toStartOf="@id/filter_image"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="gone"
                 android:layout_width="8dp"
                 android:layout_height="8dp"/>
             <TextView
                 android:id="@+id/filter_text"
-                app:layout_constraintEnd_toStartOf="@id/filter"
+                app:layout_constraintEnd_toStartOf="@id/filter_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/White"
@@ -61,15 +61,19 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/hottitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
                 android:text="@string/hotTitle"
                 android:textAllCaps="false"
                 android:textColor="@color/White"
-                android:textSize="18sp"
+                android:textSize="@dimen/_14ssp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/filter"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/toolbar" />
 

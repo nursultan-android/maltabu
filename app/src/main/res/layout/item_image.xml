@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/imgPage"
-        android:src="@drawable/ic_no_photo"
+        android:src="@drawable/ic_no_photo_colored"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

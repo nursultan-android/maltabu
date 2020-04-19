@@ -66,7 +66,10 @@ class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) 
         holder.price.text=FormatHelper.setFormat(ad.currency, ad.amount)
         holder.visitors.text=ad.visited.toString()
         holder.photoCount.text=ad.images.size.toString()
-        Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_no_photo)).centerCrop().into(holder.img)
+        if(ad.images.size>0)
+            Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_photography_loading)).centerCrop().into(holder.img)
+        else
+            holder.img.setImageDrawable(context.getDrawable(R.drawable.ic_no_photo_colored))
         holder.itemView.setOnClickListener {
             chooseAd.chooseAd(ad)
         }
