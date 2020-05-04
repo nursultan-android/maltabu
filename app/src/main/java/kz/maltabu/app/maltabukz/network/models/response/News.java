@@ -3,7 +3,9 @@ package kz.maltabu.app.maltabukz.network.models.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+import java.io.Serializable;
+
+public class News implements Serializable {
     @SerializedName("id")
     @Expose
     private int id;
@@ -12,9 +14,9 @@ public class News {
     @Expose
     private String title;
 
-//    @SerializedName("description")
-//    @Expose
-//    private String description;
+    @SerializedName("slug")
+    @Expose
+    private String slug;
 
     @SerializedName("image")
     @Expose
@@ -36,9 +38,9 @@ public class News {
         return title;
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
+    public String getSlug() {
+        return slug;
+    }
 
     public String getImage() {
         return image;

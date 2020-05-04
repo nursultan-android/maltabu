@@ -8,13 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.item_ad.view.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.di.BaseUseCase
 import kz.maltabu.app.maltabukz.network.models.response.News
+import org.koin.core.inject
 
-class NewsAdapter(val context: Context, private val chooser: ChooseNews) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(val context: Context, private val chooser: ChooseNews) : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), BaseUseCase {
     private var newsList : List<News> = ArrayList()
+    private val glideManager: RequestManager by inject()
 
     fun setData(newsList: List<News>) {
         this.newsList = newsList
@@ -45,7 +49,7 @@ class NewsAdapter(val context: Context, private val chooser: ChooseNews) : Recyc
         holder.title.text=news.title
         holder.date.text=news.date
         holder.visitors.text=news.visited.toString()
-        Glide.with(context).load(news.image).placeholder(context.getDrawable(R.drawable.ic_no_photo_colored)).centerCrop().into(holder.img)
+        glideManager.load(news.image).placeholder(context.getDrawable(R.drawable.ic_no_photo_colored)).centerCrop().into(holder.img)
         holder.itemView.setOnClickListener {
             chooser.chooseNews(news)
         }

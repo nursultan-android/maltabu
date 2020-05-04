@@ -8,15 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_ad.view.*
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.item_hot.view.*
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.di.BaseUseCase
 import kz.maltabu.app.maltabukz.network.models.response.Ad
-import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.FormatHelper
+import org.koin.core.inject
 
-class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : RecyclerView.Adapter<HotAdAdapter.ViewHolder>() {
+class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : RecyclerView.Adapter<HotAdAdapter.ViewHolder>(), BaseUseCase {
     private var adList : List<Ad> = ArrayList()
+    private val formatHelper: FormatHelper by inject()
+    private val glideManager: RequestManager by inject()
 
     fun setData(adList: List<Ad>) {
         this.adList = adList
@@ -44,11 +47,11 @@ class HotAdAdapter(val context: Context, private val chooseAd: ChooseAd) : Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ad =adList[position]
-        holder.price.text= FormatHelper.setFormat(ad.currency, ad.amount)
+        holder.price.text= formatHelper.setFormat(ad.currency, ad.amount)
         holder.photoCount.text=ad.images.size.toString()
         holder.location.text=ad.city
         if(ad.images.size>0)
-            Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_photography_loading)).centerCrop().into(holder.img)
+            glideManager.load(ad.image).placeholder(context.getDrawable(R.drawable.ic_photography_loading)).centerCrop().into(holder.img)
         else
             holder.img.setImageDrawable(context.getDrawable(R.drawable.ic_no_photo_colored))
         holder.itemView.setOnClickListener {

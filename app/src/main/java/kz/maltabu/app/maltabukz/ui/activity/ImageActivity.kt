@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -13,7 +12,7 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.models.response.Ad
-import kz.maltabu.app.maltabukz.ui.fragment.FullScreenFragment
+import kz.maltabu.app.maltabukz.ui.fragment.showAd.FullScreenFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator.Companion.animateHotViewLinear
 
 class ImageActivity : BaseActivity() {

@@ -3,7 +3,9 @@ package kz.maltabu.app.maltabukz.network.models.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -38,7 +40,10 @@ public class User {
     }
 
     public String getPhone() {
-        return phone;
+        if(phone!=null && !phone.isEmpty())
+            return "7"+phone;
+        else
+            return null;
     }
 
     public String getEmail() {

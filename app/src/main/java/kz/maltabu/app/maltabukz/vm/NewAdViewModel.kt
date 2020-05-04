@@ -1,8 +1,5 @@
 package kz.maltabu.app.maltabukz.vm
 
-import android.os.AsyncTask
-import android.os.StrictMode
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +16,6 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import rx.Subscriber
-import java.io.IOException
 
 
 class NewAdViewModel(private var language: String) : ViewModel() {

@@ -8,15 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.di.BaseUseCase
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.utils.SvgLoaderUtils
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.koin.core.inject
 
-class MenuAdapter(private val context: Context, private val choose: ChooseCategory) :
-    RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+class MenuAdapter(private val context: Context, private val choose: ChooseCategory) : RecyclerView.Adapter<MenuAdapter.ViewHolder>(), BaseUseCase{
     private var categories : List<MenuCategory> = ArrayList()
+    private val glideManager: RequestManager by inject()
 
     fun setData(categories: List<MenuCategory>) {
         this.categories = categories
@@ -48,7 +51,7 @@ class MenuAdapter(private val context: Context, private val choose: ChooseCatego
         if(currentCategory.image.endsWith("svg"))
             SvgLoaderUtils.fetchSvg(context, currentCategory.image, holder.menuImage)
         else
-            Glide.with(context).load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
+            glideManager.load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
         holder.itemView.onClick {
             choose.chooseCategory(currentCategory)
         }

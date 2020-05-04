@@ -200,4 +200,14 @@
     <string name="facebook_app_id">235176714524367</string> <string name="fb_login_protocol_scheme">fb235176714524367</string>
     <string name="yandex_app_id">16364ff9-f4b0-45ac-ad8f-820d663f50a2</string>
     <string name="login_with_social">Әлеуметтік желілер арқылы кіру</string>
+
+    <string name="play_market_link">https://play.google.com/store/apps/details?id=kz.maltabu.app.maltabukz</string>
+    <string name="update">Жаңарту</string>
+    <string name="update_title">Жаңа версия</string>
+    <string name="no_connection">Нет соединения</string>
+    <string name="check_connection">Проверить соединение</string>
+
+    <string name="choose">Таңдау</string>
+    <string name="reset_password_success">Құпия сөзді қалпына келтіру хаты жіберілді</string>
+    <string name="reset_password_success_phone">Құпия сөзді қалпына келтіру SMS жіберілді</string>
 </resources>

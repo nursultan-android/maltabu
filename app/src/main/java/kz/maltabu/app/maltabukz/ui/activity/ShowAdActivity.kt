@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.google.android.gms.ads.MobileAds
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_show_ad.*
 import kz.maltabu.app.maltabukz.R
@@ -25,15 +26,16 @@ import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAd
 import kz.maltabu.app.maltabukz.ui.adapter.ImagesAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.PhoneAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.ImageFragment
-import kz.maltabu.app.maltabukz.ui.fragment.NoImageFragment
-import kz.maltabu.app.maltabukz.ui.fragment.YandexAdFragment
+import kz.maltabu.app.maltabukz.ui.fragment.showAd.ImageFragment
+import kz.maltabu.app.maltabukz.ui.fragment.showAd.NoImageFragment
+import kz.maltabu.app.maltabukz.ui.fragment.showAd.YandexAdFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.FormatHelper
-import kz.maltabu.app.maltabukz.utils.customEnum.ApiLangEnum
-import kz.maltabu.app.maltabukz.utils.customEnum.Keys
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
+import kz.maltabu.app.maltabukz.utils.web.NetworkChecker
+import kz.maltabu.app.maltabukz.utils.yandexAds.GoogleAdmobHelper
 import kz.maltabu.app.maltabukz.vm.ShowAdActivityViewModel
+import org.koin.android.ext.android.inject
 import java.util.*
 
 
@@ -47,6 +49,9 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
     var PERMISSION_ALL = 1
     var PERMISSIONS =  Manifest.permission.CALL_PHONE
 
+    private val formatHelper: FormatHelper by inject()
+    private val checker: NetworkChecker by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val id = (intent.getSerializableExtra("ad") as Ad).id
@@ -59,15 +64,20 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
 //
 //        }
         dialog = ProgressDialog(this)
-        viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(Keys.LANG.constantKey, ApiLangEnum.KAZAKH.constantKey)))
+        viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH)))
             .get(ShowAdActivityViewModel::class.java)
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
-        viewModel.getAdById(id)
+        if(checker.isNetworkAvailable) {
+            viewModel.getAdById(id)
+        } else {
+            setNoInternetView()
+        }
         imagesIntent = Intent(this, ImageActivity::class.java)
         finish.setOnClickListener {
             CustomAnimator.animateHotViewLinear(it)
             finish()
         }
+        loadGoogleAd()
     }
 
     override fun onBackPressed() {
@@ -144,7 +154,8 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
             }
             fragments.add(YandexAdFragment.newInstance())
         } else {
-            fragments.add(0,NoImageFragment.newInstance())
+            fragments.add(0,
+                NoImageFragment.newInstance())
         }
         return fragments
     }
@@ -171,7 +182,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
 
     private fun renderResponse(response: ResponseAd) {
         title_txt.text = response.ad.title
-        price_txt.text = FormatHelper.setFormat(response.ad.currency, response.ad.amount)
+        price_txt.text = formatHelper.setFormat(response.ad.currency, response.ad.amount)
         content_txt.text = response.ad.description
         dateTxt.text = response.ad.date
         location_txt.text = response.ad.city
@@ -215,6 +226,15 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
             adActivity.imagesIntent.putExtra("ad", ad)
             adActivity.startActivity(adActivity.imagesIntent)
             return super.onSingleTapConfirmed(e)
+        }
+    }
+
+    private fun loadGoogleAd(){
+        try {
+            MobileAds.initialize(this) {}
+            GoogleAdmobHelper(this, "ca-app-pub-8576417478026387/6427654586", my_template).loadAd()
+        } catch (e:Exception){
+            Log.d("TAGg", e.message)
         }
     }
 }

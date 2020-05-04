@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
-import kz.maltabu.app.maltabukz.network.models.response.City
 import kz.maltabu.app.maltabukz.network.models.response.Region
 
 class RegionAdapter(val chooser: ChooseRegion) : RecyclerView.Adapter<RegionAdapter.ViewHolder>() {
@@ -38,10 +37,10 @@ class RegionAdapter(val chooser: ChooseRegion) : RecyclerView.Adapter<RegionAdap
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentCategory =regions[position]
-        holder.menuName.text=currentCategory.name
+        val region =regions[position]
+        holder.menuName.text=region.name
         holder.itemView.setOnClickListener {
-            chooser.chooseRegion(currentCategory)
+            chooser.chooseRegion(region)
         }
     }
 

@@ -3,27 +3,20 @@ package kz.maltabu.app.maltabukz.ui.activity
 import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import io.paperdb.Paper
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.AuthFragment
-import kz.maltabu.app.maltabukz.ui.fragment.ChooseFragment
-import kz.maltabu.app.maltabukz.ui.fragment.ProfileFragment
-import kz.maltabu.app.maltabukz.ui.fragment.RegFragment
-import kz.maltabu.app.maltabukz.utils.customEnum.Keys
+import kz.maltabu.app.maltabukz.ui.fragment.cabinet.AuthFragment
+import kz.maltabu.app.maltabukz.ui.fragment.cabinet.ProfileFragment
 
 class AuthActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
-
-    var manager = supportFragmentManager
-    private lateinit var ft: FragmentTransaction
     private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_ad)
         dialog= ProgressDialog(this)
-        if((Paper.book().read(Keys.TOKEN.constantKey, "") as String).isNotEmpty()){
+        if((Paper.book().read(enum.TOKEN, "") as String).isNotEmpty()){
             setFragment(ProfileFragment.newInstance())
         } else {
             setFragment(AuthFragment.newInstance())

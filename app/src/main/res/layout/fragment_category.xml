@@ -49,12 +49,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
-
-    <ImageView
-        android:id="@+id/sort_shadow"
-        app:layout_constraintTop_toTopOf="@id/catalog_place"
-        android:src="@drawable/line_divider"
-        android:background="@android:color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

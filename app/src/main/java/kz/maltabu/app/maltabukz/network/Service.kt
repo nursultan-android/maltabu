@@ -1,8 +1,6 @@
 package kz.maltabu.app.maltabukz.network
 
-import android.icu.text.CaseMap
 import io.reactivex.Observable
-import kz.maltabu.app.maltabukz.model.NewAdBody
 import kz.maltabu.app.maltabukz.network.models.response.*
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -15,7 +13,7 @@ interface Service {
 
     @GET("api/v2/advertisements")
     fun getAds(@Query("page") page: Int?=null, @Query("order") order: String?=null, @Query("word") word: String?=null, @Query("category") category: Int?=null,
-               @Query("region") region: Int?=null, @Query("price_to") price_to: Int?=null, @Query("price_from") price_from: Int?=null,
+               @Query("region") region: Int?=null, @Query("price_to") price_to: Int?=null, @Query("price_from") price_from: Int?=null, @Query("city") city: Int?=null,
                @Query("exchange") exchange: Int?=null, @Query("image_required") image_required: Boolean?=null, @Query("favorite") favorite: Boolean?=null)
             : Observable<Response<ResponseAds>>
 
@@ -52,6 +50,10 @@ interface Service {
     @FormUrlEncoded
     @POST("/api/v2/login")
     fun login(@Field("identity") email: String, @Field("password") password: String):Observable<Response<ResponseAuth>>
+
+    @FormUrlEncoded
+    @POST("/api/v2/reset-password")
+    fun resetPassword(@Field("identity") email: String):Observable<Response<ResponseEmpty>>
 
     @GET("/api/v2/advertisements-hot")
     fun getHotAd(): Observable<Response<ResponseAds>>

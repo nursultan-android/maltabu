@@ -7,20 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.yandex.mobile.ads.nativeads.NativeGenericAd
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.di.BaseUseCase
 import kz.maltabu.app.maltabukz.network.models.response.Ad
-import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.yandexAds.AdapterHolder
 import kz.maltabu.app.maltabukz.utils.yandexAds.NativeBlock
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
+import org.koin.core.inject
 
-class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), BaseUseCase {
     private val mBlockContentHelper= NativeBlock()
     private lateinit var mData: List<Pair<Int, Any>>
+    private val formatHelper: FormatHelper by inject()
+    private val glideManager: RequestManager by inject()
 
     fun setData(dataList: List<Pair<Int, Any>>) {
         mData = dataList
@@ -62,12 +64,16 @@ class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) 
     private fun bindItem(holder: AdapterHolder.ViewHolder, position: Int) {
         val ad = mData[position].second as Ad
         holder.title.text=ad.title
-        holder.date.text=ad.date
-        holder.price.text=FormatHelper.setFormat(ad.currency, ad.amount)
+        if(ad.city!=null || ad.city.toString().isNotEmpty()) {
+            holder.date.text = "${ad.city}, ${ad.date}"
+        } else {
+            holder.date.text = ad.date
+        }
+        holder.price.text=formatHelper.setFormat(ad.currency, ad.amount)
         holder.visitors.text=ad.visited.toString()
         holder.photoCount.text=ad.images.size.toString()
         if(ad.images.size>0)
-            Glide.with(context).load(ad.image).placeholder(context.getDrawable(R.drawable.ic_photography_loading)).centerCrop().into(holder.img)
+            glideManager.load(ad.image).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(context.getDrawable(R.drawable.ic_photography_loading)).centerCrop().into(holder.img)
         else
             holder.img.setImageDrawable(context.getDrawable(R.drawable.ic_no_photo_colored))
         holder.itemView.setOnClickListener {

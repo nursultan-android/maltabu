@@ -138,10 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_70sdp"
                 android:background="@color/White"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout13">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -261,7 +259,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/visitors_icon"
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -305,6 +302,22 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ad_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_70sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.ads.nativetemplates.TemplateView
+                    android:id="@+id/my_template"
+                    app:gnt_template_type="@layout/gnt_medium_template_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
@@ -358,6 +371,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="0dp"
             android:src="@drawable/ic_phone"
+            android:tint="@color/White"
             app:layout_constraintBottom_toBottomOf="@+id/textView32"
             app:layout_constraintEnd_toStartOf="@+id/textView32"
             app:layout_constraintHorizontal_bias="0.9"

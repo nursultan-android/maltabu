@@ -1,28 +1,37 @@
 package kz.maltabu.app.maltabukz.utils
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
-import android.view.View
-import android.view.animation.BounceInterpolator
-import android.view.animation.LinearInterpolator
+import android.util.Patterns
+import kz.maltabu.app.maltabukz.network.models.response.City
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
 
 class FormatHelper {
-    companion object {
-        fun setFormat(currency: String,number: Long):String{
-            val symbols = DecimalFormatSymbols()
-            symbols.groupingSeparator = ','
-            symbols.decimalSeparator = '\''
+    fun setFormat(currency: String,number: Long):String{
+        val symbols = DecimalFormatSymbols()
+        symbols.groupingSeparator = ','
+        symbols.decimalSeparator = '\''
 
-            val decimalFormat = DecimalFormat("#,### $currency", symbols)
-            return decimalFormat.format(number)
-        }
+        val decimalFormat = DecimalFormat("#,### $currency", symbols)
+        return decimalFormat.format(number)
+    }
 
-        fun isAlpha(name: String): Boolean {
-            return name.matches("[a-zA-Z]+".toRegex())
+    fun isAlpha(name: String): Boolean {
+        return name.matches("[a-zA-Z]+".toRegex())
+    }
+
+    fun getCityByName(cityList: List<City>, name: String): City {
+        var city = City()
+        for (i in cityList.indices){
+            if(cityList[i].name == name){
+                city=cityList[i]
+            }
         }
+        return city
+    }
+
+    fun validEmail(email: String): Boolean {
+        val pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
     }
 }

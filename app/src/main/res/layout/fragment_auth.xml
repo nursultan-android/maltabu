@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:text="@string/forgetPass"
             android:layout_marginStart="16dp"
-            android:visibility="gone"
             android:layout_marginTop="8dp"
             android:padding="@dimen/_12sdp"
             android:layout_marginEnd="16dp"

@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import kz.maltabu.app.maltabukz.BuildConfig
-import kz.maltabu.app.maltabukz.model.NewAdBody
 import kz.maltabu.app.maltabukz.network.models.response.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -27,7 +26,7 @@ open class Repository{
                 .addHeader("Accept", "application/json")
                 .method(original.method(), original.body())
             chain.proceed(builder.build())
-        }.connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
+        }.connectTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS)
         val gson = GsonBuilder().setLenient().create()
         val rxAdapter = RxJava2CallAdapterFactory.create()
         mainService = Retrofit.Builder()
@@ -50,7 +49,7 @@ open class Repository{
                 .addHeader("Accept", "application/json")
                 .method(original.method(), original.body())
             chain.proceed(builder.build())
-        }.connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
+        }.connectTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS)
         val gson = GsonBuilder().setLenient().create()
         val rxAdapter = RxJava2CallAdapterFactory.create()
         mainService = Retrofit.Builder()
@@ -79,9 +78,9 @@ open class Repository{
     }
 
     fun getAds(page: Int? = null, order: String? = null, category: Int? = null, region: Int? = null, word: String? = null, price_to:Int? = null, price_from:Int? = null,
-               exchange:Int? = null, image_required: Boolean? = null, favorite: Boolean? = null): Observable<Response<ResponseAds>>{
+               exchange:Int? = null, image_required: Boolean? = null, favorite: Boolean? = null, city: Int? = null): Observable<Response<ResponseAds>>{
         return mainService!!.getAds(page=page, order = order, category = category, region = region, word = word, price_from = price_from, price_to = price_to,
-            exchange = exchange, image_required = image_required, favorite = favorite)
+            exchange = exchange, image_required = image_required, favorite = favorite, city = city)
     }
 
     fun getRegions(): Observable<Response<ResponseRegion>>{
@@ -125,5 +124,9 @@ open class Repository{
 
     fun getNews(page:Int): Observable<Response<ResponseNews>> {
         return mainService!!.getNews(page)
+    }
+
+    fun resetPassword(login: String): Observable<Response<ResponseEmpty>> {
+        return mainService!!.resetPassword(login)
     }
 }

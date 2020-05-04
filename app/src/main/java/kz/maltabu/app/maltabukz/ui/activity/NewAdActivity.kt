@@ -3,15 +3,11 @@ package kz.maltabu.app.maltabukz.ui.activity
 import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.ChooseFragment
+import kz.maltabu.app.maltabukz.ui.fragment.newAd.ChooseFragment
 
 class NewAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
-
-    var manager = supportFragmentManager
-    private lateinit var ft: FragmentTransaction
     private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {

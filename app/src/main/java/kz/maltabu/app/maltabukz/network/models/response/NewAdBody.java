@@ -1,5 +1,7 @@
 package kz.maltabu.app.maltabukz.network.models.response;
 
-public class NewAdBody {
+import java.io.Serializable;
+
+public class NewAdBody implements Serializable {
 
 }

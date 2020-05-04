@@ -17,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 73
-        versionName "2.0.1"
+        versionCode 83
+        versionName "2.0.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -83,6 +83,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "com.makeramen:roundedimageview:2.3.0"
+
     implementation 'com.bartoszlipinski:viewpropertyobjectanimator:1.4.5'
 
     //RX
@@ -130,7 +131,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.3.0'
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta03'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta04'
 
     //google auth
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
@@ -147,4 +148,14 @@ dependencies {
 
     //rxBinding
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+
+    //google ads
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation project(':nativetemplate')
+
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.11.3'
+
+    //koin
+    implementation 'org.koin:koin-android:2.1.0'
 }

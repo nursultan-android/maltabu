@@ -21,7 +21,7 @@ class CatalogViewModel(private val language: String) : ViewModel() {
     fun getAds(body : QueryPaginationModel){
         disposable.add(
             Repository.newInstance(language).getAds(page = body.page, order = body.order, category = body.category, region = body.region, word = body.word, price_from = body.price_from,
-                price_to = body.price_to, exchange = body.exchange, image_required = body.image_required, favorite = body.favorite)
+                price_to = body.price_to, exchange = body.exchange, image_required = body.image_required, favorite = body.favorite, city = body.city)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { response.value= ApiResponse.loading()}
@@ -42,4 +42,10 @@ class CatalogViewModel(private val language: String) : ViewModel() {
             return CatalogViewModel(language) as T
         }
     }
+
+    fun clear(){
+        response.value=ApiResponse.loading()
+        disposable.clear()
+    }
+
 }

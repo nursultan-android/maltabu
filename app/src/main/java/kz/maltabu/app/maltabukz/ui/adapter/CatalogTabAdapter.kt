@@ -8,17 +8,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.di.BaseUseCase
 import kz.maltabu.app.maltabukz.network.models.response.CategoryChild
 import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.SvgLoaderUtils
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.koin.core.inject
 
-class CatalogTabAdapter(private val context: Context, private val listener: ChooseCategory) : RecyclerView.Adapter<CatalogTabAdapter.ViewHolder>() {
+class CatalogTabAdapter(private val context: Context, private val listener: ChooseCategory) : RecyclerView.Adapter<CatalogTabAdapter.ViewHolder>(), BaseUseCase {
     private var categories : List<CategoryChild> = ArrayList()
     private var selectedTavIndex = 0
+    private val glideManager: RequestManager by inject()
 
     fun setData(categories: List<CategoryChild>) {
         this.categories = categories
@@ -50,7 +54,7 @@ class CatalogTabAdapter(private val context: Context, private val listener: Choo
         if(currentCategory.image.endsWith("svg"))
             SvgLoaderUtils.fetchSvg(context, currentCategory.image, holder.menuImage)
         else
-            Glide.with(context).load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
+            glideManager.load(currentCategory.image).centerCrop().fitCenter().into(holder.menuImage)
         holder.itemView.onClick {
             selectedTavIndex = position
             listener.chooseCatalog(position, currentCategory)

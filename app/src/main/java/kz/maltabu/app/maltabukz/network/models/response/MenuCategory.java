@@ -8,6 +8,10 @@ import java.util.List;
 
 
 public class MenuCategory implements Serializable {
+    public MenuCategory(int id, String name){
+        this.id = id;
+        this.name=name;
+    }
 
     @SerializedName("id")
     @Expose
