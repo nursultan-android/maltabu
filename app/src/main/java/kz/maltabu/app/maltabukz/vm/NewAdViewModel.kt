@@ -1,5 +1,6 @@
 package kz.maltabu.app.maltabukz.vm
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -100,9 +101,10 @@ class NewAdViewModel(private var language: String) : ViewModel() {
         disposable.add(observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                adResponse.value=it
-            })
+            .subscribe (
+                { result -> adResponse.value=result },
+                { throwable ->  Log.d("TAGg", throwable.message!!)}
+            ))
     }
 
     private fun createRequest(bodyAd: NewAdBody): Observable<Response> {

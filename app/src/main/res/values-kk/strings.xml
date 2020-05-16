@@ -16,7 +16,7 @@
     <string name="menu5">Қызметтер және техника</string>
     <string name="menu6">Азық-түлік</string>
     <string name="menu7">Жұмыспен қамту</string>
-    <string name="menu8">Тегін хабарландыру беру</string>
+    <string name="menu8">Хабарландыру беру</string>
     <string name="menu82">Қарапайым жедел және тегін</string>
     <string name="Cabinet">Жеке кабинет</string>
     <string name="Option1">Бүкіл бөлімдер бойынша</string>
@@ -74,8 +74,8 @@
     <string name="phoneExist">Бұл телефон номірі тіркелген</string>
     <string name="forgetPass">Құпия сөзіңізді ұмытып қалдыңыз ба?</string>
     <string name="forgetPassTitle">Құпия сөзді қалпына келтіру</string>
-    <string name="forgetPassPhone">Телефон арқылы тіркелгем</string>
-    <string name="forgetPassMail">Эл.пошта арқылы тіркелгем</string>
+    <string name="forgetPassPhone">Телефон арқылы</string>
+    <string name="forgetPassMail">Эл.пошта арқылы</string>
     <string name="forgetPassSuccess">Құпия сөз өзгертілді</string>
     <string name="infoCode">Сіздін телефонызға смс-хабарлама жіберілeді</string>
     <string name="wrongCode">Қате код</string>
@@ -210,4 +210,9 @@
     <string name="choose">Таңдау</string>
     <string name="reset_password_success">Құпия сөзді қалпына келтіру хаты жіберілді</string>
     <string name="reset_password_success_phone">Құпия сөзді қалпына келтіру SMS жіберілді</string>
+
+    <integer name="com_vk_sdk_AppId">7449625</integer>
+    <string name="social_no_email">Әлеуметтік желіде электронды мекенжайыңыз көрсетілмеген.</string>
+
+    <string name="ad_on_moderation">Хабарландыру әзірге модерацияда</string>
 </resources>

@@ -24,6 +24,7 @@ import kz.maltabu.app.maltabukz.network.models.response.ResponseAuth
 import kz.maltabu.app.maltabukz.network.models.response.ResponseRegister
 import kz.maltabu.app.maltabukz.ui.activity.AuthActivity
 import kz.maltabu.app.maltabukz.ui.activity.BaseActivity
+import kz.maltabu.app.maltabukz.ui.fragment.cabinet.profile.CabinetFragment
 import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.*
 import kz.maltabu.app.maltabukz.vm.AuthViewModel
@@ -87,7 +88,7 @@ class AuthFragment : BaseSocialFragment() {
             Paper.book().write((activity!! as BaseActivity).enum.TOKEN, response.token.token)
             Paper.book().write((activity!! as BaseActivity).enum.USER, response.user)
             (activity as AuthActivity).clearBackStack()
-            (activity as AuthActivity).setFragment(ProfileFragment.newInstance())
+            (activity as AuthActivity).setFragment(CabinetFragment.newInstance())
         } else {
             Toast.makeText(activity!!, "", Toast.LENGTH_SHORT).show()
         }
@@ -119,7 +120,7 @@ class AuthFragment : BaseSocialFragment() {
             Paper.book().write((activity!! as BaseActivity).enum.TOKEN, response.token)
             Paper.book().write((activity!! as BaseActivity).enum.USER, response.user)
             (activity as AuthActivity).clearBackStack()
-            (activity as AuthActivity).setFragment(ProfileFragment.newInstance())
+            (activity as AuthActivity).setFragment(CabinetFragment.newInstance())
         } else {
             Toast.makeText(activity!!, "", Toast.LENGTH_SHORT).show()
         }
@@ -131,7 +132,7 @@ class AuthFragment : BaseSocialFragment() {
             (activity as AuthActivity).setFragmentToBack(RegFragment.newInstance())
         }
         forgot_button.setOnClickListener {
-            (activity as AuthActivity).setFragmentToBack(ForgetPasswordFragment.newInstance())
+            (activity as AuthActivity).setFragmentToBack(ChooseRegFragment.newInstance())
         }
         button_auth.setOnClickListener {
             if(validateFields()){
@@ -148,6 +149,7 @@ class AuthFragment : BaseSocialFragment() {
         }
         google=social_btn_google
         facebook=social_btn_facebook
+        vkontakte=social_btn_vk
         setSocialButtonsListeners()
         fb.registerCallback(callbackManager, object: FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
@@ -163,7 +165,7 @@ class AuthFragment : BaseSocialFragment() {
                             firstName = resultObject.getString("first_name")
                         if (resultObject.has("last_name"))
                             lastName = resultObject.getString("last_name")
-                        viewModel.socail(email, userId, (activity!! as BaseActivity).enum.FACEBOOK)
+                        viewModel.social(email, userId, (activity!! as BaseActivity).enum.FACEBOOK)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -207,7 +209,7 @@ class AuthFragment : BaseSocialFragment() {
             val completedTask = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = completedTask.getResult(ApiException::class.java)
-                viewModel.socail(account!!.email!!, account!!.id!!, (activity!! as BaseActivity).enum.GOOGLE)
+                viewModel.social(account!!.email!!, account!!.id!!, (activity!! as BaseActivity).enum.GOOGLE)
             } catch (e: ApiException) {
                 Toast.makeText(activity, e.message,Toast.LENGTH_LONG).show()
             }

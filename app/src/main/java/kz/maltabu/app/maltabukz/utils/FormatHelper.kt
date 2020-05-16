@@ -20,6 +20,10 @@ class FormatHelper {
         return name.matches("[a-zA-Z]+".toRegex())
     }
 
+    fun removeInvelidSymbols(first: String): String{
+        return first.replace("+","").replace("(", "").replace(")","")
+    }
+
     fun getCityByName(cityList: List<City>, name: String): City {
         var city = City()
         for (i in cityList.indices){

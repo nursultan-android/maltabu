@@ -129,4 +129,12 @@ open class Repository{
     fun resetPassword(login: String): Observable<Response<ResponseEmpty>> {
         return mainService!!.resetPassword(login)
     }
+
+    fun getBanner(): Observable<Response<ResponseBanner>> {
+        return mainService!!.getBanners()
+    }
+
+    fun getMyAds(page:Int): Observable<Response<ResponseAds>> {
+        return mainService!!.getMyAds(page)
+    }
 }

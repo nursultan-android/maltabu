@@ -238,4 +238,11 @@ class FilterFragment : Fragment(), RegionAdapter.ChooseRegion{
         filter.cityName = city.name
         sortDialog.dismiss()
     }
+
+    override fun onDestroy() {
+        if(sortDialog!=null && sortDialog.isShowing){
+            sortDialog.dismiss()
+        }
+        super.onDestroy()
+    }
 }

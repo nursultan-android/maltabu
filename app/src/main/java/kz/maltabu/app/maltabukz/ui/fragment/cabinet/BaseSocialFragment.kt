@@ -9,9 +9,13 @@ import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.vk.api.sdk.VK.login
+import com.vk.api.sdk.auth.VKScope
+import java.util.*
 
 abstract class BaseSocialFragment : Fragment() {
     lateinit var google: ImageView
+    lateinit var vkontakte: ImageView
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var facebook: ImageView
     lateinit var fb: LoginButton
@@ -39,6 +43,12 @@ abstract class BaseSocialFragment : Fragment() {
         }
         facebook.setOnClickListener {
             fb.performClick()
+        }
+        val scope = ArrayList<VKScope>()
+        scope.add(VKScope.OFFLINE)
+        scope.add(VKScope.EMAIL)
+        vkontakte.setOnClickListener {
+            login(activity!!, scope)
         }
     }
 }

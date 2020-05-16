@@ -357,4 +357,11 @@ class SearchFragment : Fragment(), AdAdapterWithAdvers.ChooseAd, RegionAdapter.C
         cityId=city.id
         choose_region_button.text = city.name
     }
+
+    override fun onDestroy() {
+        if(dialog!=null && dialog.isShowing){
+            dialog.dismiss()
+        }
+        super.onDestroy()
+    }
 }

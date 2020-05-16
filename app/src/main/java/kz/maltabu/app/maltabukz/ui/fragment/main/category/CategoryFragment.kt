@@ -4,10 +4,13 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProviders
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
@@ -19,6 +22,8 @@ import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.ui.activity.MainActivity
 import kz.maltabu.app.maltabukz.ui.adapter.CatalogTabAdapter
 import kz.maltabu.app.maltabukz.vm.CategoryViewModel
+import java.lang.ref.WeakReference
+import java.util.ArrayList
 
 
 class CategoryFragment : Fragment(), CatalogTabAdapter.ChooseCategory {

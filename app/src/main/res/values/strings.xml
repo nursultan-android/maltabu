@@ -15,7 +15,7 @@
     <string name="menu5">Услуги и техника</string>
     <string name="menu6">Продукты питания</string>
     <string name="menu7">Работа</string>
-    <string name="menu8">Подать объявление бесплатно</string>
+    <string name="menu8">Подать объявление</string>
     <string name="Cabinet">Личный кабинет</string>
     <string name="menu82">Просто, быстро и бесплатно</string>
     <string name="Option1">Во всех разделах</string>
@@ -80,8 +80,8 @@
     <string name="phoneExist">Данный номер телефона уже существует</string>
     <string name="forgetPass">Забыли пароль?</string>
     <string name="forgetPassTitle">Восстановление пароля</string>
-    <string name="forgetPassPhone">Регистрировался(-acь) через телефон</string>
-    <string name="forgetPassMail">Регистрировался(-acь) через эл.почту</string>
+    <string name="forgetPassPhone">Через телефон</string>
+    <string name="forgetPassMail">Через эл.почту</string>
     <string name="forgetPassSuccess">Вы успешно сменили пароль</string>
     <string name="wrongCode">Неверный код</string>
 
@@ -216,4 +216,9 @@
     <string name="choose">Выбрать</string>
     <string name="reset_password_success">Письмо для восстановления пароля отправлено</string>
     <string name="reset_password_success_phone">SMS для восстановления пароля отправлено</string>
+
+    <integer name="com_vk_sdk_AppId">7449625</integer>
+    <string name="social_no_email">Не указан электронный адрес в социальной сети.</string>
+
+    <string name="ad_on_moderation">Объявление на модерации</string>
 </resources>

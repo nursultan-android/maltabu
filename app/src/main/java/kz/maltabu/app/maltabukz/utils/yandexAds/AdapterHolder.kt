@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yandex.mobile.ads.nativeads.template.NativeBannerView
+import kotlinx.android.synthetic.main.activity_show_ad.view.*
 import kotlinx.android.synthetic.main.item_ad.view.*
 import kz.maltabu.app.maltabukz.R
 
@@ -22,6 +23,7 @@ class AdapterHolder {
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.ad_title
         val date: TextView = view.ad_date
+        val location: TextView = view.ad_location
         val price: TextView = view.ad_price
         val img: ImageView = view.ad_img
         val visitors: TextView = view.ad_visitors_count_text

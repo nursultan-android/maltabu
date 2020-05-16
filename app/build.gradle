@@ -17,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 83
-        versionName "2.0.11"
+        versionCode 84
+        versionName "2.0.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -158,4 +158,7 @@ dependencies {
 
     //koin
     implementation 'org.koin:koin-android:2.1.0'
+
+    //vk auth
+    implementation 'com.vk:androidsdk:2.1.1'
 }

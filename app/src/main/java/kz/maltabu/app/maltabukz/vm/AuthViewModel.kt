@@ -23,7 +23,7 @@ class AuthViewModel(private val language: String) : ViewModel() {
         return socialResponse
     }
 
-    fun socail(email: String, userId: String, provider: String){
+    fun social(email: String, userId: String, provider: String){
         disposable.add(
             Repository.newInstance(language).social(email, userId=userId, providerName = provider)
                 .subscribeOn(Schedulers.io())

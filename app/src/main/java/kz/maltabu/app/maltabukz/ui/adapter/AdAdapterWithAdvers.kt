@@ -64,11 +64,14 @@ class AdAdapterWithAdvers(val context: Context, private val chooseAd: ChooseAd) 
     private fun bindItem(holder: AdapterHolder.ViewHolder, position: Int) {
         val ad = mData[position].second as Ad
         holder.title.text=ad.title
-        if(ad.city!=null || ad.city.toString().isNotEmpty()) {
-            holder.date.text = "${ad.city}, ${ad.date}"
-        } else {
-            holder.date.text = ad.date
+        if(ad.city!=null) {
+            if(ad.region!=null){
+                holder.location.text = "${ad.region}, ${ad.city}"
+            } else {
+                holder.location.text = "${ad.city}"
+            }
         }
+        holder.date.text = ad.date
         holder.price.text=formatHelper.setFormat(ad.currency, ad.amount)
         holder.visitors.text=ad.visited.toString()
         holder.photoCount.text=ad.images.size.toString()

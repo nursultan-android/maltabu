@@ -61,4 +61,10 @@ interface Service {
     @GET("/api/v2/news")
     fun getNews(@Query("page") page: Int):Observable<Response<ResponseNews>>
 
+    @GET("/api/v2/banners")
+    fun getBanners():Observable<Response<ResponseBanner>>
+
+    @GET("/api/v2/profile/advertisements")
+    fun getMyAds(@Query("page") page: Int):Observable<Response<ResponseAds>>
+
 }

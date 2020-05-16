@@ -315,4 +315,11 @@ class CatalogFragment : Fragment(), AdAdapterWithAdvers.ChooseAd {
         viewModel!!.clear()
         viewModel=null
     }
+
+    override fun onDestroy() {
+        if(dialog!=null && dialog.isShowing){
+            dialog.dismiss()
+        }
+        super.onDestroy()
+    }
 }

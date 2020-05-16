@@ -87,8 +87,8 @@
 
                 <ImageView
                     android:id="@+id/cabinet_img"
-                    android:layout_width="@dimen/_19sdp"
-                    android:layout_height="@dimen/_27sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_user"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -104,7 +104,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/Cabinet"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/_12ssp"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cabinet_img"
                     app:layout_constraintTop_toTopOf="parent"
@@ -131,9 +131,9 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/menu_img"
-                    android:layout_width="@dimen/_19sdp"
+                    android:layout_width="@dimen/_23sdp"
                     android:src="@drawable/ic_news"
-                    android:layout_height="@dimen/_27sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="@dimen/_13sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -147,7 +147,7 @@
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:layout_marginBottom="@dimen/_13sdp"
-                    android:textSize="@dimen/_11ssp"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/menu_img"
                     app:layout_constraintTop_toTopOf="parent"
@@ -165,8 +165,8 @@
 
                 <ImageView
                     android:id="@+id/counrty_img"
-                    android:layout_width="@dimen/_19sdp"
-                    android:layout_height="@dimen/_27sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/kz"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -181,6 +181,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="@string/other_lang"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/counrty_img"
                     app:layout_constraintTop_toTopOf="parent"

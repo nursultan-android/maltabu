@@ -111,4 +111,11 @@ class ChooseFragment : Fragment(), CategoryAdapter.ChooseCategory {
         sortDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         sortDialog.show()
     }
+
+    override fun onDestroy() {
+        if(sortDialog!=null && sortDialog.isShowing){
+            sortDialog.dismiss()
+        }
+        super.onDestroy()
+    }
 }

@@ -1,6 +1,7 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
 import android.Manifest
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -39,10 +40,11 @@ import org.koin.android.ext.android.inject
 import java.util.*
 
 
-class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
+class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 
     private lateinit var viewModel: ShowAdActivityViewModel
     private lateinit var dialog: ProgressDialog
+    private lateinit var noAdDialog: Dialog
     lateinit var imagesIntent: Intent
     var current=0
     var size=0
@@ -64,11 +66,12 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
 //
 //        }
         dialog = ProgressDialog(this)
+        noAdDialog = Dialog(this)
         viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH)))
             .get(ShowAdActivityViewModel::class.java)
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
         if(checker.isNetworkAvailable) {
-            viewModel.getAdById(id)
+            viewModel.getAdById(id, this)
         } else {
             setNoInternetView()
         }
@@ -171,26 +174,39 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
             }
             Status.ERROR -> {
                 hideDialog()
-                Log.d("TAGg", response.error.toString())
+                Log.d("TAGg", "error")
+                if(response.error!!.code()==404){
+                    showModeratorDialog()
+                }
             }
             Status.THROWABLE -> {
+                Log.d("TAGg", "throw")
                 hideDialog()
-                Log.d("TAGg", response.throwabl.toString())
             }
         }
     }
 
     private fun renderResponse(response: ResponseAd) {
-        title_txt.text = response.ad.title
-        price_txt.text = formatHelper.setFormat(response.ad.currency, response.ad.amount)
-        content_txt.text = response.ad.description
-        dateTxt.text = response.ad.date
-        location_txt.text = response.ad.city
-        visitors_text.text = response.ad.visited.toString()
-        if(response.ad.images.size>0)
-            photos.text = "1/" + response.ad.images.size.toString()
-        setAdapter(response.ad)
-        setListeners(response.ad)
+        if(response.ad.title!=null) {
+            title_txt.text = response.ad.title
+            price_txt.text = formatHelper.setFormat(response.ad.currency, response.ad.amount)
+            content_txt.text = response.ad.description
+            dateTxt.text = response.ad.date
+            if (response.ad.city != null) {
+                if (response.ad.region != null) {
+                    location_txt.text = "${response.ad.region}, ${response.ad.city}"
+                } else {
+                    location_txt.text = "${response.ad.city}"
+                }
+            }
+            visitors_text.text = response.ad.visited.toString()
+            if (response.ad.images.size > 0)
+                photos.text = "1/" + response.ad.images.size.toString()
+            setAdapter(response.ad)
+            setListeners(response.ad)
+        } else {
+            showModeratorDialog()
+        }
     }
 
     private fun showDialog(){
@@ -236,5 +252,22 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall {
         } catch (e:Exception){
             Log.d("TAGg", e.message)
         }
+    }
+
+    private fun showModeratorDialog(){
+        noAdDialog.setContentView(R.layout.dialog_ad_moderate)
+        noAdDialog.show()
+        noAdDialog.setOnCancelListener {
+            onBackPressed()
+        }
+    }
+
+    override fun onDestroy() {
+        hideDialog()
+        super.onDestroy()
+    }
+
+    override fun adOnMOderate() {
+        showModeratorDialog()
     }
 }

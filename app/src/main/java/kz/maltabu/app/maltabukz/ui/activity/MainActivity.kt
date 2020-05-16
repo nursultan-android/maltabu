@@ -199,6 +199,7 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         nav_view.getHeaderView(0).counrty_img.setImageDrawable(img)
         val newRes = LocaleHelper.setLanguage(this, lang).resources
         nav_view.getHeaderView(0).langText.text = newRes.getString(R.string.other_lang)
+        nav_view.getHeaderView(0).menu_title.text = newRes.getString(R.string.news)
         nav_view.getHeaderView(0).rules_granted.text = newRes.getString(R.string.rules2020)
         if(Paper.book().read(enum.TOKEN, "")==null|| Paper.book().read(enum.TOKEN, "").isEmpty()){
             nav_view.getHeaderView(0).user_name.text = newRes.getString(R.string.Cabinet)
@@ -232,7 +233,7 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
         filter_text.visibility=View.VISIBLE
     }
 
-    fun clearBackStack(){
+    private fun clearBackStack(){
         for (i in 0 until manager.backStackEntryCount) {
             manager.popBackStack()
         }
@@ -321,6 +322,11 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
             if(current==enum.HOT)
             loadData()
         }
+    }
+
+    override fun onDestroy() {
+        hideLoader()
+        super.onDestroy()
     }
 
     private fun showUpdateDialog() {

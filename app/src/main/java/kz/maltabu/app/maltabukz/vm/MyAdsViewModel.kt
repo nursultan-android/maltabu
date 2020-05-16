@@ -6,25 +6,21 @@ import androidx.lifecycle.ViewModelProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kz.maltabu.app.maltabukz.model.QueryPaginationModel
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.Repository
 
-class HotViewModel(private val language: String) : ViewModel() {
+class MyAdsViewModel(private val language: String) : ViewModel() {
     private val disposable = CompositeDisposable()
     private val response = MutableLiveData<ApiResponse>()
-    private val bannerResponse = MutableLiveData<ApiResponse>()
 
     fun mainResponse(): MutableLiveData<ApiResponse> {
         return response
     }
 
-    fun getBannerResponse(): MutableLiveData<ApiResponse> {
-        return bannerResponse
-    }
-
-    fun getAds(){
+    fun getAds(token: String, page : Int){
         disposable.add(
-            Repository.newInstance(language).getHotAds()
+            Repository.newInstance(token, language).getMyAds(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { response.value= ApiResponse.loading()}
@@ -40,27 +36,9 @@ class HotViewModel(private val language: String) : ViewModel() {
                 ))
     }
 
-    fun getBanners(){
-        disposable.add(
-            Repository.newInstance(language).getBanner()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { bannerResponse.value= ApiResponse.loading()}
-                .subscribe(
-                    { result ->
-                        if(result.code()==200){
-                            bannerResponse.value= ApiResponse.success(result)
-                        } else {
-                            bannerResponse.value= ApiResponse.error(result)
-                        }
-                    },
-                    { throwable ->  bannerResponse.value= ApiResponse.throwable(throwable)}
-                ))
-    }
-
     class ViewModelFactory(private val language: String): ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return HotViewModel(language) as T
+            return MyAdsViewModel(language) as T
         }
     }
 }

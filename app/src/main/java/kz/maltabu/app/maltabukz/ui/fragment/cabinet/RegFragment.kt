@@ -2,7 +2,6 @@ package kz.maltabu.app.maltabukz.ui.fragment.cabinet
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.ResponseRegister
 import kz.maltabu.app.maltabukz.ui.activity.AuthActivity
 import kz.maltabu.app.maltabukz.ui.activity.BaseActivity
+import kz.maltabu.app.maltabukz.ui.fragment.cabinet.profile.CabinetFragment
 import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.vm.RegViewModel
@@ -80,7 +80,7 @@ class RegFragment : Fragment() {
             Paper.book().write((activity!! as BaseActivity).enum.USER, response.user)
             Toast.makeText(activity!!, resources.getString(R.string.noActivation2), Toast.LENGTH_LONG).show()
             (activity as AuthActivity).clearBackStack()
-            (activity as AuthActivity).setFragment(ProfileFragment.newInstance())
+            (activity as AuthActivity).setFragment(CabinetFragment.newInstance())
         } else {
             Toast.makeText(activity!!, "", Toast.LENGTH_SHORT).show()
         }
@@ -109,11 +109,11 @@ class RegFragment : Fragment() {
         val listener =
             MaskedTextChangedListener.installOn(
                 phone_edit_txt,
-                "+7-[000]-[000]-[00]-[00]",
+                "+7-([000])-[000]-[00]-[00]",
                 object : MaskedTextChangedListener.ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String) {
                         if (maskFilled) {
-                            body.phone = formattedValue.replace("+", "")
+                            body.phone = formatHelper.removeInvelidSymbols(formattedValue)
                         } else {
                             body.phone=null
                         }

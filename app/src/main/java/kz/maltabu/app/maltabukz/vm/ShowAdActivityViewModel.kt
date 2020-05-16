@@ -1,5 +1,6 @@
 package kz.maltabu.app.maltabukz.vm
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.Repository
+import kz.maltabu.app.maltabukz.ui.activity.OnModerate
 
 class ShowAdActivityViewModel(private var language: String) : ViewModel() {
     private val disposable = CompositeDisposable()
@@ -17,7 +19,7 @@ class ShowAdActivityViewModel(private var language: String) : ViewModel() {
         return response
     }
 
-    fun getAdById(id:Int){
+    fun getAdById(id:Int, listener: OnModerate){
         disposable.add(
             Repository.newInstance(language).getAdBuId(id)
             .subscribeOn(Schedulers.io())
@@ -31,7 +33,9 @@ class ShowAdActivityViewModel(private var language: String) : ViewModel() {
                         response.value= ApiResponse.error(result)
                     }
                 },
-                { throwable ->  response.value= ApiResponse.throwable(throwable)}
+                {
+                    listener.adOnMOderate()
+                }
             ))
     }
 

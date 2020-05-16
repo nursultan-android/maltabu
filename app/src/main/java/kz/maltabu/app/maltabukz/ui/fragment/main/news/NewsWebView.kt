@@ -97,7 +97,7 @@ class NewsWebView : Fragment() {
             this.mOriginalSystemUiVisibility = activity!!.window.decorView.systemUiVisibility
             this.mOriginalOrientation = activity!!.requestedOrientation
             this.mCustomViewCallback = paramCustomViewCallback
-            (activity!!.window.decorView as FrameLayout).addView(this.mCustomView, FrameLayout.LayoutParams(-1, -1))
+//            (activity!!.window.decorView as FrameLayout).addView(this.mCustomView, FrameLayout.LayoutParams(-1, -1))
             activity!!.window.decorView.systemUiVisibility = 3846
         }
     }

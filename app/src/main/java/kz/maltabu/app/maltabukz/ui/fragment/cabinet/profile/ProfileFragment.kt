@@ -1,4 +1,4 @@
-package kz.maltabu.app.maltabukz.ui.fragment.cabinet
+package kz.maltabu.app.maltabukz.ui.fragment.cabinet.profile
 
 import android.app.AlertDialog
 import android.os.Bundle

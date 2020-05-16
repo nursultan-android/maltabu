@@ -520,12 +520,12 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         val listener =
             installOn(
                 editText_phone_1,
-                "+7-[000]-[000]-[00]-[00]",
+                "+7-([000])-[000]-[00]-[00]",
                 object : MaskedTextChangedListener.ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String) {
                         if(maskFilled) {
-                            body.main_phone=formattedValue.replace("+","")
-                            arrayPhones[0]=formattedValue.replace("+","")
+                            body.main_phone=formatHelper.removeInvelidSymbols(formattedValue)
+                            arrayPhones[0]=formatHelper.removeInvelidSymbols(formattedValue)
                         }
                     }
                 }
@@ -533,11 +533,11 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         val listener2 =
             installOn(
                 editText_phone_2,
-                "+7-[000]-[000]-[00]-[00]",
+                "+7-([000])-[000]-[00]-[00]",
                 object : MaskedTextChangedListener.ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String) {
                         if(maskFilled) {
-                            arrayPhones[1]=formattedValue.replace("+","")
+                            arrayPhones[1]=formatHelper.removeInvelidSymbols(formattedValue)
                         }
                     }
                 }
@@ -545,11 +545,11 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         val listener3 =
             installOn(
                 editText_phone_3,
-                "+7-[000]-[000]-[00]-[00]",
+                "+7-([000])-[000]-[00]-[00]",
                 object : MaskedTextChangedListener.ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String) {
                         if(maskFilled) {
-                            arrayPhones[2]=formattedValue.replace("+","")
+                            arrayPhones[2]=formatHelper.removeInvelidSymbols(formattedValue)
                         }
                     }
                 }
@@ -561,7 +561,6 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
 
     private fun postAd(){
         addToBody()
-        Log.d("TAGg", "city:${body.city_id.toString()}  region:${body.region_id.toString()}")
         if (validateForm()){
             showLoader()
             sendImages()
@@ -714,5 +713,12 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
                 editText_email.isEnabled=false
             }
         }
+    }
+
+    override fun onDestroy() {
+        if(sortDialog!=null && sortDialog.isShowing){
+            sortDialog.dismiss()
+        }
+        super.onDestroy()
     }
 }
