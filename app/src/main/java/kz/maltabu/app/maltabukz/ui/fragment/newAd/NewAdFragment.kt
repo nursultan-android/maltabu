@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator
+import com.bumptech.glide.RequestManager
 import com.esafirm.imagepicker.features.ImagePicker
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -38,6 +40,7 @@ import kz.maltabu.app.maltabukz.model.NewAdBody
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.*
 import kz.maltabu.app.maltabukz.ui.activity.BaseActivity
+import kz.maltabu.app.maltabukz.ui.activity.EditAdActivity
 import kz.maltabu.app.maltabukz.ui.activity.NewAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.RegionAdapter
 import kz.maltabu.app.maltabukz.utils.FormatHelper
@@ -53,7 +56,7 @@ import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import java.io.File
 
-class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
+class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
 
     private val REQUEST_CODE_CAMERA = 1
     private val REQUEST_CODE_GALLERY = 2
@@ -67,15 +70,29 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     private lateinit var viewModel: NewAdViewModel
     private lateinit var interstitialAd: InterstitialAd
     private var cities: List<City>? = null
+    private var regions: List<Region>? = null
     private var categoryId=0
+    private var isEdit = false
+    private var isPhotoEdited = false
 
     private val formatHelper: FormatHelper by inject()
+    private val glideManager: RequestManager by inject()
 
     companion object {
         fun newInstance(categoryId: Int) : NewAdFragment{
             val fragment = NewAdFragment()
             val bundle = Bundle()
             bundle.putInt("categoryId", categoryId)
+            fragment.arguments=bundle
+            return fragment
+        }
+
+        fun newInstance(cityId: Int, regionId: Int, categoryId: Int) : NewAdFragment{
+            val fragment = NewAdFragment()
+            val bundle = Bundle()
+            bundle.putInt("categoryId", categoryId)
+            bundle.putInt("regionId", regionId)
+            bundle.putInt("cityId", cityId)
             fragment.arguments=bundle
             return fragment
         }
@@ -110,8 +127,8 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryId = arguments!!.getInt("categoryId")
-        viewModel.mainResponse().observe(viewLifecycleOwner, Observer {
-            consumeResponse(it)
+        viewModel.regionResponse().observe(viewLifecycleOwner, Observer {
+            consumeRegionResponse(it)
         })
 
         viewModel.getAmountResponse().observe(viewLifecycleOwner, Observer {
@@ -125,6 +142,11 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         viewModel.getImageResponse().observe(viewLifecycleOwner, Observer {
             consumeResponseImage(it)
         })
+
+        viewModel.getAdEditResponse().observe(viewLifecycleOwner, Observer {
+            consumeResponseAd(it)
+        })
+        viewModel.getRegions()
         arrayPhones.add("")
         arrayPhones.add("")
         arrayPhones.add("")
@@ -134,6 +156,111 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         setArrowButtonColor()
         setUser()
         setPriceMask()
+        if(activity!!.intent.getSerializableExtra("ad")!=null){
+            isEdit = true
+            isPhotoEdited = true
+            setInfo(activity!!.intent.getSerializableExtra("ad") as Ad)
+        }
+    }
+
+    private fun setInfo(ad: Ad) {
+        editText_title.setText(ad.title)
+        if(ad.description!=null)
+            editText_desc.setText(ad.description)
+        if(ad.email!=null)
+            editText_email.setText(ad.email)
+        setImagesFromAd(ad)
+        setPriceFromAd(ad)
+        setRegionFromAd(ad)
+        setPhonesFromAd(ad)
+    }
+
+    private fun setImagesFromAd(ad: Ad) {
+        if(ad.images.size>0){
+            first_four_photo.visibility=View.VISIBLE
+            closeButtonsInvis()
+            if(ad.images.size>4) {
+                second_four_photo.visibility=View.VISIBLE
+            }
+            for(j in ad.images.indices){
+                glideManager.load(ad.images[j]).into(imgArray!![j])
+            }
+        }
+    }
+
+    private fun closeButtonsInvis(){
+        close_1.visibility=View.GONE
+        close_2.visibility=View.GONE
+        close_3.visibility=View.GONE
+        close_4.visibility=View.GONE
+        close_5.visibility=View.GONE
+        close_6.visibility=View.GONE
+        close_7.visibility=View.GONE
+        close_8.visibility=View.GONE
+    }
+
+    private fun closeButtonsVis(){
+        close_1.visibility=View.VISIBLE
+        close_2.visibility=View.VISIBLE
+        close_3.visibility=View.VISIBLE
+        close_4.visibility=View.VISIBLE
+        close_5.visibility=View.VISIBLE
+        close_6.visibility=View.VISIBLE
+        close_7.visibility=View.VISIBLE
+        close_8.visibility=View.VISIBLE
+    }
+
+    private fun setPriceFromAd(ad: Ad) {
+        editText_price.visibility=View.VISIBLE
+        if(ad.amount==0.toLong()){
+            editText_price.setText(resources.getString(R.string.radioB2))
+            editText_price.isEnabled=false
+            body.amountId=3
+        } else {
+            editText_price.setText(ad.amount.toString())
+            editText_price.isEnabled=true
+            body.amountId=1
+            body.amountId=ad.amount.toInt()
+        }
+    }
+
+    private fun setRegionFromAd(ad: Ad) {
+        textView_city.visibility=View.VISIBLE
+        button_city.visibility=View.VISIBLE
+        if(ad.region!=null){
+            if(ad.city!=null){
+                button_choose_region.text= ad.region
+                button_city.setText(ad.city)
+            } else {
+                button_choose_region.text= ad.region
+            }
+        } else {
+            button_choose_region.text=ad.city
+            button_city.setText(ad.city)
+            button_city.isEnabled=false
+        }
+        if(arguments!=null){
+            body.region_id=arguments!!.getInt("regionId")
+            body.city_id=arguments!!.getInt("cityId")
+        }
+        button_choose_region.isEnabled=true
+        button_city.isEnabled=false
+    }
+
+    private fun setPhonesFromAd(ad: Ad) {
+        if(ad.phones!=null && ad.phones.size>0){
+            if(ad.phones[0]!=null && ad.phones[0].isNotEmpty()){
+                editText_phone_1.setText("7${ad.phones[0]}")
+            }
+            if(ad.phones[1]!=null && ad.phones[1].isNotEmpty()){
+                editText_phone_2.setText("7${ad.phones[1]}")
+                linear_phone_2.visibility=View.VISIBLE
+            }
+            if(ad.phones[2]!=null && ad.phones[2].isNotEmpty()){
+                editText_phone_3.setText("7${ad.phones[2]}")
+                linear_phone_3.visibility=View.VISIBLE
+            }
+        }
     }
 
     private fun consumeResponseImage(response: ApiResponse) {
@@ -148,7 +275,10 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
                     body.image_ids!!.add(response.data!!.body() as Int)
                 }
                 if(totalImageCount==body.image_ids!!.size){
-                    viewModel.newAdOld(body)
+                    if(!isEdit)
+                        viewModel.newAdOld(body)
+                    else
+                        viewModel.editAd(body)
                 }
             }
             Status.ERROR -> {
@@ -167,10 +297,14 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
             val json = JSONObject(response.body()!!.string())
             if (json.getString("status") == "success") {
                 Log.d("TAGg", "OK")
-                (activity as NewAdActivity).clearBackStack()
-                val fragmentSuccess = SuccessFragment()
-                fragmentSuccess.setAd(interstitialAd)
-                (activity as NewAdActivity).setFragment(fragmentSuccess)
+                if(!isEdit) {
+                    (activity as NewAdActivity).clearBackStack()
+                    val fragmentSuccess = SuccessFragment()
+                    fragmentSuccess.setAd(interstitialAd)
+                    (activity as NewAdActivity).setFragment(fragmentSuccess)
+                } else {
+                    activity!!.onBackPressed()
+                }
             } else {
                 Log.d("TAGg", "not OK")
             }
@@ -198,10 +332,16 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
 
     private fun setListeners(){
         choose_photo.setOnClickListener {
+            if(isPhotoEdited){
+                clearPhoto()
+                isPhotoEdited=false
+            }
+            closeButtonsVis()
             showPhotoDialog()
         }
-        button_region.setOnClickListener {
-            viewModel.getRegions()
+
+        button_choose_region.setOnClickListener {
+            showRegionsDialog(regions!!)
         }
 //        button_city.setOnClickListener {
 //            if(cities!=null){
@@ -233,7 +373,7 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         }
     }
 
-    private fun consumeResponse(response: ApiResponse) {
+    private fun consumeRegionResponse(response: ApiResponse) {
         when (response.status) {
             Status.LOADING -> {
                 showLoader()
@@ -254,7 +394,7 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     private fun renderResponse(response: ResponseRegion) {
-        showRegionsDialog(response.regions)
+        regions = response.regions
     }
 
     private fun showRegionsDialog(regions: List<Region>) {
@@ -322,6 +462,15 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         }
     }
 
+    private fun clearPhoto(){
+        for (k in imgArray!!.indices){
+            imgArray!![k].image=null
+            array[k]=false
+            choose_photo.isEnabled=true
+            filesArr[k]=null
+        }
+    }
+
     private fun setPriceMask(){
 //        val disposable = RxTextView.textChanges(editText_price)
 //                .subscribe {
@@ -372,16 +521,16 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
 //        })
     }
 
-    private fun addSpace(string: String): String{
-        var index = 0
-        var result = ""
-        var iteration = string.length/3
-        for (i in 0 until iteration){
-            result+=string.substring(index, index+3)+" "
-            index+=3
-        }
-        return result
-    }
+//    private fun addSpace(string: String): String{
+//        var index = 0
+//        var result = ""
+//        var iteration = string.length/3
+//        for (i in 0 until iteration){
+//            result+=string.substring(index, index+3)+" "
+//            index+=3
+//        }
+//        return result
+//    }
 
     private fun showPhotoDialog() {
         sortDialog.setContentView(R.layout.dialog_choose_image)
@@ -560,14 +709,49 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     private fun postAd(){
-        addToBody()
+        if(isEdit){
+            addToBodyEdit()
+            Log.d("TAGg", "edit")
+        } else {
+            addToBody()
+            Log.d("TAGg", "new")
+        }
         if (validateForm()){
             showLoader()
             sendImages()
         }
     }
 
-    private fun sendImages() {
+    private fun addToBodyEdit() {
+        body.title=editText_title.text.toString()
+        body.category_id=categoryId
+        body.advertisementId = (activity!!.intent.getSerializableExtra("ad") as Ad).id
+        if(body.amountId==1) {
+            if(editText_price.text.toString().isEmpty()){
+                Toast.makeText(activity, resources.getString(R.string.priceValid), Toast.LENGTH_SHORT).show()
+            } else {
+                body.amount = makeNumber(editText_price.text.toString())
+            }
+        } else {
+            body.amount = null
+        }
+        if(editText_desc.text.toString().isNotEmpty()){
+            body.description=editText_desc.text.toString()
+        }
+        if(editText_email.text.toString().isNotEmpty()){
+            body.email=editText_email.text.toString()
+        }
+        if(arrayPhones!=null){
+            body.phones=ArrayList()
+            for (i in 0 until arrayPhones.size){
+                if(arrayPhones[i]!=null && arrayPhones[i].isNotEmpty()){
+                    body.phones!!.add(arrayPhones[i])
+                }
+            }
+        }
+    }
+
+    private fun sendImages(){
         for (file in filesArr) {
             if(file!=null) {
                 totalImageCount++
@@ -576,7 +760,11 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
             }
         }
         if(totalImageCount==0){
-            viewModel.newAdOld(body)
+            if(isEdit){
+                viewModel.editAd(body)
+            } else {
+                viewModel.newAdOld(body)
+            }
         }
     }
 
@@ -603,15 +791,10 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
             body.email=editText_email.text.toString()
         }
         if(arrayPhones!=null){
+            body.phones=ArrayList()
             for (i in 0 until arrayPhones.size){
                 if(arrayPhones[i]!=null && arrayPhones[i].isNotEmpty()){
-                    if (body.phones!=null) {
-                        body.phones!!.add(arrayPhones[i])
-                    } else {
-                        body.phones=ArrayList()
-                        body.phones!!.add(arrayPhones[i])
-                    }
-                    Log.d("TAGg", arrayPhones[i])
+                    body.phones!!.add(arrayPhones[i])
                 }
             }
         }
@@ -622,7 +805,7 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
         return result.toInt()
     }
 
-    private fun setcityAdapter(){
+    private fun setCityAdapter(){
         val citiesNameList= ArrayList<String>()
         for(i in 0 until cities!!.size){
             citiesNameList.add(cities!![i].name)
@@ -632,14 +815,14 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     override fun chooseRegion(region: Region) {
-        button_region.text=region.name
+        button_choose_region.text=region.name
         button_city.visibility=View.VISIBLE
         textView_city.visibility=View.VISIBLE
         if(region.cities!=null) {
             this.cities = region.cities
             body.region_id=null
             body.city_id=null
-            setcityAdapter()
+            setCityAdapter()
             button_city.isEnabled=true
             button_city.setText("")
         } else {
@@ -671,7 +854,7 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
             } else {
                 if(body.region_id==null || body.city_id==null || body.region_id==0 || body.city_id==0){
                     Toast.makeText(activity, resources.getString(R.string.regionValid), Toast.LENGTH_SHORT).show()
-                    ViewPropertyObjectAnimator.animate(nested_scroll).scrollY(button_region.scrollY).start()
+                    ViewPropertyObjectAnimator.animate(nested_scroll).scrollY(button_choose_region.scrollY).start()
                     return false
                 } else {
                     if(body.main_phone==null){
@@ -691,11 +874,17 @@ class NewAdFragment() : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     private fun showLoader(){
-        (activity as NewAdActivity).showLoader()
+        if(activity is NewAdActivity)
+            (activity as NewAdActivity).showLoader()
+        else
+            (activity as EditAdActivity).showLoader()
     }
 
     private fun hideLoader(){
-        (activity as NewAdActivity).hideLoader()
+        if(activity is NewAdActivity)
+            (activity as NewAdActivity).hideLoader()
+        else
+            (activity as EditAdActivity).hideLoader()
     }
 
     private fun setUser(){

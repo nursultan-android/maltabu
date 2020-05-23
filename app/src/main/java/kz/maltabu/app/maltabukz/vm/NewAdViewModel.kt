@@ -24,9 +24,10 @@ class NewAdViewModel(private var language: String) : ViewModel() {
     private val response = MutableLiveData<ApiResponse>()
     private val amountResponse = MutableLiveData<ApiResponse>()
     private val adResponse = MutableLiveData<Response>()
+    private val adEditResponse = MutableLiveData<Response>()
     private val imageResponse = MutableLiveData<ApiResponse>()
 
-    fun mainResponse(): MutableLiveData<ApiResponse> {
+    fun regionResponse(): MutableLiveData<ApiResponse> {
         return response
     }
 
@@ -36,6 +37,10 @@ class NewAdViewModel(private var language: String) : ViewModel() {
 
     fun getAdResponse(): MutableLiveData<Response> {
         return adResponse
+    }
+
+    fun getAdEditResponse(): MutableLiveData<Response> {
+        return adEditResponse
     }
 
     fun getImageResponse(): MutableLiveData<ApiResponse> {
@@ -107,11 +112,37 @@ class NewAdViewModel(private var language: String) : ViewModel() {
             ))
     }
 
+    fun editAd(bodyAd: NewAdBody){
+        val observable = createRequestForEdit(bodyAd)
+        disposable.add(observable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (
+                { result -> adEditResponse.value=result },
+                { throwable ->  Log.d("TAGg", throwable.message!!)}
+            ))
+    }
+
     private fun createRequest(bodyAd: NewAdBody): Observable<Response> {
         val client = OkHttpClient()
         val body = PostBody(bodyAd).create()
         val request = Request.Builder()
             .url(BuildConfig.BASE_URL+"/api/v2/advertisements")
+            .addHeader("Content-Type", "multipart/form-data")
+            .addHeader("x-locale", language)
+            .post(body)
+            .build()
+
+        return Observable.fromCallable {
+            client.newCall(request).execute()
+        }
+    }
+
+    private fun createRequestForEdit(bodyAd: NewAdBody): Observable<Response> {
+        val client = OkHttpClient()
+        val body = PostBody(bodyAd).createForEdit()
+        val request = Request.Builder()
+            .url(BuildConfig.BASE_URL+"/api/v2/advertisements-edit")
             .addHeader("Content-Type", "multipart/form-data")
             .addHeader("x-locale", language)
             .post(body)

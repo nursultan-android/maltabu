@@ -110,8 +110,9 @@ class CategoryFragment : Fragment(), CatalogTabAdapter.ChooseCategory {
         try {
             if(tablayout!=null) {
                 Handler().postDelayed({
-                    tablayout.findViewHolderForAdapterPosition(pos)!!.itemView.performClick()
-                }, 20)
+                    if(tablayout.findViewHolderForAdapterPosition(pos)!!.itemView!=null)
+                        tablayout.findViewHolderForAdapterPosition(pos)!!.itemView.performClick()
+                }, 200)
             }
         } catch (e:Exception){}
     }

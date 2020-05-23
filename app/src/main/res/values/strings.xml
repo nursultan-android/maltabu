@@ -221,4 +221,7 @@
     <string name="social_no_email">Не указан электронный адрес в социальной сети.</string>
 
     <string name="ad_on_moderation">Объявление на модерации</string>
+    <string name="photoChange">Сменить фотографии</string>
+
+    <string name="load_more">Загрузить еще</string>
 </resources>

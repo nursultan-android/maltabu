@@ -30,7 +30,7 @@ class MyAdsFragment : Fragment(), MyAdAdapter.ChooseAd{
     private lateinit var viewModel: MyAdsViewModel
     private lateinit var adapter : MyAdAdapter
     private val adList = ArrayList<Ad>()
-    var pageNumber= 0
+    var pageNumber= 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +50,14 @@ class MyAdsFragment : Fragment(), MyAdAdapter.ChooseAd{
         viewModel.mainResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             consumeReesponse(it)
         })
-        viewModel.getAds(Paper.book().read((activity!! as BaseActivity).enum.TOKEN), pageNumber)
+        resetData()
         setListeners()
+    }
+
+    private fun resetData(){
+        pageNumber=1
+        adList.clear()
+        viewModel.getAds(Paper.book().read((activity!! as BaseActivity).enum.TOKEN), pageNumber)
     }
 
     private fun consumeReesponse(response: ApiResponse) {
@@ -84,17 +90,19 @@ class MyAdsFragment : Fragment(), MyAdAdapter.ChooseAd{
     }
 
     private fun hideDialog(){
+        swipe_refresh_lay.isRefreshing=false
         (activity as AuthActivity).hideLoader()
     }
 
     private fun setListeners(){
+        swipe_refresh_lay.setOnRefreshListener {
+            resetData()
+        }
         my_ads_recycler.addOnScrollListener(
             object : EndlessListener(my_ads_recycler.layoutManager as LinearLayoutManager){
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView){
-                    if(adList.size>9) {
                         pageNumber++
                         viewModel.getAds(Paper.book().read((activity!! as BaseActivity).enum.TOKEN), pageNumber)
-                    }
                 }
             }
         )

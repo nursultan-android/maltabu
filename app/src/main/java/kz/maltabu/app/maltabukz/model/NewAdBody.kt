@@ -3,6 +3,7 @@ package kz.maltabu.app.maltabukz.model
 
 class NewAdBody(){
     var amountId: Int?=null
+    var advertisementId: Int?=null
     var category_id: Int?=null
     var region_id: Int?=null
     var city_id: Int?=null

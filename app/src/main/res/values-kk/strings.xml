@@ -215,4 +215,7 @@
     <string name="social_no_email">Әлеуметтік желіде электронды мекенжайыңыз көрсетілмеген.</string>
 
     <string name="ad_on_moderation">Хабарландыру әзірге модерацияда</string>
+    <string name="photoChange">Фотосүреттер өзгерту</string>
+
+    <string name="load_more">Жүктеу</string>
 </resources>
