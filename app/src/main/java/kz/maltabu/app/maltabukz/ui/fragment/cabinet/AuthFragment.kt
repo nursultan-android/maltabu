@@ -141,7 +141,7 @@ class AuthFragment : BaseSocialFragment() {
                     login="7$login"
                 }
                 Log.d("TAGg", login)
-//                viewModel.login(login, password_edit_txt.text.toString())
+                viewModel.login(login, password_edit_txt.text.toString())
             }
         }
         (activity as AuthActivity).back_arrow.setOnClickListener {

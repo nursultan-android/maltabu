@@ -16,7 +16,7 @@ import kz.maltabu.app.maltabukz.ui.fragment.newAd.NewAdFragment
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.vm.EditAdViewModel
 
-class EditAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
+public class EditAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
     private lateinit var dialog: ProgressDialog
     private lateinit var viewModel: EditAdViewModel
     var cityID = 0

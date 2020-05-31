@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -22,6 +22,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator
 import com.bumptech.glide.RequestManager
 import com.esafirm.imagepicker.features.ImagePicker
@@ -39,11 +42,14 @@ import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.model.NewAdBody
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.*
+import kz.maltabu.app.maltabukz.service.EdiAdNotificationWorker
+import kz.maltabu.app.maltabukz.service.NotificationWorker
 import kz.maltabu.app.maltabukz.ui.activity.BaseActivity
 import kz.maltabu.app.maltabukz.ui.activity.EditAdActivity
 import kz.maltabu.app.maltabukz.ui.activity.NewAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.RegionAdapter
 import kz.maltabu.app.maltabukz.utils.FormatHelper
+import kz.maltabu.app.maltabukz.utils.customEnum.EnumsClass
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.vm.NewAdViewModel
 import me.shaohui.advancedluban.Luban
@@ -52,9 +58,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.Response
 import org.jetbrains.anko.image
+import org.jetbrains.anko.notificationManager
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
 
@@ -182,8 +191,12 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
             if(ad.images.size>4) {
                 second_four_photo.visibility=View.VISIBLE
             }
-            for(j in ad.images.indices){
-                glideManager.load(ad.images[j]).into(imgArray!![j])
+            for(j in 0 until 8){
+                try {
+                    glideManager.load(ad.images[j]).into(imgArray!![j])
+                } catch (e:Exception){
+                    Log.d("TAGg", e.message)
+                }
             }
         }
     }
@@ -249,16 +262,22 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
 
     private fun setPhonesFromAd(ad: Ad) {
         if(ad.phones!=null && ad.phones.size>0){
-            if(ad.phones[0]!=null && ad.phones[0].isNotEmpty()){
-                editText_phone_1.setText("7${ad.phones[0]}")
-            }
-            if(ad.phones[1]!=null && ad.phones[1].isNotEmpty()){
-                editText_phone_2.setText("7${ad.phones[1]}")
-                linear_phone_2.visibility=View.VISIBLE
-            }
-            if(ad.phones[2]!=null && ad.phones[2].isNotEmpty()){
-                editText_phone_3.setText("7${ad.phones[2]}")
-                linear_phone_3.visibility=View.VISIBLE
+            when(ad.phones.size){
+                1->{
+                    editText_phone_1.setText("7${ad.phones[0]}")
+                }
+                2->{
+                    editText_phone_1.setText("7${ad.phones[0]}")
+                    editText_phone_2.setText("7${ad.phones[1]}")
+                    linear_phone_2.visibility=View.VISIBLE
+                }
+                else ->{
+                    editText_phone_1.setText("7${ad.phones[0]}")
+                    editText_phone_2.setText("7${ad.phones[1]}")
+                    editText_phone_3.setText("7${ad.phones[2]}")
+                    linear_phone_2.visibility=View.VISIBLE
+                    linear_phone_3.visibility=View.VISIBLE
+                }
             }
         }
     }
@@ -606,7 +625,9 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
                 second_four_photo.visibility= View.VISIBLE
                 for(i in 0 until images.size){
                     val fileMult = File(images[i].path)
-                    compressImgFile(fileMult)
+                    val compressedFile = saveBitmapToFile(fileMult)
+                    if(compressedFile!=null)
+                        compressImgFile(compressedFile)
                 }
             }
         }
@@ -711,15 +732,31 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
     private fun postAd(){
         if(isEdit){
             addToBodyEdit()
-            Log.d("TAGg", "edit")
+            Log.d("TAGg", "region ${body.region_id.toString()} city ${body.city_id.toString()}")
         } else {
             addToBody()
-            Log.d("TAGg", "new")
         }
         if (validateForm()){
             showLoader()
-            sendImages()
+//            sendImages()
+            val fileList = createList(filesArr)
+            if(fileList.isNotEmpty())
+                Paper.book().write("imgFiles", fileList)
+            else
+                Paper.book().delete("imgFiles")
+            Paper.book().write(EnumsClass().ADBODY, body)
+            setWorkManagerListener()
         }
+    }
+
+    private fun createList(filesArr: Array<File?>): List<File> {
+        val resultList = ArrayList<File>()
+        for (i in filesArr.indices) {
+            if(filesArr[i]!=null){
+                resultList.add(filesArr[i]!!)
+            }
+        }
+        return resultList
     }
 
     private fun addToBodyEdit() {
@@ -748,6 +785,10 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
                     body.phones!!.add(arrayPhones[i])
                 }
             }
+        }
+        if(body.region_id==null || body.city_id==null || body.region_id==0 || body.city_id==0){
+            val city = formatHelper.getCityByName(cities!!, button_city.text.toString())
+            chooseCity(city)
         }
     }
 
@@ -909,5 +950,68 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
             sortDialog.dismiss()
         }
         super.onDestroy()
+    }
+
+    private fun setWorkManagerListener() {
+        val workManager = WorkManager.getInstance()
+        var request: OneTimeWorkRequest = if(!isEdit)
+            OneTimeWorkRequest.Builder(NotificationWorker::class.java).build()
+        else
+            OneTimeWorkRequest.Builder(EdiAdNotificationWorker::class.java).build()
+        workManager.enqueue(request)
+        workManager.getWorkInfoByIdLiveData(request.id)
+            .observe(viewLifecycleOwner, Observer<WorkInfo?> {
+                if (it != null) {
+                    when(it.state){
+                        WorkInfo.State.ENQUEUED->{
+                        }
+                        WorkInfo.State.CANCELLED->{
+                            hideLoader()
+                            activity!!.notificationManager.cancel(1)
+                        }
+                        WorkInfo.State.RUNNING->{
+                            hideLoader()
+                            if(!isEdit) {
+                                (activity as NewAdActivity).clearBackStack()
+                                val fragmentSuccess = SuccessFragment()
+                                fragmentSuccess.setAd(interstitialAd)
+                                (activity as NewAdActivity).setFragment(fragmentSuccess)
+                            } else {
+                                activity!!.onBackPressed()
+                            }
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun saveBitmapToFile(file: File): File?{
+        try {
+            val o = BitmapFactory.Options()
+            o.inJustDecodeBounds = true
+            o.inSampleSize = 6
+            var inputStream = FileInputStream(file)
+            BitmapFactory.decodeStream(inputStream, null, o);
+            inputStream.close()
+            val REQUIRED_SIZE=65
+            var scale = 1
+            while(o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2
+            }
+            val o2 = BitmapFactory.Options()
+            o2.inSampleSize = scale
+            inputStream = FileInputStream(file)
+            var selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2)
+            inputStream.close()
+            file.createNewFile();
+            val outputStream = FileOutputStream(file)
+            selectedBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+            return file
+        } catch (e: Exception) {
+            return null
+        }
     }
 }

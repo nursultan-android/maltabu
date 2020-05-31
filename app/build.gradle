@@ -17,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 87
-        versionName "2.0.14"
+        versionCode 90
+        versionName "2.0.17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -127,17 +127,17 @@ dependencies {
     implementation 'com.redmadrobot:inputmask:4.1.0'
 
     //firebase
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
-    implementation 'com.google.firebase:firebase-core:17.3.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta04'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
     //google auth
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     //firebase messaging
-    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation 'com.google.firebase:firebase-messaging:20.2.0'
 
     //facebook sdk
     implementation 'com.facebook.android:facebook-login:5.5.1'
@@ -161,4 +161,7 @@ dependencies {
 
     //vk auth
     implementation 'com.vk:androidsdk:2.1.1'
+
+    //workManager
+    implementation "android.arch.work:work-runtime:1.0.1"
 }

@@ -50,8 +50,12 @@ class MyAdsFragment : Fragment(), MyAdAdapter.ChooseAd{
         viewModel.mainResponse().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             consumeReesponse(it)
         })
-        resetData()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resetData()
     }
 
     private fun resetData(){

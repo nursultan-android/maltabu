@@ -14,4 +14,6 @@ class EnumsClass {
     val TOKEN="token"
     val GOOGLE="google"
     val FACEBOOK="facebook"
+    val ADBODY="adBody"
+    val MESSAGE_STATUS = "message_status"
 }
