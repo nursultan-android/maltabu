@@ -17,8 +17,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 90
-        versionName "2.0.17"
+        versionCode 91
+        versionName "2.0.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -151,7 +151,7 @@ dependencies {
 
     //google ads
     implementation 'com.google.android.gms:play-services-ads:19.1.0'
-    implementation project(':nativetemplate')
+    implementation project(':nativetemplates')
 
     //jsoup
     implementation 'org.jsoup:jsoup:1.11.3'

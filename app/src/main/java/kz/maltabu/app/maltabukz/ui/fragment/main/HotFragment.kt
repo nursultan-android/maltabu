@@ -21,6 +21,7 @@ import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAds
 import kz.maltabu.app.maltabukz.network.models.response.ResponseBanner
 import kz.maltabu.app.maltabukz.ui.activity.BaseActivity
+import kz.maltabu.app.maltabukz.ui.activity.ContestActivity
 import kz.maltabu.app.maltabukz.ui.activity.MainActivity
 import kz.maltabu.app.maltabukz.ui.activity.ShowAdActivity
 import kz.maltabu.app.maltabukz.ui.adapter.HotAdAdapter
@@ -65,6 +66,9 @@ class HotFragment : Fragment(), HotAdAdapter.ChooseAd {
         viewModel.getBanners()
         (activity as MainActivity).hottitle.setText(R.string.hotTitle)
         (activity as MainActivity).hideFilter()
+        button_contest.setOnClickListener {
+            activity!!.startActivity(Intent(activity, ContestActivity::class.java))
+        }
     }
 
     private fun consumeBannerResponse(response: ApiResponse) {

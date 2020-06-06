@@ -219,4 +219,16 @@
 
     <string name="load_more">Жүктеу</string>
     <string name="uploading_photo">Фото жүктеу…</string>
+
+    <string name="contest_field_1">Телефон нөміріңіз</string>
+    <string name="contest_field_2">Атыңыз</string>
+    <string name="contest_field_3">Тегіңіз</string>
+    <string name="contest_field_4">Әкеңіздің аты</string>
+    <string name="contest_field_5">Аймақ</string>
+    <string name="contest_result">Бәйгеге қатысуға сәтті тіркелдіңіз!</string>
+    <string name="contest_code">Жеке кодыңызды сақтаңыз</string>
+    <string name="contest">Жіберу</string>
+
+    <string name="empty_fields">Заполните поля</string>
+    <string name="do_contest">Бәйгеге қатысу!</string>
 </resources>
