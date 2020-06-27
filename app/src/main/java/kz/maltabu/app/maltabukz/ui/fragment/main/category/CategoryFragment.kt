@@ -4,13 +4,10 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProviders
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
@@ -22,8 +19,6 @@ import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.ui.activity.MainActivity
 import kz.maltabu.app.maltabukz.ui.adapter.CatalogTabAdapter
 import kz.maltabu.app.maltabukz.vm.CategoryViewModel
-import java.lang.ref.WeakReference
-import java.util.ArrayList
 
 
 class CategoryFragment : Fragment(), CatalogTabAdapter.ChooseCategory {
@@ -107,13 +102,19 @@ class CategoryFragment : Fragment(), CatalogTabAdapter.ChooseCategory {
     }
 
     private fun selectCatalog(pos: Int){
-        try {
-            if(tablayout!=null) {
-                Handler().postDelayed({
-                    if(tablayout.findViewHolderForAdapterPosition(pos)!!.itemView!=null)
-                        tablayout.findViewHolderForAdapterPosition(pos)!!.itemView.performClick()
-                }, 200)
+        val cat = adapter.getData()[pos]
+        val catalog = CatalogFragment.newInstance(cat.id, pos)
+        (activity as MainActivity).setFragmentForCatalog(catalog)
+        when(pos){
+            adapter.itemCount-1 -> {
+                scroll(pos)
             }
-        } catch (e:Exception){}
+            1 ->{
+                scroll(0)
+            }
+            else -> {
+                scroll(pos+1)
+            }
+        }
     }
 }

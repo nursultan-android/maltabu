@@ -59,7 +59,7 @@ class CatalogTabAdapter(private val context: Context, private val listener: Choo
             selectedTavIndex = position
             listener.chooseCatalog(position, currentCategory)
             notifyDataSetChanged()
-            CustomAnimator.animateTab(holder.itemView)
+//            CustomAnimator.animateTab(holder.itemView)
         }
 
         if(selectedTavIndex==position){
