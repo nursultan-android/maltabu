@@ -19,7 +19,7 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 93
+        versionCode 94
         versionName "2.0.20"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -54,7 +54,9 @@ android {
             buildConfigField "String", "BASE_URL", '"https://maltabu.kz/"'
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                releaseNotes="first tester"
+                appId="1:85511783598:android:e95678ba0714c1b6"
+                serviceCredentialsFile="/home/nurs/StudioProjects/maltaburedesign/app/Maltabu-1fbeb507bbf7.json"
+                releaseNotes="second tester"
                 testers="nursultan.2027@gmail.com"
             }
         }

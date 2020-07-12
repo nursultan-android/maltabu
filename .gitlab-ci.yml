@@ -42,7 +42,6 @@ stages:
 assembleRelease:
   stage: release
   script:
-    - export FIREBASE_TOKEN=1//0cb4m4PoKc0dvCgYIARAAGAwSNwF-L9Ir2AFfg1s3jFQgzCDHZS90JcGAMCqzeSiLYnu1SYFFRuwX39hO4GkpMDoz72yKUShUzz
     - ./gradlew assembleRelease appDistributionUploadRelease
   artifacts:
     paths:
