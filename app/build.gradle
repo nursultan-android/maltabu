@@ -10,6 +10,8 @@ apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
 
+apply plugin: 'com.google.firebase.appdistribution'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -51,6 +53,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"https://maltabu.kz/"'
             signingConfig signingConfigs.release
+            firebaseAppDistribution {
+                releaseNotes="first tester"
+                testers="nursultan.2027@gmail.com"
+            }
         }
 
         debug {
