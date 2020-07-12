@@ -14,9 +14,19 @@ import kz.maltabu.app.maltabukz.ui.activity.OnModerate
 class ShowAdActivityViewModel(private var language: String) : ViewModel() {
     private val disposable = CompositeDisposable()
     private val response = MutableLiveData<ApiResponse>()
+    private val smsResponse = MutableLiveData<ApiResponse>()
+    private val codeResponse = MutableLiveData<ApiResponse>()
 
     fun mainResponse(): MutableLiveData<ApiResponse> {
         return response
+    }
+
+    fun getSmsResponse(): MutableLiveData<ApiResponse> {
+        return smsResponse
+    }
+
+    fun getCodeResponse(): MutableLiveData<ApiResponse> {
+        return codeResponse
     }
 
     fun getAdById(id:Int, listener: OnModerate){
@@ -37,6 +47,46 @@ class ShowAdActivityViewModel(private var language: String) : ViewModel() {
                     listener.adOnMOderate()
                 }
             ))
+    }
+
+    fun sendSms(phone: String){
+        disposable.add(
+            Repository.newInstance(language).sendSms(phone)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { smsResponse.value= ApiResponse.loading()}
+                .subscribe(
+                    { result ->
+                        if(result.code()==200){
+                            smsResponse.value= ApiResponse.success(result)
+                        } else {
+                            smsResponse.value= ApiResponse.error(result)
+                        }
+                    },
+                    {
+                        smsResponse.value= ApiResponse.throwable(it)
+                    }
+                ))
+    }
+
+    fun sendCode(phone: String, code: String, type: String, id: Int){
+        disposable.add(
+            Repository.newInstance(language).sendCode(phone, code, type, id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { codeResponse.value= ApiResponse.loading()}
+                .subscribe(
+                    { result ->
+                        if(result.code()==200){
+                            codeResponse.value= ApiResponse.success(result)
+                        } else {
+                            codeResponse.value= ApiResponse.error(result)
+                        }
+                    },
+                    {
+                        codeResponse.value= ApiResponse.throwable(it)
+                    }
+                ))
     }
 
     class ViewModelFactory(private val language: String): ViewModelProvider.Factory {

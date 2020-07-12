@@ -237,4 +237,9 @@
 
     <string name="empty_fields">Заполните поля</string>
     <string name="do_contest">Участвовать в конкурсе!</string>
+
+    <string name="add_to_hot">Добавить в горячие</string>
+    <string name="added_to_hot">Добавлено в горячие</string>
+    <string name="hot_price">Цена за поднятие объявления вверх - 50₸</string>
+    <string name="enter_code">Введите SMS код</string>
 </resources>

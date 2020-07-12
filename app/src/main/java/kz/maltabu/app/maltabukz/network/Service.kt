@@ -74,4 +74,12 @@ interface Service {
                 @Field("region_id") regionId: Int, @Field("city_id") cityId: Int)
             :Observable<Response<ResponseContest>>
 
+    @FormUrlEncoded
+    @POST("/api/v2/woopay-send-code")
+    fun sendSms(@Field("phone") phone: String):Observable<Response<ResponseSuccess>>
+
+    @FormUrlEncoded
+    @POST("/api/v2/woopay-advertisement-invoice")
+    fun sendCode(@Field("phone") phone: String, @Field("code") code: String, @Field("type") type: String,
+                 @Field("advertisement_id") id:Int):Observable<Response<ResponseSuccess>>
 }

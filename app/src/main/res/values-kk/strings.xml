@@ -231,4 +231,9 @@
 
     <string name="empty_fields">Заполните поля</string>
     <string name="do_contest">Бәйгеге қатысу!</string>
+
+    <string name="add_to_hot">Жедел ұсыныстарға қосу</string>
+    <string name="added_to_hot">Жедел ұсыныстарға қосылды</string>
+    <string name="hot_price">Жоғары көтеру бағасы - 50₸</string>
+    <string name="enter_code">SMS кодты жазыңыз</string>
 </resources>
