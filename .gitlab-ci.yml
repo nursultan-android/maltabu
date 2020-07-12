@@ -22,26 +22,27 @@ before_script:
   - set -o pipefail
 
 stages:
-  - build
-  - test
+#  - build
+#  - test
   - release
 
-assembleDebug:
-  stage: build
-  script:
-    - ./gradlew assembleDebug
-  artifacts:
-    paths:
-      - app/build/outputs/
-
-debugTests:
-  stage: test
-  script:
-    - ./gradlew -Pci --console=plain :app:testDebug
+#assembleDebug:
+#  stage: build
+#  script:
+#    - ./gradlew assembleDebug
+#  artifacts:
+#    paths:
+#      - app/build/outputs/
+#
+#debugTests:
+#  stage: test
+#  script:
+#    - ./gradlew -Pci --console=plain :app:testDebug
 
 assembleRelease:
   stage: release
   script:
+    - export FIREBASE_TOKEN=1//0cb4m4PoKc0dvCgYIARAAGAwSNwF-L9Ir2AFfg1s3jFQgzCDHZS90JcGAMCqzeSiLYnu1SYFFRuwX39hO4GkpMDoz72yKUShUzz
     - ./gradlew assembleRelease appDistributionUploadRelease
   artifacts:
     paths:
