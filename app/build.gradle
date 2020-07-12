@@ -55,7 +55,7 @@ android {
             signingConfig signingConfigs.release
             firebaseAppDistribution {
                 appId="1:85511783598:android:e95678ba0714c1b6"
-                serviceCredentialsFile="/home/nurs/StudioProjects/maltaburedesign/app/Maltabu-1fbeb507bbf7.json"
+                serviceCredentialsFile="/app/Maltabu-1fbeb507bbf7.json"
                 releaseNotes="second tester"
                 testers="nursultan.2027@gmail.com"
             }
