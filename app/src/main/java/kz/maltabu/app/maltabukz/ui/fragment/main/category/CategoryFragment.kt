@@ -101,6 +101,13 @@ class CategoryFragment : Fragment(), CatalogTabAdapter.ChooseCategory {
         }, 0)
     }
 
+    override fun onDestroy() {
+        if(sortDialog.isShowing){
+            sortDialog.dismiss()
+        }
+        super.onDestroy()
+    }
+
     private fun selectCatalog(pos: Int){
         val cat = adapter.getData()[pos]
         val catalog = CatalogFragment.newInstance(cat.id, pos)

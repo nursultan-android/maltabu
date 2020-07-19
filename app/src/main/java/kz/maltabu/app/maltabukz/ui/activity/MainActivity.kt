@@ -1,7 +1,6 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,6 +18,7 @@ import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.dialog_update.*
+import kotlinx.android.synthetic.main.fragment_hot.*
 import kotlinx.android.synthetic.main.main_menu.view.*
 import kz.maltabu.app.maltabukz.BuildConfig
 import kz.maltabu.app.maltabukz.R
@@ -28,14 +28,14 @@ import kz.maltabu.app.maltabukz.network.models.response.MenuCategory
 import kz.maltabu.app.maltabukz.network.models.response.ResponseCategories
 import kz.maltabu.app.maltabukz.network.models.response.User
 import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.main.category.CategoryFragment
-import kz.maltabu.app.maltabukz.ui.fragment.main.category.FilterFragment
 import kz.maltabu.app.maltabukz.ui.fragment.main.HotFragment
 import kz.maltabu.app.maltabukz.ui.fragment.main.SearchFragment
+import kz.maltabu.app.maltabukz.ui.fragment.main.category.CategoryFragment
+import kz.maltabu.app.maltabukz.ui.fragment.main.category.FilterFragment
 import kz.maltabu.app.maltabukz.ui.fragment.main.news.NewsFragment
 import kz.maltabu.app.maltabukz.utils.CustomAnimator
 import kz.maltabu.app.maltabukz.utils.LocaleHelper
-import kz.maltabu.app.maltabukz.utils.customEnum.*
+import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.utils.web.NetworkChecker
 import kz.maltabu.app.maltabukz.utils.web.VersionChecker
 import kz.maltabu.app.maltabukz.vm.MainActivityViewModel
@@ -47,7 +47,6 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
 
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var adapter: MenuAdapter
-    private lateinit var dialog: ProgressDialog
     private lateinit var customDialog: Dialog
     val checker: NetworkChecker by inject()
     var filer: FilterBody?=null
@@ -138,7 +137,6 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
 
     private fun setViewSettings(){
         setSupportActionBar(toolbar)
-        dialog = ProgressDialog(this)
         customDialog = Dialog(this)
         appBarLayout.outlineProvider = null
         supportActionBar!!.setDisplayHomeAsUpEnabled(false)
@@ -240,15 +238,11 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     }
 
     fun showLoader(){
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        if(!dialog.isShowing)
-            dialog.show()
+        progress_bar_main.visibility=View.VISIBLE
     }
 
     fun hideLoader(){
-        if(dialog.isShowing)
-            dialog.dismiss()
+        progress_bar_main.visibility=View.GONE
     }
 
     override fun onResume() {
@@ -325,7 +319,9 @@ class MainActivity : BaseActivity(), MenuAdapter.ChooseCategory {
     }
 
     override fun onDestroy() {
-        hideLoader()
+        if(customDialog.isShowing){
+            customDialog.dismiss()
+        }
         super.onDestroy()
     }
 

@@ -1,9 +1,9 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,6 +12,7 @@ import com.vk.api.sdk.VK.onActivityResult
 import com.vk.api.sdk.auth.VKAccessToken
 import com.vk.api.sdk.auth.VKAuthCallback
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.activity_new_ad.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.ResponseRegister
@@ -24,7 +25,6 @@ import kz.maltabu.app.maltabukz.vm.AuthViewModel
 import org.koin.android.ext.android.inject
 
 class AuthActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
-    private lateinit var dialog: ProgressDialog
     private lateinit var authViewModel: AuthViewModel
     val checker: NetworkChecker by inject()
 
@@ -32,7 +32,6 @@ class AuthActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_ad)
-        dialog= ProgressDialog(this)
         authViewModel = ViewModelProviders.of(this, AuthViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH))).get(AuthViewModel::class.java)
         if((Paper.book().read(enum.TOKEN, "") as String).isNotEmpty()){
             setFragment(CabinetFragment.newInstance())
@@ -90,16 +89,11 @@ class AuthActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
     }
 
     fun showLoader(){
-        if (!dialog.isShowing) {
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.setCancelable(false)
-            dialog.show()
-        }
+        progress_view.visibility = View.VISIBLE
     }
 
     fun hideLoader(){
-        if(dialog.isShowing)
-            dialog.dismiss()
+        progress_view.visibility = View.GONE
     }
 
     fun clearBackStack(){

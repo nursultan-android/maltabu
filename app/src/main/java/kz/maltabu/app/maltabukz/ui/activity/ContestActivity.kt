@@ -1,14 +1,13 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.redmadrobot.inputmask.MaskedTextChangedListener
@@ -17,25 +16,19 @@ import kotlinx.android.synthetic.main.dialog_choose_catalog.*
 import kotlinx.android.synthetic.main.dialog_choose_city.*
 import kotlinx.android.synthetic.main.dialog_contest_success.*
 import kotlinx.android.synthetic.main.fragment_contest.*
-import kotlinx.android.synthetic.main.fragment_new_ad.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.City
 import kz.maltabu.app.maltabukz.network.models.response.Region
 import kz.maltabu.app.maltabukz.network.models.response.ResponseContest
 import kz.maltabu.app.maltabukz.network.models.response.ResponseRegion
-import kz.maltabu.app.maltabukz.ui.adapter.MenuAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.RegionAdapter
-import kz.maltabu.app.maltabukz.ui.fragment.newAd.ChooseFragment
 import kz.maltabu.app.maltabukz.utils.FormatHelper
 import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.vm.ContestViewModel
-import kz.maltabu.app.maltabukz.vm.SearchViewModel
 import org.koin.android.ext.android.inject
 
 class ContestActivity :  BaseActivity(), RegionAdapter.ChooseRegion{
-    private lateinit var progressDialog: ProgressDialog
     private lateinit var dialog: Dialog
     private var regionId=0
     private var phoneNumber=""
@@ -49,7 +42,6 @@ class ContestActivity :  BaseActivity(), RegionAdapter.ChooseRegion{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_contest)
-        progressDialog = ProgressDialog(this)
         dialog= Dialog(this)
         viewModel = ViewModelProviders.of(this, ContestViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH)))
             .get(ContestViewModel::class.java)
@@ -177,18 +169,17 @@ class ContestActivity :  BaseActivity(), RegionAdapter.ChooseRegion{
     }
 
     fun showLoader(){
-        progressDialog.setCanceledOnTouchOutside(false)
-        progressDialog.setCancelable(false)
-        progressDialog.show()
+        progress_contest_view.visibility= View.VISIBLE
     }
 
     fun hideLoader(){
-        if(progressDialog.isShowing)
-            progressDialog.dismiss()
+        progress_contest_view.visibility= View.GONE
     }
 
     override fun onDestroy() {
-        hideLoader()
+        if(dialog.isShowing){
+            dialog.dismiss()
+        }
         super.onDestroy()
     }
 
@@ -232,6 +223,7 @@ class ContestActivity :  BaseActivity(), RegionAdapter.ChooseRegion{
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(true)
         dialog.setOnCancelListener {
+            dialog.dismiss()
             finish()
         }
         dialog.show()

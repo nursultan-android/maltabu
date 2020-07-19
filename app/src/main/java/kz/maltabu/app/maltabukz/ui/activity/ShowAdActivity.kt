@@ -2,7 +2,6 @@ package kz.maltabu.app.maltabukz.ui.activity
 
 import android.Manifest
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,7 +14,6 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_show_ad.*
 import kotlinx.android.synthetic.main.dialog_input_code.*
 import kotlinx.android.synthetic.main.dialog_input_phone.*
 import kotlinx.android.synthetic.main.dialog_input_phone.auto_complete
-import kotlinx.android.synthetic.main.fragment_new_ad.*
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.Ad
@@ -52,7 +49,6 @@ import java.util.*
 class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 
     private lateinit var viewModel: ShowAdActivityViewModel
-    private lateinit var dialog: ProgressDialog
     private lateinit var noAdDialog: Dialog
     lateinit var imagesIntent: Intent
     var current=0
@@ -75,7 +71,6 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 //            Log.d("TAGg", slug)
 //
 //        }
-        dialog = ProgressDialog(this)
         noAdDialog = Dialog(this)
         viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH)))
             .get(ShowAdActivityViewModel::class.java)
@@ -278,13 +273,11 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
     }
 
     private fun showDialog(){
-        if(!dialog.isShowing)
-            dialog.show()
+        progress_bar_show_ad.visibility=View.VISIBLE
     }
 
     private fun hideDialog(){
-        if(dialog.isShowing)
-            dialog.dismiss()
+        progress_bar_show_ad.visibility=View.GONE
     }
 
     private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {
@@ -385,7 +378,9 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
     }
 
     override fun onDestroy() {
-        hideDialog()
+        if(noAdDialog.isShowing){
+            noAdDialog.dismiss()
+        }
         super.onDestroy()
     }
 

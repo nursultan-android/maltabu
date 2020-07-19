@@ -359,7 +359,7 @@ class SearchFragment : Fragment(), AdAdapterWithAdvers.ChooseAd, RegionAdapter.C
     }
 
     override fun onDestroy() {
-        if(dialog!=null && dialog.isShowing){
+        if(dialog.isShowing){
             dialog.dismiss()
         }
         super.onDestroy()

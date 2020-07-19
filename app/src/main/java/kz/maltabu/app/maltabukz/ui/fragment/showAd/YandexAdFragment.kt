@@ -22,10 +22,6 @@ class YandexAdFragment : Fragment() {
             YandexAdFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_image_ad, null)
         mNativeBannerView = view.findViewById(R.id.native_template)
