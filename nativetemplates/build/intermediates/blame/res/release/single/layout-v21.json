@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/nurs/StudioProjects/maltaburedesign/nativetemplates/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/nurs/.gradle/caches/transforms-2/files-2.1/a705433752b35e2ad9fdaaa6f95c707b/core-1.1.0/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/nurs/StudioProjects/maltaburedesign/nativetemplates/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/nurs/.gradle/caches/transforms-2/files-2.1/a705433752b35e2ad9fdaaa6f95c707b/core-1.1.0/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/nurs/StudioProjects/maltaburedesign/nativetemplates/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/home/nurs/.gradle/caches/transforms-2/files-2.1/a705433752b35e2ad9fdaaa6f95c707b/core-1.1.0/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/home/nurs/StudioProjects/maltaburedesign/nativetemplates/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/nurs/.gradle/caches/transforms-2/files-2.1/a705433752b35e2ad9fdaaa6f95c707b/core-1.1.0/res/layout-v21/notification_template_custom_big.xml"
+    }
+]

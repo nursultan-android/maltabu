@@ -1,2 +1,2 @@
-include ':app', ':nativetemplate'
+include ':app', ':nativetemplates'
 rootProject.name='NewMaltabuKZ'

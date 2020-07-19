@@ -738,14 +738,14 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
         }
         if (validateForm()){
             showLoader()
-//            sendImages()
-            val fileList = createList(filesArr)
-            if(fileList.isNotEmpty())
-                Paper.book().write("imgFiles", fileList)
-            else
-                Paper.book().delete("imgFiles")
-            Paper.book().write(EnumsClass().ADBODY, body)
-            setWorkManagerListener()
+            sendImages()
+//            val fileList = createList(filesArr)
+//            if(fileList.isNotEmpty())
+//                Paper.book().write("imgFiles", fileList)
+//            else
+//                Paper.book().delete("imgFiles")
+//            Paper.book().write(EnumsClass().ADBODY, body)
+//            setWorkManagerListener()
         }
     }
 
@@ -946,7 +946,7 @@ class NewAdFragment : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     override fun onDestroy() {
-        if(sortDialog!=null && sortDialog.isShowing){
+        if(sortDialog.isShowing){
             sortDialog.dismiss()
         }
         super.onDestroy()

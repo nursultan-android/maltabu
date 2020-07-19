@@ -10,6 +10,8 @@ apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
 
+apply plugin: 'com.google.firebase.appdistribution'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -17,8 +19,9 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 90
-        versionName "2.0.17"
+        versionCode 94
+        versionName "2.0.20"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -50,6 +53,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"https://maltabu.kz/"'
             signingConfig signingConfigs.release
+            firebaseAppDistribution {
+                appId="1:85511783598:android:e95678ba0714c1b6"
+                serviceCredentialsFile="Maltabu-1fbeb507bbf7.json"
+                releaseNotes="second tester"
+                testers="nursultan.2027@gmail.com"
+            }
         }
 
         debug {
@@ -151,7 +160,7 @@ dependencies {
 
     //google ads
     implementation 'com.google.android.gms:play-services-ads:19.1.0'
-    implementation project(':nativetemplate')
+    implementation project(':nativetemplates')
 
     //jsoup
     implementation 'org.jsoup:jsoup:1.11.3'

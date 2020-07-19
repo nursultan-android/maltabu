@@ -240,7 +240,7 @@ class FilterFragment : Fragment(), RegionAdapter.ChooseRegion{
     }
 
     override fun onDestroy() {
-        if(sortDialog!=null && sortDialog.isShowing){
+        if(sortDialog.isShowing){
             sortDialog.dismiss()
         }
         super.onDestroy()

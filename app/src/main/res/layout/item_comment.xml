@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/menu_background_ripple"
+    android:layout_width="match_parent"
+    android:layout_marginStart="@dimen/_10sdp"
+    app:layout_constraintTop_toBottomOf="@+id/menu_recycler"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/comment_owner"
+        android:layout_width="wrap_content"
+        android:text="name@mail.ss"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:textColor="@color/Black"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/comment_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="18 may 2019"
+        android:textColor="@color/Black"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/comment_text"
+        android:layout_width="@dimen/_290sdp"
+        android:layout_height="wrap_content"
+        android:text="how much is it?"
+        android:gravity="start"
+        android:textColor="@color/Black"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/comment_owner"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/comment_text"
+        android:background="@color/MaltabuGrey"
+        android:layout_width="0dp"
+        android:layout_height="1dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,10 +2,11 @@ package kz.maltabu.app.maltabukz.ui.activity
 
 import android.Manifest
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,12 +20,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.gms.ads.MobileAds
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_show_ad.*
+import kotlinx.android.synthetic.main.dialog_input_code.*
+import kotlinx.android.synthetic.main.dialog_input_phone.*
+import kotlinx.android.synthetic.main.dialog_input_phone.auto_complete
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAd
+import kz.maltabu.app.maltabukz.network.models.response.ResponseSuccess
 import kz.maltabu.app.maltabukz.ui.adapter.ImagesAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.PhoneAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.showAd.ImageFragment
@@ -43,13 +49,13 @@ import java.util.*
 class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 
     private lateinit var viewModel: ShowAdActivityViewModel
-    private lateinit var dialog: ProgressDialog
     private lateinit var noAdDialog: Dialog
     lateinit var imagesIntent: Intent
     var current=0
     var size=0
     var PERMISSION_ALL = 1
     var PERMISSIONS =  Manifest.permission.CALL_PHONE
+    var phoneNumber=""
 
     private val formatHelper: FormatHelper by inject()
     private val checker: NetworkChecker by inject()
@@ -65,11 +71,12 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 //            Log.d("TAGg", slug)
 //
 //        }
-        dialog = ProgressDialog(this)
         noAdDialog = Dialog(this)
         viewModel = ViewModelProviders.of(this, ShowAdActivityViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH)))
             .get(ShowAdActivityViewModel::class.java)
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
+        viewModel.getSmsResponse().observe(this, Observer { consumeSmsResponse(it) })
+        viewModel.getCodeResponse().observe(this, Observer { consumeCodeResponse(it) })
         if(checker.isNetworkAvailable) {
             viewModel.getAdById(id, this)
         } else {
@@ -81,6 +88,58 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
             finish()
         }
         loadGoogleAd()
+    }
+
+    private fun consumeCodeResponse(response: ApiResponse) {
+        when (response.status) {
+            Status.LOADING -> {
+                showDialog()
+            }
+            Status.SUCCESS -> {
+                hideDialog()
+                val body = response.data!!.body() as ResponseSuccess
+                if(body.status=="success"){
+                    showSuccessfulPromotionDialog()
+                }
+            }
+            Status.ERROR -> {
+                hideDialog()
+                Log.d("TAGg", "error")
+                if(response.error!!.code()==404){
+                    showModeratorDialog()
+                }
+            }
+            Status.THROWABLE -> {
+                Log.d("TAGg", "throw")
+                hideDialog()
+            }
+        }
+    }
+
+    private fun consumeSmsResponse(response: ApiResponse) {
+        when (response.status) {
+            Status.LOADING -> {
+                showDialog()
+            }
+            Status.SUCCESS -> {
+                hideDialog()
+                val body = response.data!!.body() as ResponseSuccess
+                if(body.status=="success"){
+                    showEnterCodeDialog()
+                }
+            }
+            Status.ERROR -> {
+                hideDialog()
+                Log.d("TAGg", "error")
+                if(response.error!!.code()==404){
+                    showModeratorDialog()
+                }
+            }
+            Status.THROWABLE -> {
+                Log.d("TAGg", "throw")
+                hideDialog()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -126,6 +185,10 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
             callPhone.setOnClickListener {
                 makeDial(ad.phones[0])
             }
+        }
+
+        hot_lay.setOnClickListener {
+            showHotPromoteDialog()
         }
     }
 
@@ -210,13 +273,11 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
     }
 
     private fun showDialog(){
-        if(!dialog.isShowing)
-            dialog.show()
+        progress_bar_show_ad.visibility=View.VISIBLE
     }
 
     private fun hideDialog(){
-        if(dialog.isShowing)
-            dialog.dismiss()
+        progress_bar_show_ad.visibility=View.GONE
     }
 
     private fun hasPermissions(context: Context?, vararg permissions: String?): Boolean {
@@ -262,8 +323,64 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
         }
     }
 
+    private fun showHotPromoteDialog(){
+        noAdDialog.setContentView(R.layout.dialog_input_phone)
+        noAdDialog.send_sms_button.setOnClickListener {
+            if(phoneNumber.isNotEmpty()){
+                noAdDialog.dismiss()
+                viewModel.sendSms(phoneNumber)
+            }
+        }
+        val listener =
+            MaskedTextChangedListener.installOn(
+                noAdDialog.auto_complete,
+                "+7-([000])-[000]-[00]-[00]",
+                object : MaskedTextChangedListener.ValueListener {
+                    override fun onTextChanged(
+                        maskFilled: Boolean,
+                        extractedValue: String,
+                        formattedValue: String
+                    ) {
+                        phoneNumber = if (maskFilled) {
+                            formatHelper.removeInvelidSymbols(formattedValue)
+                        } else {
+                            ""
+                        }
+                    }
+                }
+            )
+        noAdDialog.setCanceledOnTouchOutside(false)
+        noAdDialog.auto_complete.hint = listener.placeholder()
+        noAdDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        noAdDialog.show()
+    }
+
+    private fun showEnterCodeDialog(){
+        noAdDialog.setContentView(R.layout.dialog_input_code)
+        noAdDialog.send_code_button.setOnClickListener {
+            val code = noAdDialog.auto_complete.text.toString()
+            val id = (intent.getSerializableExtra("ad") as Ad).id
+            if(code.isNotEmpty() && code.length>5){
+                noAdDialog.dismiss()
+                viewModel.sendCode(phoneNumber, code, "hot", id)
+            }
+        }
+        noAdDialog.setCanceledOnTouchOutside(false)
+        noAdDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        noAdDialog.show()
+    }
+
+    private fun showSuccessfulPromotionDialog(){
+        noAdDialog.setCanceledOnTouchOutside(true)
+        noAdDialog.setContentView(R.layout.dialog_successful_promotion)
+        noAdDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        noAdDialog.show()
+    }
+
     override fun onDestroy() {
-        hideDialog()
+        if(noAdDialog.isShowing){
+            noAdDialog.dismiss()
+        }
         super.onDestroy()
     }
 

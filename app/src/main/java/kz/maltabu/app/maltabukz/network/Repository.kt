@@ -137,4 +137,17 @@ open class Repository{
     fun getMyAds(page:Int): Observable<Response<ResponseAds>> {
         return mainService!!.getMyAds(page)
     }
+
+    fun contests(phone:String, first:String, last:String, sur:String, region:Int, city:Int)
+            : Observable<Response<ResponseContest>> {
+        return mainService!!.contest(phone,first,last,sur,region,city)
+    }
+
+    fun sendSms(phone: String):Observable<Response<ResponseSuccess>>{
+        return mainService!!.sendSms(phone)
+    }
+
+    fun sendCode(phone: String, code: String, type: String, id: Int):Observable<Response<ResponseSuccess>>{
+        return mainService!!.sendCode(phone, code, type, id)
+    }
 }

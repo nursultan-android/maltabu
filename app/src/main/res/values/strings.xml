@@ -225,4 +225,21 @@
 
     <string name="load_more">Загрузить еще</string>
     <string name="uploading_photo">Загрузка фото…</string>
+
+    <string name="contest_field_1">Ваш номер телефона</string>
+    <string name="contest_field_2">Имя</string>
+    <string name="contest_field_3">Фамилия</string>
+    <string name="contest_field_4">Отчество</string>
+    <string name="contest_field_5">Регион</string>
+    <string name="contest_result">Успешная регистрация на участие в конкурсе!</string>
+    <string name="contest_code">Сохраните ваш код</string>
+    <string name="contest">Отправить</string>
+
+    <string name="empty_fields">Заполните поля</string>
+    <string name="do_contest">Участвовать в конкурсе!</string>
+
+    <string name="add_to_hot">Добавить в горячие</string>
+    <string name="added_to_hot">Добавлено в горячие</string>
+    <string name="hot_price">Цена за поднятие объявления вверх - 50₸</string>
+    <string name="enter_code">Введите SMS код</string>
 </resources>

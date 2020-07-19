@@ -113,7 +113,7 @@ class ChooseFragment : Fragment(), CategoryAdapter.ChooseCategory {
     }
 
     override fun onDestroy() {
-        if(sortDialog!=null && sortDialog.isShowing){
+        if(sortDialog.isShowing){
             sortDialog.dismiss()
         }
         super.onDestroy()

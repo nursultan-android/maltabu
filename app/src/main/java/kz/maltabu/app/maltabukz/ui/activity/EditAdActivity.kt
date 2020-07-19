@@ -1,8 +1,8 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,7 +17,6 @@ import kz.maltabu.app.maltabukz.utils.customEnum.Status
 import kz.maltabu.app.maltabukz.vm.EditAdViewModel
 
 public class EditAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
-    private lateinit var dialog: ProgressDialog
     private lateinit var viewModel: EditAdViewModel
     var cityID = 0
     var regionID = 0
@@ -28,7 +27,6 @@ public class EditAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
         viewModel = ViewModelProviders.of(this, EditAdViewModel.ViewModelFactory(Paper.book().read(enum.LANG, enum.KAZAKH))).get(EditAdViewModel::class.java)
         setContentView(R.layout.activity_new_ad)
         setListeners()
-        dialog= ProgressDialog(this)
         viewModel.catResponse().observe(this, Observer {
             consumeCategoryResponse(it)
         })
@@ -149,14 +147,11 @@ public class EditAdActivity :  BaseActivity(), MenuAdapter.ChooseCategory {
     }
 
     fun showLoader(){
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
+        progress_view.visibility= View.VISIBLE
     }
 
     fun hideLoader(){
-        if(dialog.isShowing)
-            dialog.dismiss()
+        progress_view.visibility= View.GONE
     }
 
     fun clearBackStack(){
