@@ -44,8 +44,8 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Commen
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentComment =comments[position]
         holder.date.text=currentComment.date
-        holder.owner.text=currentComment.user.email
         holder.text.text=currentComment.text
+        holder.owner.text="*****${currentComment.user.name.substring(currentComment.user.name.length-5)}"
     }
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
