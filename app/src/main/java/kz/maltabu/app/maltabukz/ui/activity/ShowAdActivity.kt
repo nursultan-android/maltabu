@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,14 +24,31 @@ import com.google.android.gms.ads.MobileAds
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_show_ad.*
+import kotlinx.android.synthetic.main.activity_show_ad.callPhone
+import kotlinx.android.synthetic.main.activity_show_ad.content_txt
+import kotlinx.android.synthetic.main.activity_show_ad.dateTxt
+import kotlinx.android.synthetic.main.activity_show_ad.finish
+import kotlinx.android.synthetic.main.activity_show_ad.hot_lay
+import kotlinx.android.synthetic.main.activity_show_ad.location_txt
+import kotlinx.android.synthetic.main.activity_show_ad.my_template
+import kotlinx.android.synthetic.main.activity_show_ad.pager
+import kotlinx.android.synthetic.main.activity_show_ad.phones_txt
+import kotlinx.android.synthetic.main.activity_show_ad.photos
+import kotlinx.android.synthetic.main.activity_show_ad.price_txt
+import kotlinx.android.synthetic.main.activity_show_ad.progress_bar_show_ad
+import kotlinx.android.synthetic.main.activity_show_ad.title_txt
+import kotlinx.android.synthetic.main.activity_show_ad.visitors_text
+import kotlinx.android.synthetic.main.activity_show_ad_with_comments.*
 import kotlinx.android.synthetic.main.dialog_input_code.*
 import kotlinx.android.synthetic.main.dialog_input_phone.*
 import kotlinx.android.synthetic.main.dialog_input_phone.auto_complete
 import kz.maltabu.app.maltabukz.R
 import kz.maltabu.app.maltabukz.network.ApiResponse
+import kz.maltabu.app.maltabukz.network.models.comment.Comment
 import kz.maltabu.app.maltabukz.network.models.response.Ad
 import kz.maltabu.app.maltabukz.network.models.response.ResponseAd
 import kz.maltabu.app.maltabukz.network.models.response.ResponseSuccess
+import kz.maltabu.app.maltabukz.ui.adapter.CommentAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.ImagesAdapter
 import kz.maltabu.app.maltabukz.ui.adapter.PhoneAdapter
 import kz.maltabu.app.maltabukz.ui.fragment.showAd.ImageFragment
@@ -50,6 +68,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 
     private lateinit var viewModel: ShowAdActivityViewModel
     private lateinit var noAdDialog: Dialog
+    private var commentsList = ArrayList<Comment>()
     lateinit var imagesIntent: Intent
     var current=0
     var size=0
@@ -62,8 +81,7 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val id = (intent.getSerializableExtra("ad") as Ad).id
-        setContentView(R.layout.activity_show_ad)
+        setContentView(R.layout.activity_show_ad_with_comments)
 //        val data = intent.data
 //        if(data!=null){
 //            var slug = data.toString()
@@ -77,17 +95,22 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
         viewModel.mainResponse().observe(this, Observer { consumeResponse(it) })
         viewModel.getSmsResponse().observe(this, Observer { consumeSmsResponse(it) })
         viewModel.getCodeResponse().observe(this, Observer { consumeCodeResponse(it) })
-        if(checker.isNetworkAvailable) {
-            viewModel.getAdById(id, this)
-        } else {
-            setNoInternetView()
-        }
         imagesIntent = Intent(this, ImageActivity::class.java)
         finish.setOnClickListener {
             CustomAnimator.animateHotViewLinear(it)
             finish()
         }
         loadGoogleAd()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val id = (intent.getSerializableExtra("ad") as Ad).id
+        if(checker.isNetworkAvailable) {
+            viewModel.getAdById(id, this)
+        } else {
+            setNoInternetView()
+        }
     }
 
     private fun consumeCodeResponse(response: ApiResponse) {
@@ -190,6 +213,13 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
         hot_lay.setOnClickListener {
             showHotPromoteDialog()
         }
+
+        show_comments_button.setOnClickListener {
+            val intent = Intent(this, CommentActivity::class.java)
+            intent.putExtra("commentsList", commentsList)
+            intent.putExtra("adId", ad.id)
+            startActivity(intent)
+        }
     }
 
     private fun makeDial(number:String) {
@@ -267,6 +297,19 @@ class ShowAdActivity : BaseActivity(), PhoneAdapter.MakeCall, OnModerate {
                 photos.text = "1/" + response.ad.images.size.toString()
             setAdapter(response.ad)
             setListeners(response.ad)
+            if(response.ad.comments.size>0) {
+                commentsList.clear()
+                commentsList.addAll(response.ad.comments)
+                var commentsList = response.ad.comments
+                if (response.ad.comments.size > 3) {
+                    commentsList = response.ad.comments.take(3)
+                }
+                val adapterForComment = CommentAdapter(this)
+                adapterForComment.setData(commentsList)
+                comments_recycler.adapter=adapterForComment
+            } else {
+                show_comments_button.text= resources.getString(R.string.comments2)
+            }
         } else {
             showModeratorDialog()
         }

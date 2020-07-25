@@ -79,6 +79,11 @@ interface Service {
     fun sendSms(@Field("phone") phone: String):Observable<Response<ResponseSuccess>>
 
     @FormUrlEncoded
+    @POST("/api/v2/comment-advertisement")
+    fun sendComment(@Field("advertisement_id") advertisementId: Int, @Field("user_id") userId: Int,
+                    @Field("text") text: String):Observable<Response<ResponseSuccess>>
+
+    @FormUrlEncoded
     @POST("/api/v2/woopay-advertisement-invoice")
     fun sendCode(@Field("phone") phone: String, @Field("code") code: String, @Field("type") type: String,
                  @Field("advertisement_id") id:Int):Observable<Response<ResponseSuccess>>

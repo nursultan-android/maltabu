@@ -85,6 +85,7 @@ class AuthFragment : BaseSocialFragment() {
 
     private fun renderSocResponse(response: ResponseRegister) {
         if(response.status=="success"){
+            Log.d("TAGg", "user ${response.user.toString()}")
             Paper.book().write((activity!! as BaseActivity).enum.TOKEN, response.token.token)
             Paper.book().write((activity!! as BaseActivity).enum.USER, response.user)
             (activity as AuthActivity).clearBackStack()

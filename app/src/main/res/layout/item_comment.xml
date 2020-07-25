@@ -11,12 +11,11 @@
     <TextView
         android:id="@+id/comment_owner"
         android:layout_width="wrap_content"
-        android:text="name@mail.ss"
         android:layout_height="wrap_content"
         android:gravity="start"
         android:textColor="@color/Black"
         android:layout_margin="@dimen/_10sdp"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,10 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="18 may 2019"
         android:textColor="@color/Black"
         android:layout_margin="@dimen/_10sdp"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -36,11 +34,10 @@
         android:id="@+id/comment_text"
         android:layout_width="@dimen/_290sdp"
         android:layout_height="wrap_content"
-        android:text="how much is it?"
         android:gravity="start"
         android:textColor="@color/Black"
         android:layout_margin="@dimen/_10sdp"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/comment_owner"
