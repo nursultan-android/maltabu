@@ -1,26 +1,47 @@
 package kz.maltabu.app.maltabukz.ui.activity
 
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.webkit.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main_web_view.*
+import kotlinx.android.synthetic.main.dialog_update.*
 import kz.maltabu.app.maltabukz.BuildConfig
 import kz.maltabu.app.maltabukz.R
+import kz.maltabu.app.maltabukz.utils.web.VersionChecker
+import org.jsoup.Jsoup
 
 
 class MainActivityWebView : AppCompatActivity() {
     private val REQUEST_SELECT_FILE = 100
     var uploadMessage: ValueCallback<Array<Uri>>? = null
+    private lateinit var customDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_web_view)
+        customDialog = Dialog(this)
+        setViewViewSettings()
+        try{
+            checkVersion()
+        } catch (e:Exception){
+            Log.d("TAGg", e.message)
+        }
+    }
+
+    private fun setViewViewSettings() {
         main_web_view.settings.javaScriptEnabled = true
         main_web_view.settings.domStorageEnabled = true
         main_web_view.settings.pluginState=WebSettings.PluginState.ON
@@ -95,5 +116,36 @@ class MainActivityWebView : AppCompatActivity() {
                 uploadMessage = null
             } catch (e:Exception){}
         }
+    }
+
+    private fun checkVersion(){
+        val checker = VersionChecker()
+        checker.getData().observe(this, Observer {
+            try {
+                val doc = Jsoup.parse(it)
+                val span = doc.select("span").first()
+                compareVersions(span.text())
+            } catch (e: Exception){
+                Log.d("TAGg", e.message)
+            }
+        })
+        checker.getVersion()
+    }
+
+    private fun compareVersions(versionFromPlayMarket: String) {
+        val versionName = BuildConfig.VERSION_NAME
+        if(versionFromPlayMarket!=versionName){
+            showUpdateDialog()
+        }
+    }
+
+    private fun showUpdateDialog() {
+        customDialog.setContentView(R.layout.dialog_update)
+        customDialog.update_button.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.play_market_link))))
+            customDialog.dismiss()
+        }
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.show()
     }
 }
