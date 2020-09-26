@@ -19,8 +19,8 @@ android {
         applicationId "kz.maltabu.app.maltabukz"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 94
-        versionName "2.0.20"
+        versionCode 99
+        versionName "2.0.24"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,8 +56,8 @@ android {
             firebaseAppDistribution {
                 appId="1:85511783598:android:e95678ba0714c1b6"
                 serviceCredentialsFile="Maltabu-1fbeb507bbf7.json"
-                releaseNotes="second tester"
-                testers="nursultan.2027@gmail.com"
+                releaseNotes="webView"
+                testers="nursultan.2027@gmail.com, daurmatai@gmail.com"
             }
         }
 

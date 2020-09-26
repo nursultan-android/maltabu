@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+import kz.maltabu.app.maltabukz.network.models.comment.Comment;
+
 public class Ad implements Serializable {
 
     @SerializedName("id")
@@ -64,6 +66,10 @@ public class Ad implements Serializable {
     @Expose
     private String currency;
 
+    @SerializedName("comments")
+    @Expose
+    private List<Comment> comments;
+
     public int getId() {
         return id;
     }
@@ -118,5 +124,9 @@ public class Ad implements Serializable {
 
     public String getCurrency() {
         return currency;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }

@@ -150,4 +150,8 @@ open class Repository{
     fun sendCode(phone: String, code: String, type: String, id: Int):Observable<Response<ResponseSuccess>>{
         return mainService!!.sendCode(phone, code, type, id)
     }
+
+    fun sendComment(adId:Int, userId: Int, text: String):Observable<Response<ResponseSuccess>>{
+        return mainService!!.sendComment(adId, userId, text)
+    }
 }
