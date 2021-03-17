@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -14,8 +15,7 @@ import android.webkit.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main_web_view.*
 import kotlinx.android.synthetic.main.dialog_update.*
 import kz.maltabu.app.maltabukz.BuildConfig
@@ -32,8 +32,10 @@ class MainActivityWebView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_web_view)
+        Paper.init(this)
         customDialog = Dialog(this)
         setViewViewSettings()
+        Log.d("TAGg", Paper.book().read("firebaseToken", "ff"))
         try{
             checkVersion()
         } catch (e:Exception){
@@ -60,9 +62,20 @@ class MainActivityWebView : AppCompatActivity() {
                 context.startActivity(intent)
                 view.reload()
                 return true
+            } else {
+                return if (url == null || url.startsWith("http://") || url.startsWith("https://"))
+                    false
+                else try {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(url)
+                    )
+                    view.context.startActivity(intent)
+                    true
+                } catch (e: java.lang.Exception) {
+                    true
+                }
             }
-            view.loadUrl(url)
-            return true
         }
     }
 
@@ -147,5 +160,15 @@ class MainActivityWebView : AppCompatActivity() {
         }
         customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         customDialog.show()
+    }
+
+    private fun appInstalledOrNot(uri: String): Boolean {
+        val pm: PackageManager = packageManager
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+        }
+        return false
     }
 }

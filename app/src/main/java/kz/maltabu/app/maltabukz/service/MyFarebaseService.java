@@ -43,6 +43,7 @@ public class MyFarebaseService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         Log.d("FirebaseTag", "Refreshed token: " + token);
+        Paper.init(this);
         Paper.book().write("firebaseToken", token);
     }
 
