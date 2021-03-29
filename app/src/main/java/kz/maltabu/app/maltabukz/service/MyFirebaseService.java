@@ -21,7 +21,7 @@ import kz.maltabu.app.maltabukz.ui.activity.MainActivity;
 
 import static kz.maltabu.app.maltabukz.App.CHANNEL_ID;
 
-public class MyFarebaseService extends FirebaseMessagingService {
+public class MyFirebaseService extends FirebaseMessagingService {
     private NotificationManagerCompat notificationManager;
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {

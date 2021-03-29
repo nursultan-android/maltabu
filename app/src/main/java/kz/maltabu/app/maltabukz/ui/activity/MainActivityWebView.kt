@@ -13,8 +13,13 @@ import android.util.Log
 import android.view.KeyEvent
 import android.webkit.*
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main_web_view.*
 import kotlinx.android.synthetic.main.dialog_update.*
@@ -35,12 +40,24 @@ class MainActivityWebView : AppCompatActivity() {
         Paper.init(this)
         customDialog = Dialog(this)
         setViewViewSettings()
-        Log.d("TAGg", Paper.book().read("firebaseToken", "ff"))
+        getTokenFirebase()
         try{
             checkVersion()
         } catch (e:Exception){
             Log.d("TAGg", e.message)
         }
+    }
+
+    private fun getTokenFirebase() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener(object : OnCompleteListener<String?> {
+                override fun onComplete(@NonNull task: Task<String?>) {
+                    if (!task.isSuccessful) {
+                        return
+                    }
+                    Log.d("TAGg", task.result!!)
+                }
+            })
     }
 
     private fun setViewViewSettings() {
@@ -49,7 +66,7 @@ class MainActivityWebView : AppCompatActivity() {
         main_web_view.settings.pluginState=WebSettings.PluginState.ON
         main_web_view.webViewClient=WebViewController(this)
         main_web_view.webChromeClient=CustomWebChromeClient(this)
-        main_web_view.loadUrl("${BuildConfig.BASE_URL}/kk")
+        main_web_view.loadUrl("${BuildConfig.BASE_URL}")
     }
 
     class WebViewController(val context: Context): WebViewClient() {
